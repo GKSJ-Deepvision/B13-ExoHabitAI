@@ -4,8 +4,8 @@ ExoHabitAI is an AI-based system that predicts the habitability potential of exo
 planetary and stellar parameters.
 ## Tech Stack
 - Python
-- Machine Learning
 - Flask
+- Machine Learning
 - HTML, CSS, JavaScript
 - Data Visualization
 - Data Visualization
