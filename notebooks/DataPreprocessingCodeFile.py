@@ -194,7 +194,13 @@ def preprocess_exoplanet_data(file_path, output_path="data/preprocessed/preproce
 
 
 if __name__ == "__main__":
-    base_dir = os.path.dirname(__file__)
-    file_path = os.path.join(base_dir, "PS_2026.02.13_04.47.45.csv")
+    project_root = os.path.dirname(os.path.dirname(__file__))
+
+    file_path = os.path.join(
+        project_root,
+        "data",
+        "raw",
+        "PS_2026.02.13_04.47.45.csv"
+    )
 
     preprocess_exoplanet_data(file_path)
