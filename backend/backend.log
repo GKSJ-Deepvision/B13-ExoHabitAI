@@ -1,0 +1,228 @@
+2026-03-13 11:56:30,643 - WARNING -  * Debugger is active!
+2026-03-13 11:56:30,658 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 11:57:07,807 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\routes\\predict_routes.py', reloading
+2026-03-13 11:57:10,297 - WARNING -  * Debugger is active!
+2026-03-13 11:57:10,300 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 11:57:21,018 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\routes\\predict_routes.py', reloading
+2026-03-13 11:57:23,245 - WARNING -  * Debugger is active!
+2026-03-13 11:57:23,248 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 11:58:10,153 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-13 11:58:10,154 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-13 11:58:10,158 - INFO -  * Restarting with stat
+2026-03-13 11:58:11,962 - WARNING -  * Debugger is active!
+2026-03-13 11:58:11,965 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 12:06:41,035 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-13 12:06:41,038 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-13 12:06:41,042 - INFO -  * Restarting with stat
+2026-03-13 12:06:43,110 - WARNING -  * Debugger is active!
+2026-03-13 12:06:43,115 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 12:08:45,588 - INFO - 127.0.0.1 - - [13/Mar/2026 12:08:45] "[31m[1mGET /predict HTTP/1.1[0m" 405 -
+2026-03-13 12:09:05,051 - INFO - 127.0.0.1 - - [13/Mar/2026 12:09:05] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-13 12:09:05,399 - INFO - 127.0.0.1 - - [13/Mar/2026 12:09:05] "GET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2026-03-13 12:09:05,403 - INFO - 127.0.0.1 - - [13/Mar/2026 12:09:05] "GET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2026-03-13 12:09:05,524 - INFO - 127.0.0.1 - - [13/Mar/2026 12:09:05] "GET /rank?__debugger__=yes&cmd=resource&f=console.png&s=fVdE5QIxxDMyvvANsIk5 HTTP/1.1" 200 -
+2026-03-13 12:09:05,615 - INFO - 127.0.0.1 - - [13/Mar/2026 12:09:05] "GET /rank?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2026-03-13 12:11:36,727 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-13 12:11:36,730 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-13 12:11:36,737 - INFO -  * Restarting with stat
+2026-03-13 12:11:38,625 - WARNING -  * Debugger is active!
+2026-03-13 12:11:38,637 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 12:12:13,128 - INFO - 127.0.0.1 - - [13/Mar/2026 12:12:13] "GET / HTTP/1.1" 200 -
+2026-03-13 12:14:41,263 - INFO - 127.0.0.1 - - [13/Mar/2026 12:14:41] "[31m[1mGET /predict HTTP/1.1[0m" 405 -
+2026-03-13 12:15:42,857 - INFO - 127.0.0.1 - - [13/Mar/2026 12:15:42] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-13 12:15:42,965 - INFO - 127.0.0.1 - - [13/Mar/2026 12:15:42] "[36mGET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2026-03-13 12:15:42,969 - INFO - 127.0.0.1 - - [13/Mar/2026 12:15:42] "[36mGET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2026-03-13 12:15:43,038 - INFO - 127.0.0.1 - - [13/Mar/2026 12:15:43] "[36mGET /rank?__debugger__=yes&cmd=resource&f=console.png&s=fVdE5QIxxDMyvvANsIk5 HTTP/1.1[0m" 304 -
+2026-03-13 18:31:36,153 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-13 18:31:36,154 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-13 18:31:36,156 - INFO -  * Restarting with stat
+2026-03-13 18:31:40,038 - WARNING -  * Debugger is active!
+2026-03-13 18:31:40,051 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 18:32:42,906 - INFO - 127.0.0.1 - - [13/Mar/2026 18:32:42] "GET / HTTP/1.1" 200 -
+2026-03-13 18:32:43,040 - INFO - 127.0.0.1 - - [13/Mar/2026 18:32:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-13 18:44:44,853 - INFO - Prediction API called
+2026-03-13 18:44:45,207 - INFO - 127.0.0.1 - - [13/Mar/2026 18:44:45] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-13 18:47:24,925 - INFO - Prediction API called
+2026-03-13 18:47:24,961 - INFO - 127.0.0.1 - - [13/Mar/2026 18:47:24] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-13 19:37:44,000 - INFO - Prediction API called
+2026-03-13 19:37:44,077 - INFO - 127.0.0.1 - - [13/Mar/2026 19:37:44] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-13 19:39:53,834 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\prediction_service.py', reloading
+2026-03-13 19:39:57,616 - INFO -  * Restarting with stat
+2026-03-13 19:40:07,027 - WARNING -  * Debugger is active!
+2026-03-13 19:40:07,046 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 19:40:48,156 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-13 19:40:48,157 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-13 19:40:48,159 - INFO -  * Restarting with stat
+2026-03-13 19:40:50,562 - WARNING -  * Debugger is active!
+2026-03-13 19:40:50,581 - INFO -  * Debugger PIN: 159-670-546
+2026-03-13 19:40:56,984 - INFO - 127.0.0.1 - - [13/Mar/2026 19:40:56] "GET / HTTP/1.1" 200 -
+2026-03-13 19:43:02,607 - INFO - 127.0.0.1 - - [13/Mar/2026 19:43:02] "GET / HTTP/1.1" 200 -
+2026-03-13 19:44:35,714 - INFO - Prediction API called
+2026-03-13 19:44:35,735 - INFO - 127.0.0.1 - - [13/Mar/2026 19:44:35] "[31m[1mPOST /predict HTTP/1.1[0m" 415 -
+2026-03-13 19:46:00,803 - INFO - Prediction API called
+2026-03-13 19:46:01,123 - INFO - 127.0.0.1 - - [13/Mar/2026 19:46:01] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-16 19:47:44,643 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 19:47:44,645 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 19:47:44,648 - INFO -  * Restarting with stat
+2026-03-16 19:47:46,484 - WARNING -  * Debugger is active!
+2026-03-16 19:47:46,491 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 19:49:59,190 - INFO - 127.0.0.1 - - [16/Mar/2026 19:49:59] "GET / HTTP/1.1" 200 -
+2026-03-16 19:49:59,298 - INFO - 127.0.0.1 - - [16/Mar/2026 19:49:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-16 19:58:32,291 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 19:58:32,291 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 19:58:32,295 - INFO -  * Restarting with stat
+2026-03-16 19:58:34,582 - WARNING -  * Debugger is active!
+2026-03-16 19:58:34,592 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 19:59:12,179 - INFO - 127.0.0.1 - - [16/Mar/2026 19:59:12] "GET / HTTP/1.1" 200 -
+2026-03-16 19:59:52,340 - INFO - 127.0.0.1 - - [16/Mar/2026 19:59:52] "[31m[1mGET /predict HTTP/1.1[0m" 405 -
+2026-03-16 20:00:27,187 - INFO - 127.0.0.1 - - [16/Mar/2026 20:00:27] "[31m[1mGET /predict HTTP/1.1[0m" 405 -
+2026-03-16 20:04:23,619 - INFO - Prediction API called
+2026-03-16 20:04:23,988 - INFO - 127.0.0.1 - - [16/Mar/2026 20:04:23] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-16 20:07:46,383 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\prediction_service.py', reloading
+2026-03-16 20:07:46,454 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\prediction_service.py', reloading
+2026-03-16 20:07:48,294 - INFO -  * Restarting with stat
+2026-03-16 20:07:48,309 - INFO -  * Restarting with stat
+2026-03-16 20:07:53,503 - WARNING -  * Debugger is active!
+2026-03-16 20:07:53,503 - WARNING -  * Debugger is active!
+2026-03-16 20:07:53,510 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 20:08:48,071 - INFO - Prediction API called
+2026-03-16 20:08:48,073 - INFO - 127.0.0.1 - - [16/Mar/2026 20:08:48] "POST /predict HTTP/1.1" 200 -
+2026-03-16 20:11:42,900 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\routes\\predict_routes.py', reloading
+2026-03-16 20:11:43,133 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\routes\\predict_routes.py', reloading
+2026-03-16 20:11:43,725 - INFO -  * Restarting with stat
+2026-03-16 20:11:43,872 - INFO -  * Restarting with stat
+2026-03-16 20:14:40,671 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 20:14:40,673 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 20:14:40,675 - INFO -  * Restarting with stat
+2026-03-16 20:14:43,256 - WARNING -  * Debugger is active!
+2026-03-16 20:14:43,266 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 20:16:35,763 - INFO - 127.0.0.1 - - [16/Mar/2026 20:16:35] "POST /predict HTTP/1.1" 200 -
+2026-03-16 20:43:28,508 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\app.py', reloading
+2026-03-16 20:43:31,689 - INFO -  * Restarting with stat
+2026-03-16 21:13:32,562 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 21:13:32,563 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 21:13:32,572 - INFO -  * Restarting with stat
+2026-03-16 21:13:35,047 - WARNING -  * Debugger is active!
+2026-03-16 21:13:35,056 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:14:16,486 - INFO - 127.0.0.1 - - [16/Mar/2026 21:14:16] "GET / HTTP/1.1" 200 -
+2026-03-16 21:14:33,549 - INFO - 127.0.0.1 - - [16/Mar/2026 21:14:33] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-16 21:14:34,219 - INFO - 127.0.0.1 - - [16/Mar/2026 21:14:34] "[36mGET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2026-03-16 21:14:34,233 - INFO - 127.0.0.1 - - [16/Mar/2026 21:14:34] "[36mGET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2026-03-16 21:14:34,332 - INFO - 127.0.0.1 - - [16/Mar/2026 21:14:34] "GET /rank?__debugger__=yes&cmd=resource&f=console.png&s=m2NZBjqY1pYRXYoZD9WS HTTP/1.1" 200 -
+2026-03-16 21:22:41,697 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:22:43,704 - INFO -  * Restarting with stat
+2026-03-16 21:22:48,503 - WARNING -  * Debugger is active!
+2026-03-16 21:22:48,516 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:24:05,700 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 21:24:05,700 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 21:24:05,705 - INFO -  * Restarting with stat
+2026-03-16 21:24:08,091 - WARNING -  * Debugger is active!
+2026-03-16 21:24:08,095 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:24:28,020 - INFO - 127.0.0.1 - - [16/Mar/2026 21:24:28] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-16 21:24:28,846 - INFO - 127.0.0.1 - - [16/Mar/2026 21:24:28] "[36mGET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2026-03-16 21:24:28,848 - INFO - 127.0.0.1 - - [16/Mar/2026 21:24:28] "[36mGET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2026-03-16 21:24:28,957 - INFO - 127.0.0.1 - - [16/Mar/2026 21:24:28] "GET /rank?__debugger__=yes&cmd=resource&f=console.png&s=6PR2mqInpbXNXgSCJidc HTTP/1.1" 200 -
+2026-03-16 21:40:52,060 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:40:52,061 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:40:54,774 - INFO -  * Restarting with stat
+2026-03-16 21:40:54,806 - INFO -  * Restarting with stat
+2026-03-16 21:41:00,946 - WARNING -  * Debugger is active!
+2026-03-16 21:41:00,984 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:42:22,334 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 21:42:22,335 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 21:42:22,338 - INFO -  * Restarting with stat
+2026-03-16 21:42:24,858 - WARNING -  * Debugger is active!
+2026-03-16 21:42:24,869 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:42:41,527 - INFO - 127.0.0.1 - - [16/Mar/2026 21:42:41] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-16 21:42:42,198 - INFO - 127.0.0.1 - - [16/Mar/2026 21:42:42] "[36mGET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2026-03-16 21:42:42,200 - INFO - 127.0.0.1 - - [16/Mar/2026 21:42:42] "[36mGET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2026-03-16 21:42:42,305 - INFO - 127.0.0.1 - - [16/Mar/2026 21:42:42] "GET /rank?__debugger__=yes&cmd=resource&f=console.png&s=zHMOzTqXWkTgj4YFIc0c HTTP/1.1" 200 -
+2026-03-16 21:49:57,079 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 21:49:57,079 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 21:49:57,081 - INFO -  * Restarting with stat
+2026-03-16 21:49:59,780 - WARNING -  * Debugger is active!
+2026-03-16 21:49:59,789 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:50:54,116 - INFO - 127.0.0.1 - - [16/Mar/2026 21:50:54] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-16 21:50:54,327 - INFO - 127.0.0.1 - - [16/Mar/2026 21:50:54] "[36mGET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2026-03-16 21:50:54,336 - INFO - 127.0.0.1 - - [16/Mar/2026 21:50:54] "[36mGET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2026-03-16 21:50:54,460 - INFO - 127.0.0.1 - - [16/Mar/2026 21:50:54] "[36mGET /rank?__debugger__=yes&cmd=resource&f=console.png&s=zHMOzTqXWkTgj4YFIc0c HTTP/1.1[0m" 304 -
+2026-03-16 21:55:53,177 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:55:53,885 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:55:53,928 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:55:55,430 - INFO -  * Restarting with stat
+2026-03-16 21:55:55,460 - INFO -  * Restarting with stat
+2026-03-16 21:55:56,793 - INFO -  * Restarting with stat
+2026-03-16 21:56:02,124 - WARNING -  * Debugger is active!
+2026-03-16 21:56:02,150 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:56:11,045 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:56:11,048 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:56:11,056 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:56:11,828 - INFO -  * Restarting with stat
+2026-03-16 21:56:11,861 - INFO -  * Restarting with stat
+2026-03-16 21:56:11,878 - INFO -  * Restarting with stat
+2026-03-16 21:57:09,721 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 21:57:09,722 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 21:57:09,725 - INFO -  * Restarting with stat
+2026-03-16 21:57:12,212 - WARNING -  * Debugger is active!
+2026-03-16 21:57:12,218 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:57:32,212 - INFO - 127.0.0.1 - - [16/Mar/2026 21:57:32] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-16 21:57:32,830 - INFO - 127.0.0.1 - - [16/Mar/2026 21:57:32] "[36mGET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2026-03-16 21:57:32,833 - INFO - 127.0.0.1 - - [16/Mar/2026 21:57:32] "[36mGET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2026-03-16 21:57:32,906 - INFO - 127.0.0.1 - - [16/Mar/2026 21:57:32] "GET /rank?__debugger__=yes&cmd=resource&f=console.png&s=u6OAGgI8a9z3aAdYtzOJ HTTP/1.1" 200 -
+2026-03-16 21:58:27,888 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 21:58:28,513 - INFO -  * Restarting with stat
+2026-03-16 21:58:57,562 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 21:58:57,563 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 21:58:57,567 - INFO -  * Restarting with stat
+2026-03-16 21:59:00,567 - WARNING -  * Debugger is active!
+2026-03-16 21:59:00,573 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 21:59:16,466 - INFO - 127.0.0.1 - - [16/Mar/2026 21:59:16] "[35m[1mGET /rank HTTP/1.1[0m" 500 -
+2026-03-16 21:59:16,994 - INFO - 127.0.0.1 - - [16/Mar/2026 21:59:16] "[36mGET /rank?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2026-03-16 21:59:17,002 - INFO - 127.0.0.1 - - [16/Mar/2026 21:59:17] "[36mGET /rank?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2026-03-16 21:59:17,095 - INFO - 127.0.0.1 - - [16/Mar/2026 21:59:17] "GET /rank?__debugger__=yes&cmd=resource&f=console.png&s=sy1HC3E6aepaWL7MiBII HTTP/1.1" 200 -
+2026-03-16 22:04:47,660 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 22:04:49,463 - INFO -  * Restarting with stat
+2026-03-16 22:04:55,062 - WARNING -  * Debugger is active!
+2026-03-16 22:04:55,089 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 22:04:57,455 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\ranking_service.py', reloading
+2026-03-16 22:04:57,839 - INFO -  * Restarting with stat
+2026-03-16 22:05:00,849 - WARNING -  * Debugger is active!
+2026-03-16 22:05:00,854 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 22:05:24,688 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 22:05:24,688 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 22:05:24,689 - INFO -  * Restarting with stat
+2026-03-16 22:05:27,076 - WARNING -  * Debugger is active!
+2026-03-16 22:05:27,080 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 22:05:49,140 - INFO - 127.0.0.1 - - [16/Mar/2026 22:05:49] "GET /rank HTTP/1.1" 200 -
+2026-03-16 22:08:06,543 - INFO - 127.0.0.1 - - [16/Mar/2026 22:08:06] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-16 22:09:12,771 - INFO - 127.0.0.1 - - [16/Mar/2026 22:09:12] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-16 22:11:35,832 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\prediction_service.py', reloading
+2026-03-16 22:11:36,106 - INFO -  * Detected change in 'C:\\Users\\SNEHA\\Desktop\\ExoHabitAI\\backend\\services\\prediction_service.py', reloading
+2026-03-16 22:11:38,437 - INFO -  * Restarting with stat
+2026-03-16 22:11:38,746 - INFO -  * Restarting with stat
+2026-03-16 22:11:43,881 - WARNING -  * Debugger is active!
+2026-03-16 22:11:43,898 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 22:12:05,013 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-16 22:12:05,013 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-16 22:12:05,015 - INFO -  * Restarting with stat
+2026-03-16 22:12:07,844 - WARNING -  * Debugger is active!
+2026-03-16 22:12:07,849 - INFO -  * Debugger PIN: 159-670-546
+2026-03-16 22:13:04,054 - INFO - 127.0.0.1 - - [16/Mar/2026 22:13:04] "POST /predict HTTP/1.1" 200 -
+2026-03-16 22:16:12,547 - INFO - 127.0.0.1 - - [16/Mar/2026 22:16:12] "GET /rank HTTP/1.1" 200 -
+2026-03-16 22:17:00,945 - INFO - 127.0.0.1 - - [16/Mar/2026 22:17:00] "POST /predict HTTP/1.1" 200 -

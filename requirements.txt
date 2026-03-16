@@ -16,3 +16,9 @@ seaborn
 scikit-learn
 xgboost
 joblib
+freeze
+flask
+numpy
+pandas
+joblib
+scikit-learn
