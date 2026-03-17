@@ -1,0 +1,131 @@
+2026-03-16 05:44:34,584 | INFO | ExoHabitAI API starting...
+2026-03-16 05:44:46,076 | INFO | Model loaded successfully
+2026-03-16 05:44:46,080 | INFO | Starting Flask development server
+2026-03-16 05:44:46,200 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.44:5000
+2026-03-16 05:44:46,200 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-16 05:44:46,205 | INFO |  * Restarting with stat
+2026-03-16 05:44:47,422 | INFO | ExoHabitAI API starting...
+2026-03-16 05:44:48,727 | INFO | Model loaded successfully
+2026-03-16 05:44:48,729 | INFO | Starting Flask development server
+2026-03-16 05:44:48,754 | WARNING |  * Debugger is active!
+2026-03-16 05:44:48,761 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 05:44:58,398 | INFO | 127.0.0.1 - - [16/Mar/2026 05:44:58] "GET / HTTP/1.1" 200 -
+2026-03-16 05:45:38,855 | INFO | 127.0.0.1 - - [16/Mar/2026 05:45:38] "GET / HTTP/1.1" 200 -
+2026-03-16 05:45:56,209 | INFO | Top planet ranking requested
+2026-03-16 05:45:56,217 | INFO | 127.0.0.1 - - [16/Mar/2026 05:45:56] "GET /rank HTTP/1.1" 200 -
+2026-03-16 05:46:51,350 | INFO | 127.0.0.1 - - [16/Mar/2026 05:46:51] "[31m[1mGET /predict HTTP/1.1[0m" 405 -
+2026-03-16 05:49:59,840 | INFO | 127.0.0.1 - - [16/Mar/2026 05:49:59] "GET /model-info HTTP/1.1" 200 -
+2026-03-16 05:51:30,463 | INFO | 127.0.0.1 - - [16/Mar/2026 05:51:30] "[31m[1mGET /predict HTTP/1.1[0m" 405 -
+2026-03-16 05:59:14,410 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 05:59:14,753 | INFO |  * Restarting with stat
+2026-03-16 05:59:16,142 | INFO | ExoHabitAI API starting...
+2026-03-16 05:59:17,684 | INFO | Model loaded successfully
+2026-03-16 05:59:17,689 | INFO | Starting Flask development server
+2026-03-16 05:59:17,706 | WARNING |  * Debugger is active!
+2026-03-16 05:59:17,718 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:00:14,220 | INFO | ExoHabitAI API starting...
+2026-03-16 06:00:15,561 | INFO | Model loaded successfully
+2026-03-16 06:00:15,564 | INFO | Starting Flask development server
+2026-03-16 06:00:15,599 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.44:5000
+2026-03-16 06:00:15,599 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-16 06:00:15,602 | INFO |  * Restarting with stat
+2026-03-16 06:00:17,077 | INFO | ExoHabitAI API starting...
+2026-03-16 06:00:18,335 | INFO | Model loaded successfully
+2026-03-16 06:00:18,338 | INFO | Starting Flask development server
+2026-03-16 06:00:18,350 | WARNING |  * Debugger is active!
+2026-03-16 06:00:18,356 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:00:18,396 | INFO | 127.0.0.1 - - [16/Mar/2026 06:00:18] "GET / HTTP/1.1" 200 -
+2026-03-16 06:00:20,761 | INFO | Top planet ranking requested
+2026-03-16 06:00:20,768 | INFO | 127.0.0.1 - - [16/Mar/2026 06:00:20] "GET /rank HTTP/1.1" 200 -
+2026-03-16 06:00:23,211 | INFO | 127.0.0.1 - - [16/Mar/2026 06:00:23] "[31m[1mGET /predict HTTP/1.1[0m" 405 -
+2026-03-16 06:00:25,875 | INFO | 127.0.0.1 - - [16/Mar/2026 06:00:25] "GET /model-info HTTP/1.1" 200 -
+2026-03-16 06:00:38,548 | INFO | 127.0.0.1 - - [16/Mar/2026 06:00:38] "GET /model-info HTTP/1.1" 200 -
+2026-03-16 06:04:39,363 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 06:04:39,693 | INFO |  * Restarting with stat
+2026-03-16 06:04:41,083 | INFO | ExoHabitAI API starting...
+2026-03-16 06:04:42,542 | INFO | Model loaded successfully
+2026-03-16 06:04:42,546 | INFO | Starting Flask development server
+2026-03-16 06:04:42,558 | WARNING |  * Debugger is active!
+2026-03-16 06:04:42,566 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:04:59,279 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 06:04:59,592 | INFO |  * Restarting with stat
+2026-03-16 06:05:00,954 | INFO | ExoHabitAI API starting...
+2026-03-16 06:05:02,318 | INFO | Model loaded successfully
+2026-03-16 06:05:02,322 | INFO | Starting Flask development server
+2026-03-16 06:05:02,335 | WARNING |  * Debugger is active!
+2026-03-16 06:05:02,340 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:05:05,556 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 06:05:06,073 | INFO |  * Restarting with stat
+2026-03-16 06:05:07,243 | INFO | ExoHabitAI API starting...
+2026-03-16 06:05:08,507 | INFO | Model loaded successfully
+2026-03-16 06:05:08,510 | INFO | Starting Flask development server
+2026-03-16 06:05:08,520 | WARNING |  * Debugger is active!
+2026-03-16 06:05:08,526 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:05:59,452 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 06:05:59,761 | INFO |  * Restarting with stat
+2026-03-16 06:06:00,986 | INFO | ExoHabitAI API starting...
+2026-03-16 06:06:02,265 | INFO | Model loaded successfully
+2026-03-16 06:06:02,267 | INFO | Starting Flask development server
+2026-03-16 06:06:02,277 | WARNING |  * Debugger is active!
+2026-03-16 06:06:02,283 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:06:24,190 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 06:06:24,493 | INFO |  * Restarting with stat
+2026-03-16 06:06:25,652 | INFO | ExoHabitAI API starting...
+2026-03-16 06:06:27,097 | INFO | Model loaded successfully
+2026-03-16 06:06:27,099 | INFO | Starting Flask development server
+2026-03-16 06:06:27,110 | WARNING |  * Debugger is active!
+2026-03-16 06:06:27,116 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:06:30,279 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 06:06:30,575 | INFO |  * Restarting with stat
+2026-03-16 06:06:31,810 | INFO | ExoHabitAI API starting...
+2026-03-16 06:06:33,303 | INFO | Model loaded successfully
+2026-03-16 06:06:33,305 | INFO | Starting Flask development server
+2026-03-16 06:06:33,319 | WARNING |  * Debugger is active!
+2026-03-16 06:06:33,326 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:07:41,738 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\test_api.py', reloading
+2026-03-16 06:07:42,067 | INFO |  * Restarting with stat
+2026-03-16 06:07:43,587 | INFO | ExoHabitAI API starting...
+2026-03-16 06:07:44,957 | INFO | Model loaded successfully
+2026-03-16 06:07:44,960 | INFO | Starting Flask development server
+2026-03-16 06:07:44,971 | WARNING |  * Debugger is active!
+2026-03-16 06:07:44,979 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:09:13,443 | INFO | Prediction request received: {'Planet_Radius': 2.5, 'Planet_Mass': 10, 'Orbital_Period': 20, 'Semi_Major_Axis': 0.12, 'Planet_Density': 3.5, 'Equilibrium_Temp': 600, 'Stellar_Temp': 5200, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': 0, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-16 06:09:13,444 | ERROR | Prediction error: prepare_features() missing 1 required positional argument: 'feature_order'
+2026-03-16 06:09:13,444 | INFO | 127.0.0.1 - - [16/Mar/2026 06:09:13] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2026-03-16 06:09:43,308 | INFO | 127.0.0.1 - - [16/Mar/2026 06:09:43] "GET / HTTP/1.1" 200 -
+2026-03-16 06:10:34,658 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\utils.py', reloading
+2026-03-16 06:10:34,960 | INFO |  * Restarting with stat
+2026-03-16 06:10:36,138 | INFO | ExoHabitAI API starting...
+2026-03-16 06:10:37,536 | INFO | Model loaded successfully
+2026-03-16 06:10:37,540 | INFO | Starting Flask development server
+2026-03-16 06:10:37,558 | WARNING |  * Debugger is active!
+2026-03-16 06:10:37,569 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:11:09,335 | INFO | ExoHabitAI API starting...
+2026-03-16 06:11:10,506 | INFO | Model loaded successfully
+2026-03-16 06:11:10,508 | INFO | Starting Flask development server
+2026-03-16 06:11:10,542 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.44:5000
+2026-03-16 06:11:10,542 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-16 06:11:10,544 | INFO |  * Restarting with stat
+2026-03-16 06:11:11,689 | INFO | ExoHabitAI API starting...
+2026-03-16 06:11:12,891 | INFO | Model loaded successfully
+2026-03-16 06:11:12,894 | INFO | Starting Flask development server
+2026-03-16 06:11:12,904 | WARNING |  * Debugger is active!
+2026-03-16 06:11:12,910 | INFO |  * Debugger PIN: 643-343-624
+2026-03-16 06:11:31,433 | INFO | Prediction request received: {'Planet_Radius': 2.5, 'Planet_Mass': 10, 'Orbital_Period': 20, 'Semi_Major_Axis': 0.12, 'Planet_Density': 3.5, 'Equilibrium_Temp': 600, 'Stellar_Temp': 5200, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': 0, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-16 06:11:31,452 | INFO | Prediction completed | prediction=1 | probability=0.9995276927947998
+2026-03-16 06:11:31,453 | INFO | 127.0.0.1 - - [16/Mar/2026 06:11:31] "POST /predict HTTP/1.1" 200 -
+2026-03-16 06:12:31,552 | INFO | 127.0.0.1 - - [16/Mar/2026 06:12:31] "GET / HTTP/1.1" 200 -
+2026-03-16 06:12:53,964 | INFO | Top planet ranking requested
+2026-03-16 06:12:53,971 | INFO | 127.0.0.1 - - [16/Mar/2026 06:12:53] "GET /rank HTTP/1.1" 200 -
+2026-03-16 06:12:55,925 | INFO | Top planet ranking requested
+2026-03-16 06:12:55,930 | INFO | 127.0.0.1 - - [16/Mar/2026 06:12:55] "GET /rank HTTP/1.1" 200 -
+2026-03-16 06:13:14,745 | INFO | 127.0.0.1 - - [16/Mar/2026 06:13:14] "GET /model-info HTTP/1.1" 200 -
