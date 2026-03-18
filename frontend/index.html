@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exohabit AI</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🌍 Exohabit AI - Habitability Predictor</h2>
+
+    <div class="card p-4 shadow">
+        <form id="planetForm">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Planet Radius</label>
+                    <input type="number" step="any" id="pl_rade" class="form-control" placeholder="Enter radius" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Star Luminosity</label>
+                    <input type="number" step="any" id="st_lum" class="form-control" placeholder="Enter luminosity" required>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label>Orbital Period</label>
+                    <input type="number" step="any" id="pl_orbper" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Star Temperature</label>
+                    <input type="number" step="any" id="st_teff" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label>Equilibrium Temperature</label>
+                    <input type="number" step="any" id="pl_eqt" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Orbital Distance</label>
+                    <input type="number" step="any" id="pl_orbsmax" class="form-control" required>
+                </div>
+            </div>
+
+            <button class="btn btn-primary mt-4 w-100" type="submit">
+                Predict Habitability
+            </button>
+        </form>
+    </div>
+
+    <!-- Result -->
+    <div id="result" class="mt-4"></div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
