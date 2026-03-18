@@ -129,3 +129,51 @@
 2026-03-16 06:12:55,925 | INFO | Top planet ranking requested
 2026-03-16 06:12:55,930 | INFO | 127.0.0.1 - - [16/Mar/2026 06:12:55] "GET /rank HTTP/1.1" 200 -
 2026-03-16 06:13:14,745 | INFO | 127.0.0.1 - - [16/Mar/2026 06:13:14] "GET /model-info HTTP/1.1" 200 -
+2026-03-19 00:35:07,529 | INFO | ExoHabitAI API starting...
+2026-03-19 00:37:12,963 | INFO | ExoHabitAI API starting...
+2026-03-19 00:37:19,896 | INFO | Model loaded successfully
+2026-03-19 00:37:19,899 | INFO | Starting Flask development server
+2026-03-19 00:37:19,975 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-19 00:37:19,975 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-19 00:37:19,980 | INFO |  * Restarting with stat
+2026-03-19 00:37:21,167 | INFO | ExoHabitAI API starting...
+2026-03-19 00:37:22,516 | INFO | Model loaded successfully
+2026-03-19 00:37:22,519 | INFO | Starting Flask development server
+2026-03-19 00:37:22,529 | WARNING |  * Debugger is active!
+2026-03-19 00:37:22,550 | INFO |  * Debugger PIN: 643-343-624
+2026-03-19 00:37:24,216 | INFO | 127.0.0.1 - - [19/Mar/2026 00:37:24] "GET / HTTP/1.1" 200 -
+2026-03-19 00:37:25,271 | INFO | 127.0.0.1 - - [19/Mar/2026 00:37:25] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-19 00:37:34,288 | INFO | 127.0.0.1 - - [19/Mar/2026 00:37:34] "GET / HTTP/1.1" 200 -
+2026-03-19 00:38:02,601 | INFO | Top planet ranking requested
+2026-03-19 00:38:02,613 | INFO | 127.0.0.1 - - [19/Mar/2026 00:38:02] "GET /rank HTTP/1.1" 200 -
+2026-03-19 00:38:22,333 | INFO | 127.0.0.1 - - [19/Mar/2026 00:38:22] "GET /model-info HTTP/1.1" 200 -
+2026-03-19 00:42:24,622 | INFO | ExoHabitAI API starting...
+2026-03-19 00:42:26,022 | INFO | Model loaded successfully
+2026-03-19 00:42:26,024 | INFO | Starting Flask development server
+2026-03-19 00:42:26,057 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-19 00:42:26,057 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-19 00:42:26,060 | INFO |  * Restarting with stat
+2026-03-19 00:42:27,370 | INFO | ExoHabitAI API starting...
+2026-03-19 00:42:28,599 | INFO | Model loaded successfully
+2026-03-19 00:42:28,602 | INFO | Starting Flask development server
+2026-03-19 00:42:28,612 | WARNING |  * Debugger is active!
+2026-03-19 00:42:28,618 | INFO |  * Debugger PIN: 643-343-624
+2026-03-19 00:42:31,007 | INFO | 127.0.0.1 - - [19/Mar/2026 00:42:31] "GET / HTTP/1.1" 200 -
+2026-03-19 00:42:33,919 | INFO | Top planet ranking requested
+2026-03-19 00:42:33,926 | INFO | 127.0.0.1 - - [19/Mar/2026 00:42:33] "GET /rank HTTP/1.1" 200 -
+2026-03-19 00:42:37,152 | INFO | 127.0.0.1 - - [19/Mar/2026 00:42:37] "GET /model-info HTTP/1.1" 200 -
+2026-03-19 00:42:48,190 | INFO | Prediction request received: {'Planet_Radius': 2.5, 'Planet_Mass': 10, 'Orbital_Period': 20, 'Semi_Major_Axis': 0.12, 'Planet_Density': 3.5, 'Equilibrium_Temp': 600, 'Stellar_Temp': 5200, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': 0, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-19 00:42:48,212 | INFO | Prediction completed | prediction=1 | probability=0.9995276927947998
+2026-03-19 00:42:48,212 | INFO | 127.0.0.1 - - [19/Mar/2026 00:42:48] "POST /predict HTTP/1.1" 200 -
+2026-03-19 00:42:56,517 | INFO | Prediction request received: {'Planet_Radius': 2.5, 'Planet_Mass': 10, 'Orbital_Period': 20, 'Semi_Major_Axis': 0.12, 'Planet_Density': 3.5, 'Equilibrium_Temp': 600, 'Stellar_Temp': 5200, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': 0, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-19 00:42:56,522 | INFO | Prediction completed | prediction=1 | probability=0.9995276927947998
+2026-03-19 00:42:56,522 | INFO | 127.0.0.1 - - [19/Mar/2026 00:42:56] "POST /predict HTTP/1.1" 200 -
+2026-03-19 00:43:11,250 | INFO | Prediction request received: {'Planet_Radius': 2.5, 'Planet_Mass': 10, 'Orbital_Period': 20, 'Semi_Major_Axis': 0.12, 'Planet_Density': 3.5, 'Equilibrium_Temp': 600, 'Stellar_Temp': 5200, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': 0, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-19 00:43:11,254 | INFO | Prediction completed | prediction=1 | probability=0.9995276927947998
+2026-03-19 00:43:11,255 | INFO | 127.0.0.1 - - [19/Mar/2026 00:43:11] "POST /predict HTTP/1.1" 200 -
