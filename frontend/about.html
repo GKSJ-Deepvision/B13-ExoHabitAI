@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — ExoHabitAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">🪐 ExoHabitAI</a>
+    <button class="navbar-toggler border-0" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span style="color:var(--blue)"><i class="fas fa-bars"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav mx-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">🏠 Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="explore.html">🔭 Explore</a></li>
+        <li class="nav-item"><a class="nav-link active" href="about.html">📖 About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7" data-aos="fade-right">
+        <div class="section-badge">📖 About This Project</div>
+        <h1 class="section-title" style="font-size:clamp(2rem,4vw,3rem)">
+          About ExoHabitAI
+        </h1>
+        <p style="color:var(--muted);line-height:1.9;font-size:0.95rem;margin-top:16px">
+          ExoHabitAI is an AI-powered web application developed as part of a
+          Machine Learning project. It predicts whether an exoplanet could
+          potentially support life, using a trained ML model and a
+          rule-based weighted scoring algorithm.
+        </p>
+        <div class="d-flex gap-3 mt-4 flex-wrap">
+          <a href="index.html" class="btn-primary-glow">🚀 Try Predictor</a>
+          <a href="explore.html" class="btn-outline-glow">🔭 Explore Planets</a>
+        </div>
+      </div>
+      <div class="col-lg-5 text-center mt-4 mt-lg-0" data-aos="fade-left">
+        <div style="font-size:8rem;animation:float 4s ease-in-out infinite">🪐</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY EXOHABITAI -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="section-badge">🌌 The Problem</div>
+      <h2 class="section-title">Why ExoHabitAI?</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-item">
+          <span class="feature-icon">🔭</span>
+          <div>
+            <h6 class="text-white mb-1">4,000+ Exoplanets</h6>
+            <p style="color:var(--muted);font-size:0.83rem;line-height:1.6">
+              Scientists have discovered thousands of planets outside our solar system.
+              Manually checking each for habitability is impossible.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-item">
+          <span class="feature-icon">🤖</span>
+          <div>
+            <h6 class="text-white mb-1">AI Solution</h6>
+            <p style="color:var(--muted);font-size:0.83rem;line-height:1.6">
+              Machine Learning analyzes multiple parameters simultaneously
+              and gives instant predictions with confidence scores.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-item">
+          <span class="feature-icon">📊</span>
+          <div>
+            <h6 class="text-white mb-1">Weighted Scoring</h6>
+            <p style="color:var(--muted);font-size:0.83rem;line-height:1.6">
+              6 key parameters are weighted by scientific importance
+              to generate accurate habitability scores.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="py-5" style="background:rgba(74,144,226,0.03)">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="section-badge">⚙️ Technologies</div>
+      <h2 class="section-title">Tech Stack</h2>
+      <p class="section-sub">Tools used to build ExoHabitAI</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="50">
+        <div class="tech-card">
+          <span class="tech-icon">🐍</span>
+          <div class="tech-name">Python</div>
+          <div class="tech-desc">Core backend language</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="100">
+        <div class="tech-card">
+          <span class="tech-icon">⚗️</span>
+          <div class="tech-name">Flask</div>
+          <div class="tech-desc">REST API framework</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="150">
+        <div class="tech-card">
+          <span class="tech-icon">🌲</span>
+          <div class="tech-name">Scikit-learn</div>
+          <div class="tech-desc">Random Forest ML</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="200">
+        <div class="tech-card">
+          <span class="tech-icon">🌐</span>
+          <div class="tech-name">HTML/CSS/JS</div>
+          <div class="tech-desc">Frontend interface</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="250">
+        <div class="tech-card">
+          <span class="tech-icon">🅱️</span>
+          <div class="tech-name">Bootstrap 5</div>
+          <div class="tech-desc">Responsive layout</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="300">
+        <div class="tech-card">
+          <span class="tech-icon">🐙</span>
+          <div class="tech-name">GitHub</div>
+          <div class="tech-desc">Version control</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCORING SYSTEM -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="section-badge">📐 Algorithm</div>
+      <h2 class="section-title">Scoring System</h2>
+      <p class="section-sub">How we calculate habitability score</p>
+    </div>
+    <div class="row g-3 justify-content-center">
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="main-card p-4 text-center h-100">
+          <div style="font-size:2.5rem;margin-bottom:12px">🌡️</div>
+          <h6 class="text-white mb-1">Temperature</h6>
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;
+                      color:var(--red);font-weight:700">35%</div>
+          <small style="color:var(--muted)">220–300 K ideal</small>
+          <div style="height:4px;background:var(--border);border-radius:2px;
+                      margin-top:12px;overflow:hidden">
+            <div style="height:100%;width:35%;background:var(--red);
+                        border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="80">
+        <div class="main-card p-4 text-center h-100">
+          <div style="font-size:2.5rem;margin-bottom:12px">🌍</div>
+          <h6 class="text-white mb-1">Planet Radius</h6>
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;
+                      color:var(--blue);font-weight:700">25%</div>
+          <small style="color:var(--muted)">0.8–1.5 R⊕ ideal</small>
+          <div style="height:4px;background:var(--border);border-radius:2px;
+                      margin-top:12px;overflow:hidden">
+            <div style="height:100%;width:25%;background:var(--blue);
+                        border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="160">
+        <div class="main-card p-4 text-center h-100">
+          <div style="font-size:2.5rem;margin-bottom:12px">⭐</div>
+          <h6 class="text-white mb-1">Luminosity</h6>
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;
+                      color:var(--gold);font-weight:700">20%</div>
+          <small style="color:var(--muted)">0.5–1.5 L☉ ideal</small>
+          <div style="height:4px;background:var(--border);border-radius:2px;
+                      margin-top:12px;overflow:hidden">
+            <div style="height:100%;width:20%;background:var(--gold);
+                        border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+        <div class="main-card p-4 text-center h-100">
+          <div style="font-size:2.5rem;margin-bottom:12px">↔️</div>
+          <h6 class="text-white mb-1">Semi-Major Axis</h6>
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;
+                      color:var(--green);font-weight:700">10%</div>
+          <small style="color:var(--muted)">0.7–1.4 AU ideal</small>
+          <div style="height:4px;background:var(--border);border-radius:2px;
+                      margin-top:12px;overflow:hidden">
+            <div style="height:100%;width:10%;background:var(--green);
+                        border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="320">
+        <div class="main-card p-4 text-center h-100">
+          <div style="font-size:2.5rem;margin-bottom:12px">🔄</div>
+          <h6 class="text-white mb-1">Orbital Period</h6>
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;
+                      color:#a78bfa;font-weight:700">5%</div>
+          <small style="color:var(--muted)">200–500 days ideal</small>
+          <div style="height:4px;background:var(--border);border-radius:2px;
+                      margin-top:12px;overflow:hidden">
+            <div style="height:100%;width:5%;background:#a78bfa;
+                        border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="main-card p-4 text-center h-100">
+          <div style="font-size:2.5rem;margin-bottom:12px">⚖️</div>
+          <h6 class="text-white mb-1">Stellar Mass</h6>
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;
+                      color:#fb923c;font-weight:700">5%</div>
+          <small style="color:var(--muted)">0.7–1.3 M☉ ideal</small>
+          <div style="height:4px;background:var(--border);border-radius:2px;
+                      margin-top:12px;overflow:hidden">
+            <div style="height:100%;width:5%;background:#fb923c;
+                        border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW I BUILT IT -->
+<section class="py-5" style="background:rgba(74,144,226,0.03)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="section-badge">🛠️ Development</div>
+        <h2 class="section-title">How I Built It</h2>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.8;margin-top:12px">
+          This project was built step by step over multiple modules —
+          from data preprocessing and model training to API development
+          and frontend design.
+        </p>
+      </div>
+      <div class="col-lg-7 mt-4 mt-lg-0" data-aos="fade-left">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-title">Module 1–3: Data and ML Model</div>
+            <div class="timeline-desc">
+              Collected NASA exoplanet data, preprocessed features, trained a
+              Random Forest Classifier with 270 features including stellar spectral types.
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">Module 4: Model Evaluation</div>
+            <div class="timeline-desc">
+              Evaluated model accuracy, selected best hyperparameters,
+              saved final model as exohabit_model.pkl using Joblib.
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">Module 5: Backend API (Flask)</div>
+            <div class="timeline-desc">
+              Built REST API with /predict and /rank endpoints,
+              input validation, CORS configuration, and structured JSON responses.
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">Module 6: Frontend UI</div>
+            <div class="timeline-desc">
+              Designed dark space-themed interface with Bootstrap 5,
+              animated starfield, particle effects, real-time API connection,
+              and prediction history.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="footer-brand">🪐 ExoHabitAI</div>
+        <p style="color:var(--muted);font-size:0.85rem;line-height:1.7">
+          AI-powered exoplanet habitability predictor built with
+          Flask, Scikit-learn, and modern web technologies.
+        </p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h6 style="color:white;margin-bottom:16px;font-size:0.9rem">Quick Links</h6>
+        <a href="index.html" class="footer-link">🏠 Home</a>
+        <a href="explore.html" class="footer-link">🔭 Explore Planets</a>
+        <a href="about.html" class="footer-link">📖 About</a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h6 style="color:white;margin-bottom:16px;font-size:0.9rem">Tech Stack</h6>
+        <a class="footer-link">🐍 Python + Flask</a>
+        <a class="footer-link">🤖 Scikit-learn</a>
+        <a class="footer-link">🌐 HTML + CSS + JavaScript</a>
+      </div>
+    </div>
+    <div class="footer-bottom text-center">
+      ExoHabitAI © 2025 — Built with ❤️ for space exploration
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: true });
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav')
+      .classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+
+</body>
+</html>
