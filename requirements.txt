@@ -22,3 +22,7 @@ numpy
 pandas
 joblib
 scikit-learn
+html
+css
+javascript
+bootstrap

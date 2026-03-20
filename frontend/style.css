@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f2027;
+    color: white;
+    text-align: center;
+}
+
+/* stars animation */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.imgur.com/8KHKhxD.png');
+    animation: move 60s linear infinite;
+}
+@keyframes move {
+    from {background-position: 0 0;}
+    to {background-position: 1000px 1000px;}
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+    max-width: 650px;
+    margin: auto;
+}
+
+.card {
+    background: rgba(255,255,255,0.08);
+    margin: 15px;
+    padding: 20px;
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(45deg, cyan, blue);
+    cursor: pointer;
+}
+
+.result, #explain {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(0,255,200,0.2);
+}
+
+.hidden {
+    display: none;
+}
+
+/* theme toggle */
+#toggleTheme {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+/* light mode */
+.light {
+    background: #f0f0f0;
+    color: black;
+}

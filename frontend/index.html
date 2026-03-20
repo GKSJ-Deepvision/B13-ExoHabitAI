@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExoHabitAI 🚀</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<div class="stars"></div>
+
+<button id="toggleTheme">🌙</button>
+
+<div class="container">
+
+<h1>🚀 ExoHabitAI</h1>
+<p>Next-Gen AI Habitability Predictor</p>
+
+<!-- PLANET -->
+<div class="card">
+<h2>🌍 Planet</h2>
+<div class="grid">
+<input id="mass" placeholder="Mass">
+<input id="radius" placeholder="Radius">
+<input id="gravity" placeholder="Gravity">
+<input id="atmosphere" placeholder="Atmosphere">
+</div>
+</div>
+
+<!-- STAR -->
+<div class="card">
+<h2>⭐ Star</h2>
+<div class="grid">
+<input id="temperature" placeholder="Temperature">
+<input id="luminosity" placeholder="Luminosity">
+<input id="distance" placeholder="Distance">
+</div>
+</div>
+
+<!-- ENV -->
+<div class="card">
+<h2>☁ Environment</h2>
+<div class="grid">
+<input id="pressure" placeholder="Pressure">
+<input id="water" placeholder="Water (0/1)">
+</div>
+</div>
+
+<button onclick="predict()">⚡ Predict</button>
+
+<div id="loader" class="hidden">⏳ Predicting...</div>
+
+<div id="result" class="result hidden"></div>
+
+<canvas id="chart" class="hidden"></canvas>
+
+<div id="explain" class="hidden"></div>
+
+<h3>📜 History</h3>
+<ul id="history"></ul>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
