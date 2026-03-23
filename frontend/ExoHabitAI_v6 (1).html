@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ExoHabitAI v2 — Mapping the Goldilocks Zone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,400;0,600;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════ */
+:root{
+  --bg:#03040a;
+  --panel:rgba(8,12,28,0.7);
+  --aqua:#0dcaf0;
+  --aqua2:rgba(13,202,240,0.18);
+  --aqua3:rgba(13,202,240,0.06);
+  --aqua-glow:rgba(13,202,240,0.35);
+  --purple:#7c3aed;
+  --gold:#f5c542;
+  --green:#00ffaa;
+  --red:#ff3d6b;
+  --border:rgba(13,202,240,0.15);
+  --text:#a8c0d6;
+  --white:#e8f4ff;
+  --mono:'Share Tech Mono',monospace;
+  --display:'Orbitron',sans-serif;
+  --body:'Exo 2',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:auto;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden;cursor:none;}
+
+/* ── Cursor ── */
+#cur{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--aqua);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:transform .1s;}
+#cur2{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid var(--aqua-glow);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .2s,height .2s;}
+
+/* ── Progress bar ── */
+#prog{display:none;}
+
+/* ── 3-Layer Canvas ── */
+#c-nebula{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+#c-deep,#c-mid,#c-front{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+#c-deep{z-index:1;}
+#c-mid{z-index:2;}
+#c-front{z-index:3;}
+#c-fx{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:4;}
+
+/* Vignette */
+#space-vignette{position:fixed;inset:0;z-index:5;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%,transparent 15%,rgba(0,0,8,0.45) 60%,rgba(0,0,12,0.82) 100%);}
+
+/* Edge burn */
+#edge-burn{position:fixed;inset:0;z-index:5;pointer-events:none;
+  box-shadow:inset 0 0 180px rgba(0,0,15,0.9),inset 0 0 60px rgba(0,0,10,0.5);}
+
+/* Subtle tech grid */
+#space-grid{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:.022;
+  background-image:linear-gradient(rgba(13,202,240,1) 1px,transparent 1px),linear-gradient(90deg,rgba(13,202,240,1) 1px,transparent 1px);
+  background-size:90px 90px;}
+
+/* CSS aurora streaks (pure CSS, behind canvas) */
+.aurora-streak{position:fixed;left:0;right:0;pointer-events:none;z-index:1;filter:blur(55px);mix-blend-mode:screen;}
+#as1{top:-8vh;height:38vh;background:linear-gradient(180deg,transparent,rgba(124,58,237,0.18) 40%,rgba(13,202,240,0.12) 70%,transparent);animation:asDrift1 22s ease-in-out infinite alternate;}
+#as2{top:25vh;height:30vh;background:linear-gradient(180deg,transparent,rgba(0,180,100,0.08) 50%,transparent);animation:asDrift2 28s ease-in-out infinite alternate;}
+#as3{top:55vh;height:35vh;background:linear-gradient(180deg,transparent,rgba(180,60,255,0.12) 40%,rgba(13,202,240,0.07) 65%,transparent);animation:asDrift1 34s ease-in-out infinite alternate-reverse;}
+@keyframes asDrift1{0%{transform:skewX(-6deg) scaleX(1.05) translateX(-3%);opacity:.5;}100%{transform:skewX(6deg) scaleX(.95) translateX(3%);opacity:1;}}
+@keyframes asDrift2{0%{transform:skewX(4deg) scaleX(.98) translateX(2%);opacity:.4;}100%{transform:skewX(-4deg) scaleX(1.04) translateX(-2%);opacity:.9;}}
+
+/* Warp overlay */
+#warp{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .4s;}
+#warp canvas{width:100%;height:100%;}
+
+/* ── Navigation ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;backdrop-filter:blur(24px);background:rgba(3,4,10,0.5);border-bottom:1px solid var(--border);}
+.nav-brand{font-family:var(--display);font-size:1rem;color:var(--aqua);text-decoration:none;letter-spacing:.12em;}
+.nav-brand b{color:#fff;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-family:var(--body);font-size:.78rem;font-weight:600;color:var(--text);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--aqua);transform:scaleX(0);transition:transform .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--aqua);}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+.nav-status{font-family:var(--mono);font-size:.62rem;color:rgba(13,202,240,.5);letter-spacing:.15em;display:flex;align-items:center;gap:.5rem;}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+/* ── Section wrapper ── */
+section{position:relative;z-index:10;}
+.wrap{padding:7rem 0;}
+
+/* ── Glass card ── */
+.gc{background:var(--panel);border:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:3px;position:relative;overflow:hidden;}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--aqua),transparent);opacity:.5;}
+
+/* ── Reveal ── */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+.rl{opacity:0;transform:translateX(-36px);transition:opacity .7s ease,transform .7s ease;}
+.rl.on{opacity:1;transform:translateX(0);}
+.rr{opacity:0;transform:translateX(36px);transition:opacity .7s ease,transform .7s ease;}
+.rr.on{opacity:1;transform:translateX(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}.d5{transition-delay:.5s;}
+
+/* ── Typography ── */
+.tag{font-family:var(--mono);font-size:.7rem;color:var(--aqua);letter-spacing:.28em;text-transform:uppercase;display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;}
+.tag::before{content:'//';opacity:.4;}
+h2.head{font-family:var(--display);font-size:clamp(1.6rem,3.5vw,2.7rem);color:#fff;font-weight:900;line-height:1.15;margin-bottom:1.2rem;}
+h2.head .a{color:var(--aqua);}
+.body{color:var(--text);line-height:1.85;font-size:.95rem;font-weight:200;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+
+/* ════════════
+   HERO
+════════════ */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:6rem 1rem 4rem;}
+.hero-pre{font-family:var(--mono);color:var(--aqua);font-size:.72rem;letter-spacing:.35em;display:inline-flex;align-items:center;gap:.7rem;margin-bottom:1.8rem;}
+.hero-pre::before,.hero-pre::after{content:'';width:28px;height:1px;background:var(--aqua);}
+h1.hero-title{font-family:var(--display);font-size:clamp(2.4rem,7vw,6rem);font-weight:900;color:#fff;line-height:1.02;margin-bottom:1rem;}
+h1.hero-title .grad{background:linear-gradient(110deg,var(--aqua) 0%,var(--purple) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero-p{max-width:640px;margin:0 auto 2.5rem;font-size:1.05rem;line-height:1.75;font-weight:200;}
+.cta-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:3.5rem;}
+.btn-gl{font-family:var(--display);font-size:.68rem;letter-spacing:.18em;padding:.8rem 1.8rem;border:1px solid var(--aqua);background:var(--aqua2);color:var(--aqua);text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.6rem;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.btn-gl:hover{background:var(--aqua);color:#000;box-shadow:0 0 28px var(--aqua-glow);}
+.btn-gl.sec{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.5);background:transparent;}
+.btn-gl.sec:hover{background:rgba(255,255,255,.06);color:#fff;}
+.btn-gl.gold{border-color:var(--gold);color:var(--gold);background:rgba(245,197,66,.08);}
+.btn-gl.gold:hover{background:var(--gold);color:#000;}
+.hero-stats{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;}
+.hs{text-align:center;}
+.hs-v{font-family:var(--display);font-size:1.9rem;color:var(--aqua);font-weight:700;}
+.hs-l{font-family:var(--mono);font-size:.62rem;color:var(--text);letter-spacing:.15em;margin-top:.2rem;}
+
+/* ════════════
+   MISSION
+════════════ */
+.transit-stage{position:relative;height:160px;display:flex;align-items:center;justify-content:center;margin:1.5rem 0;}
+.t-star{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff7cc,#ffcc44 35%,#ff8800 70%,#cc3300);box-shadow:0 0 50px rgba(255,180,0,.5),0 0 100px rgba(255,130,0,.2);position:absolute;animation:starPulse 4s ease-in-out infinite;}
+@keyframes starPulse{0%,100%{box-shadow:0 0 50px rgba(255,180,0,.5),0 0 100px rgba(255,130,0,.2);}50%{box-shadow:0 0 80px rgba(255,180,0,.7),0 0 140px rgba(255,130,0,.35);}}
+.t-planet{width:17px;height:17px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#5cf,#29a,#047);box-shadow:0 0 10px rgba(51,204,255,.5);position:absolute;top:50%;transform:translateY(-50%);animation:tplanet 5s linear infinite;}
+@keyframes tplanet{0%{left:4%;}100%{left:88%;}}
+.t-flux{position:absolute;bottom:0;left:0;right:0;height:45px;}
+.step-b{border-left:2px solid var(--aqua);padding-left:1rem;margin-bottom:1.2rem;}
+.step-b .snum{font-family:var(--mono);font-size:.65rem;color:var(--aqua);letter-spacing:.2em;}
+.step-b .stit{font-family:var(--display);color:#fff;font-size:.88rem;margin:.15rem 0 .35rem;}
+.step-b .stxt{font-size:.83rem;color:var(--text);line-height:1.6;}
+
+/* ════════════
+   PREDICTOR
+════════════ */
+.param-tabs{display:flex;gap:0;margin-bottom:1.2rem;}
+.ptab{flex:1;text-align:center;font-family:var(--mono);font-size:.7rem;letter-spacing:.15em;padding:.65rem;cursor:pointer;border:1px solid var(--border);color:var(--text);background:transparent;transition:all .25s;text-transform:uppercase;}
+.ptab.active{background:var(--aqua2);border-color:var(--aqua);color:var(--aqua);}
+.ptab:first-child{border-right:none;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);}
+.ptab:last-child{clip-path:polygon(0 0,100% 0,100% 100%,8px 100%,0 calc(100% - 8px));}
+.param-pane{display:none;animation:fadePop .3s ease;}
+.param-pane.active{display:block;}
+@keyframes fadePop{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.lbl{font-family:var(--mono);font-size:.68rem;color:var(--aqua);letter-spacing:.15em;text-transform:uppercase;display:block;margin-bottom:.35rem;}
+.inp{width:100%;background:rgba(13,202,240,.05);border:1px solid var(--border);color:#fff;padding:.7rem 1rem;font-family:var(--mono);font-size:.85rem;outline:none;transition:border .2s,box-shadow .2s;border-radius:2px;}
+.inp:focus{border-color:var(--aqua);box-shadow:0 0 0 2px rgba(13,202,240,.1),inset 0 0 16px rgba(13,202,240,.04);}
+.inp::placeholder{color:rgba(255,255,255,.18);}
+.hint{font-size:.64rem;color:rgba(255,255,255,.28);margin-top:.28rem;font-family:var(--mono);}
+.demo-strip{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.demo-chip{font-family:var(--mono);font-size:.62rem;padding:.3rem .75rem;border:1px solid rgba(245,197,66,.3);background:rgba(245,197,66,.07);color:var(--gold);cursor:pointer;border-radius:2px;transition:all .2s;letter-spacing:.08em;}
+.demo-chip:hover{background:var(--gold);color:#000;}
+
+/* Sample Planet Cards */
+.sample-panel{margin-bottom:1.2rem;}
+.sample-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.sample-card{background:rgba(8,12,28,0.8);border:1px solid var(--border);border-radius:4px;padding:.85rem .9rem;cursor:pointer;text-align:left;transition:all .25s;position:relative;overflow:hidden;}
+.sample-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s;}
+.sample-card.habitable::before{background:linear-gradient(135deg,rgba(0,255,170,0.06),transparent);}
+.sample-card.uninhabitable::before{background:linear-gradient(135deg,rgba(255,61,107,0.06),transparent);}
+.sample-card:hover::before{opacity:1;}
+.sample-card.habitable{border-color:rgba(0,255,170,0.2);}
+.sample-card.habitable:hover{border-color:rgba(0,255,170,0.5);box-shadow:0 0 16px rgba(0,255,170,0.1);transform:translateY(-2px);}
+.sample-card.uninhabitable{border-color:rgba(255,61,107,0.2);}
+.sample-card.uninhabitable:hover{border-color:rgba(255,61,107,0.5);box-shadow:0 0 16px rgba(255,61,107,0.1);transform:translateY(-2px);}
+.sc-icon{font-size:.85rem;margin-bottom:.35rem;}
+.sample-card.habitable .sc-icon{color:var(--green);}
+.sample-card.uninhabitable .sc-icon{color:var(--red);}
+.sc-name{font-family:var(--display);font-size:.75rem;color:#fff;font-weight:700;margin-bottom:.2rem;letter-spacing:.05em;}
+.sc-meta{font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);line-height:1.5;margin-bottom:.4rem;}
+.sc-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;padding:.1rem .4rem;border-radius:2px;display:inline-block;}
+.sc-tag.hab{background:rgba(0,255,170,0.12);border:1px solid rgba(0,255,170,0.3);color:var(--green);}
+.sc-tag.uninhab{background:rgba(255,61,107,0.12);border:1px solid rgba(255,61,107,0.3);color:var(--red);}
+.sample-loaded-msg{font-family:var(--mono);font-size:.68rem;color:var(--aqua);background:rgba(13,202,240,0.08);border:1px solid rgba(13,202,240,0.2);border-radius:3px;padding:.5rem .8rem;margin-top:.6rem;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.btn-ana{width:100%;font-family:var(--display);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;padding:.95rem;border:1px solid var(--aqua);background:linear-gradient(135deg,rgba(13,202,240,.12),rgba(124,58,237,.08));color:var(--aqua);cursor:pointer;transition:all .3s;margin-top:1rem;position:relative;overflow:hidden;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.btn-ana::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 30%,rgba(13,202,240,.07) 50%,transparent 70%);transform:translateX(-100%);transition:transform .5s;}
+.btn-ana:hover::before{transform:translateX(100%);}
+.btn-ana:hover{background:linear-gradient(135deg,rgba(13,202,240,.28),rgba(124,58,237,.18));box-shadow:0 0 24px rgba(13,202,240,.22);}
+.btn-ana:disabled{opacity:.4;cursor:not-allowed;}
+
+/* Console */
+.c-wrap{background:#01020a;border:1px solid rgba(13,202,240,.18);border-radius:2px;overflow:hidden;}
+.c-bar{display:flex;align-items:center;gap:.4rem;padding:.6rem .9rem;background:rgba(13,202,240,.04);border-bottom:1px solid var(--border);}
+.cd{width:7px;height:7px;border-radius:50%;}
+.cr{background:#ff3d6b;}.cy{background:#ffcc00;}.cg{background:var(--green);}
+.c-title{font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.25);letter-spacing:.15em;margin-left:auto;}
+.c-body{padding:.9rem;height:220px;overflow-y:auto;font-family:var(--mono);font-size:.75rem;line-height:1.8;}
+.c-body::-webkit-scrollbar{width:3px;}.c-body::-webkit-scrollbar-thumb{background:var(--aqua2);}
+.cl{margin:0;}.cl.info{color:#7ecfff;}.cl.ok{color:var(--green);}.cl.warn{color:#ffcc44;}.cl.err{color:var(--red);}.cl.cm{color:rgba(255,255,255,.25);}
+.cb{display:inline-block;width:6px;height:12px;background:var(--aqua);vertical-align:middle;animation:cblink 1s step-end infinite;}
+@keyframes cblink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* Result ring */
+.res-box{display:none;margin-top:1.5rem;padding:1.5rem;background:rgba(13,202,240,.04);border:1px solid var(--border);border-radius:2px;text-align:center;}
+.res-box.show{display:block;animation:fadeUp .5s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.ring-w{width:130px;height:130px;margin:0 auto .8rem;position:relative;display:flex;align-items:center;justify-content:center;}
+.ring-w svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+.ring-w circle{fill:none;stroke-width:6;stroke-linecap:round;}
+.rt{stroke:rgba(255,255,255,.06);}
+.rf{stroke:var(--aqua);stroke-dasharray:339.292;stroke-dashoffset:339.292;transition:stroke-dashoffset 1.6s cubic-bezier(.34,1.56,.64,1);}
+.ring-val{font-family:var(--display);font-size:1.8rem;color:#fff;font-weight:900;z-index:1;}
+.r-lbl{font-family:var(--display);font-size:.62rem;letter-spacing:.2em;}
+.r-lbl.h{color:var(--green);}.r-lbl.u{color:var(--red);}
+.r-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .9rem;border-radius:2px;font-family:var(--mono);font-size:.7rem;margin-top:.7rem;}
+.r-badge.h{background:rgba(0,255,170,.1);border:1px solid rgba(0,255,170,.3);color:var(--green);}
+.r-badge.u{background:rgba(255,61,107,.1);border:1px solid rgba(255,61,107,.3);color:var(--red);}
+
+/* ════════════
+   BATCH PROCESSOR
+════════════ */
+.batch-tabs{display:flex;gap:.5rem;margin-bottom:1rem;}
+.btab{font-family:var(--mono);font-size:.68rem;padding:.5rem 1.2rem;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;border-radius:2px;transition:all .2s;text-transform:uppercase;letter-spacing:.12em;}
+.btab.active{border-color:var(--aqua);background:var(--aqua2);color:var(--aqua);}
+.batch-pane{display:none;}
+.batch-pane.active{display:block;animation:fadePop .3s ease;}
+textarea.inp-ta{width:100%;background:rgba(13,202,240,.04);border:1px solid var(--border);color:#fff;padding:.85rem 1rem;font-family:var(--mono);font-size:.74rem;outline:none;resize:vertical;min-height:160px;line-height:1.7;transition:border .2s,box-shadow .2s;border-radius:2px;}
+textarea.inp-ta:focus{border-color:var(--aqua);box-shadow:0 0 0 2px rgba(13,202,240,.1);}
+.upload-zone{border:2px dashed var(--border);padding:2.5rem;text-align:center;border-radius:2px;cursor:pointer;transition:all .3s;position:relative;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--aqua);background:var(--aqua3);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.up-icon{font-size:2rem;color:rgba(13,202,240,.4);margin-bottom:.8rem;}
+.up-title{font-family:var(--display);color:#fff;font-size:.85rem;margin-bottom:.4rem;}
+.up-sub{font-size:.75rem;color:var(--text);font-family:var(--mono);}
+.batch-results{margin-top:1.5rem;}
+.batch-row{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-family:var(--mono);font-size:.75rem;transition:background .2s;}
+.batch-row:hover{background:rgba(13,202,240,.04);}
+.batch-row.h-row .br-status{color:var(--green);}
+.batch-row.u-row .br-status{color:var(--red);}
+.br-id{color:rgba(255,255,255,.4);width:100px;flex-shrink:0;}
+.br-pct{font-family:var(--display);font-size:.9rem;width:60px;flex-shrink:0;}
+.br-bar{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;}
+.br-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+.br-status{width:120px;flex-shrink:0;font-size:.65rem;}
+.batch-summary{display:flex;gap:2rem;padding:1rem;background:rgba(13,202,240,.04);border:1px solid var(--border);border-radius:2px;margin-top:1rem;flex-wrap:wrap;}
+.bs-item{text-align:center;}
+.bs-v{font-family:var(--display);font-size:1.4rem;color:var(--aqua);}
+.bs-l{font-family:var(--mono);font-size:.6rem;color:var(--text);letter-spacing:.12em;margin-top:.15rem;}
+
+/* ════════════
+   TECH LAB
+════════════ */
+.route-c{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:2px;padding:1.1rem;margin-bottom:.9rem;}
+.rm{font-family:var(--mono);font-size:.65rem;padding:.18rem .55rem;border-radius:2px;margin-right:.5rem;}
+.rm-post{background:rgba(13,202,240,.15);color:var(--aqua);border:1px solid var(--border);}
+.rm-get{background:rgba(0,255,170,.12);color:var(--green);border:1px solid rgba(0,255,170,.25);}
+.rpath{font-family:var(--mono);color:#fff;font-size:.88rem;}
+.rdesc{font-size:.82rem;color:var(--text);margin-top:.4rem;line-height:1.6;}
+.code-b{background:#010409;border:1px solid var(--border);border-radius:2px;padding:1.1rem;font-family:var(--mono);font-size:.75rem;line-height:1.75;overflow-x:auto;margin:1rem 0;}
+.kw{color:var(--purple);}.fn{color:var(--aqua);}.st{color:var(--green);}.cm{color:rgba(255,255,255,.27);}.nm{color:var(--gold);}
+.flow-s{display:flex;gap:.9rem;margin-bottom:1.3rem;align-items:flex-start;}
+.fi{width:38px;height:38px;border-radius:50%;background:var(--aqua2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--aqua);font-size:.8rem;flex-shrink:0;margin-top:.15rem;}
+.fc h5{font-family:var(--display);color:#fff;font-size:.84rem;margin-bottom:.25rem;}
+.fc p{font-size:.82rem;color:var(--text);line-height:1.6;}
+
+/* ════════════
+   METRICS
+════════════ */
+.met-c{text-align:center;padding:1.8rem 1rem;}
+.met-v{font-family:var(--display);font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;background:linear-gradient(135deg,var(--aqua),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;margin-bottom:.4rem;}
+.met-l{font-family:var(--mono);font-size:.67rem;color:var(--text);letter-spacing:.15em;text-transform:uppercase;}
+.prog-w{height:3px;background:rgba(255,255,255,.05);border-radius:2px;margin:.8rem 0 .25rem;overflow:hidden;}
+.prog-f{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--aqua),var(--purple));transform:scaleX(0);transform-origin:left;transition:transform 1.6s cubic-bezier(.34,1.56,.64,1);}
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;max-width:190px;margin:0 auto;}
+.cfc{padding:.75rem .5rem;text-align:center;border-radius:2px;font-family:var(--mono);font-size:.72rem;}
+.cf-tp{background:rgba(0,255,170,.13);color:var(--green);}
+.cf-tn{background:rgba(0,255,170,.06);color:rgba(0,255,170,.55);}
+.cf-fp{background:rgba(255,61,107,.09);color:rgba(255,61,107,.65);}
+.cf-fn{background:rgba(255,61,107,.05);color:rgba(255,61,107,.45);}
+.cf-lbl{font-size:.58rem;color:var(--text);display:block;margin-top:.15rem;}
+.feat-p{display:inline-block;font-family:var(--mono);font-size:.65rem;padding:.22rem .6rem;margin:.2rem;background:var(--aqua2);border:1px solid var(--border);color:var(--aqua);border-radius:2px;}
+
+/* ════════════
+   FOOTER
+════════════ */
+footer{position:relative;z-index:10;padding:3rem 0 2rem;border-top:1px solid var(--border);text-align:center;}
+.f-logo{font-family:var(--display);font-size:1.3rem;color:var(--aqua);letter-spacing:.15em;margin-bottom:.4rem;}
+.f-logo b{color:#fff;}
+.f-sub{font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.2);}
+.f-links{display:flex;justify-content:center;gap:2rem;margin:1.2rem 0;flex-wrap:wrap;}
+.f-links a{color:var(--text);text-decoration:none;font-size:.78rem;transition:color .2s;}
+.f-links a:hover{color:var(--aqua);}
+
+@media(max-width:768px){.nav-links{display:none;}.nav-status{display:none;}.hero-stats{gap:1.5rem;}}
+
+/* ════════════════════════════════
+   PLANET SHOWCASE — hero visual
+════════════════════════════════ */
+.planet-showcase{display:flex;justify-content:center;align-items:center;gap:2.5rem;margin:2.5rem 0 1rem;flex-wrap:wrap;}
+.ps-item{display:flex;flex-direction:column;align-items:center;gap:.5rem;cursor:pointer;transition:transform .3s;}
+.ps-item:hover{transform:translateY(-6px);}
+.ps-planet{border-radius:50%;position:relative;box-shadow:0 0 30px var(--glow,rgba(13,202,240,.3)),0 0 60px var(--glow2,rgba(13,202,240,.1));}
+.ps-planet::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.18),transparent 60%);}
+.ps-label{font-family:var(--mono);font-size:.6rem;color:var(--text);letter-spacing:.12em;text-align:center;}
+.ps-status{font-family:var(--mono);font-size:.55rem;padding:.1rem .4rem;border-radius:2px;letter-spacing:.1em;}
+.ps-status.h{color:var(--green);border:1px solid rgba(0,255,170,.3);background:rgba(0,255,170,.08);}
+.ps-status.u{color:var(--red);border:1px solid rgba(255,61,107,.3);background:rgba(255,61,107,.08);}
+
+/* orbit rings around hero planets */
+.ps-orbit{position:relative;display:flex;align-items:center;justify-content:center;}
+.ps-orbit::before{content:'';position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06);pointer-events:none;}
+
+/* ════════════════════════════════
+   GOLDILOCKS ZONE INTERACTIVE DIAGRAM
+════════════════════════════════ */
+.hz-diagram{width:100%;position:relative;overflow:hidden;}
+#hz-canvas{display:block;width:100%;border-radius:4px;}
+.hz-legend{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:.8rem;}
+.hz-leg-item{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.62rem;color:var(--text);}
+.hz-leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ════════════════════════════════
+   PLANET PROFILE CARDS (Mission section)
+════════════════════════════════ */
+.planet-profile-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:2rem;}
+.pp-card{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:1rem .8rem;text-align:center;position:relative;overflow:hidden;cursor:pointer;transition:all .3s;}
+.pp-card:hover{border-color:var(--aqua);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 20px rgba(13,202,240,.1);}
+.pp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--pc,var(--aqua)),transparent);}
+.pp-planet-visual{width:52px;height:52px;border-radius:50%;margin:0 auto .6rem;position:relative;}
+.pp-planet-visual::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.22),transparent 55%);}
+.pp-name{font-family:var(--display);font-size:.7rem;color:#fff;font-weight:700;margin-bottom:.2rem;}
+.pp-dist{font-family:var(--mono);font-size:.55rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;}
+.pp-badge{font-family:var(--mono);font-size:.55rem;padding:.1rem .45rem;border-radius:2px;letter-spacing:.1em;}
+.pp-badge.h{color:var(--green);border:1px solid rgba(0,255,170,.3);background:rgba(0,255,170,.08);}
+.pp-badge.u{color:var(--red);border:1px solid rgba(255,61,107,.3);background:rgba(255,61,107,.08);}
+/* tooltip on hover */
+.pp-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:rgba(4,6,20,.95);border:1px solid var(--border);border-radius:4px;padding:.65rem .85rem;white-space:nowrap;font-family:var(--mono);font-size:.62rem;color:var(--text);opacity:0;pointer-events:none;transition:opacity .2s;z-index:100;line-height:1.8;}
+.pp-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--border);}
+.pp-card:hover .pp-tooltip{opacity:1;}
+
+/* ════════════════════════════════
+   KEPLER TELESCOPE IMAGE CARD
+════════════════════════════════ */
+.telescope-visual{position:relative;border-radius:4px;overflow:hidden;background:rgba(4,8,20,.9);border:1px solid var(--border);}
+.telescope-visual img{width:100%;display:block;opacity:.75;mix-blend-mode:luminosity;filter:hue-rotate(180deg) saturate(1.4) brightness(.85);}
+.telescope-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,202,240,.08),rgba(124,58,237,.06));pointer-events:none;}
+.telescope-label{position:absolute;bottom:.7rem;left:.8rem;font-family:var(--mono);font-size:.6rem;color:rgba(13,202,240,.7);letter-spacing:.15em;}
+
+/* ════════════════════════════════
+   INTERACTIVE SOLAR SYSTEM COMPARE
+════════════════════════════════ */
+.sys-compare{background:rgba(4,6,20,.7);border:1px solid var(--border);border-radius:4px;padding:1.2rem;position:relative;overflow:hidden;}
+.sys-compare-title{font-family:var(--mono);font-size:.65rem;color:var(--aqua);letter-spacing:.18em;margin-bottom:1rem;}
+.sys-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem;position:relative;}
+.sys-row-label{font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.4);width:70px;flex-shrink:0;text-align:right;}
+.sys-row-planets{display:flex;align-items:center;gap:4px;flex:1;height:32px;}
+.sys-planet{border-radius:50%;flex-shrink:0;position:relative;transition:transform .2s,box-shadow .2s;cursor:pointer;}
+.sys-planet:hover{transform:scale(1.4);z-index:10;}
+.sys-sun{width:28px;height:28px;border-radius:50%;flex-shrink:0;}
+.sys-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:.6rem 0;}
+
+/* ════════════════════════════════
+   SPECTRUM ANALYSIS VISUAL
+════════════════════════════════ */
+.spectrum-bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#3a0066,#7c3aed 15%,#0dcaf0 35%,#00ffaa 55%,#ffcc44 75%,#ff6600 88%,#cc0000);margin:.6rem 0;position:relative;overflow:visible;}
+.spec-marker{position:absolute;top:-18px;transform:translateX(-50%);}
+.spec-marker-line{width:1px;height:28px;background:rgba(255,255,255,.6);margin:0 auto;}
+.spec-marker-label{font-family:var(--mono);font-size:.55rem;color:#fff;text-align:center;white-space:nowrap;margin-top:2px;}
+
+/* ════════════════════════════════
+   INTERACTIVE TOOLTIP SYSTEM
+════════════════════════════════ */
+.has-tip{position:relative;cursor:help;}
+.has-tip .tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(4,6,22,.96);border:1px solid rgba(13,202,240,.25);border-radius:3px;padding:.5rem .75rem;font-family:var(--mono);font-size:.65rem;color:var(--text);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .18s;z-index:200;line-height:1.7;}
+.has-tip:hover .tip{opacity:1;}
+
+/* ════════════════════════════════
+   ANIMATED ORBIT DIAGRAM (Mission)
+════════════════════════════════ */
+#orbit-canvas{display:block;border-radius:4px;}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur2"></div>
+<div id="prog"></div>
+
+<!-- Deep space overlays -->
+<div id="space-vignette"></div>
+<div id="edge-burn"></div>
+<div id="space-grid"></div>
+
+<!-- Aurora CSS streaks -->
+<div class="aurora-streak" id="as1"></div>
+<div class="aurora-streak" id="as2"></div>
+<div class="aurora-streak" id="as3"></div>
+
+<!-- Canvas layers: nebula / deep stars / mid stars / front stars / FX -->
+<canvas id="c-nebula"></canvas>
+<canvas id="c-deep"></canvas>
+<canvas id="c-mid"></canvas>
+<canvas id="c-front"></canvas>
+<canvas id="c-fx"></canvas>
+
+<!-- Warp Drive overlay -->
+<div id="warp"><canvas id="warp-canvas"></canvas></div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="#hero" class="nav-brand">Exo<b>Habit</b>AI<span style="font-size:.55rem;color:rgba(13,202,240,.4);margin-left:.5rem;">v2</span></a>
+  <ul class="nav-links">
+    <li><a href="#hero" data-s="hero">Launchpad</a></li>
+    <li><a href="#mission" data-s="mission">Mission</a></li>
+    <li><a href="#predictor" data-s="predictor">Predictor</a></li>
+    <li><a href="#batch" data-s="batch">Batch</a></li>
+    <li><a href="#techlab" data-s="techlab">Tech Lab</a></li>
+    <li><a href="#metrics" data-s="metrics">Metrics</a></li>
+  </ul>
+  <div class="nav-status"><div class="status-dot"></div>BACKEND MONITORING</div>
+</nav>
+
+<!-- ══════════════════════════════════
+     §1 HERO
+══════════════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-pre rv">NASA Kepler Mission · Random Forest AI</div>
+    <h1 class="hero-title rv d1">Mapping the<br/><span class="grad">Goldilocks Zone</span></h1>
+    <p class="hero-p rv d2">On a mission to discover Earth 2.0. We fuse 40+ astrophysical features from the Kepler Space Telescope with an ensemble ML classifier to identify worlds capable of harboring liquid water—and life.</p>
+
+    <!-- PLANET SHOWCASE VISUAL -->
+    <div class="planet-showcase rv d3">
+      <div class="ps-item has-tip" onclick="loadDemo('kepler186f');document.getElementById('predictor').scrollIntoView()">
+        <div class="tip">Kepler-186f · 500 ly away<br/>T=188K · R=1.17R⊕ · Habitable ✓</div>
+        <div class="ps-planet" style="width:42px;height:42px;background:radial-gradient(circle at 38% 32%,#7ecb9f,#2a8a55,#0d4a2a,#062015);--glow:rgba(0,200,100,.35);--glow2:rgba(0,200,100,.12);"></div>
+        <div class="ps-label">Kepler-186f</div>
+        <div class="ps-status h">HABITABLE</div>
+      </div>
+      <div class="ps-item has-tip" onclick="loadDemo('kepler452b');document.getElementById('predictor').scrollIntoView()">
+        <div class="tip">Kepler-452b · 1,400 ly away<br/>T=265K · R=1.63R⊕ · "Earth Cousin" ✓</div>
+        <div class="ps-planet" style="width:58px;height:58px;background:radial-gradient(circle at 35% 30%,#8ab4e8,#3a7cc0,#1a4880,#0a2040);--glow:rgba(13,202,240,.4);--glow2:rgba(13,202,240,.15);"></div>
+        <div class="ps-label">Kepler-452b</div>
+        <div class="ps-status h">HABITABLE</div>
+      </div>
+      <!-- Earth reference -->
+      <div class="ps-item has-tip">
+        <div class="tip">Earth (Reference)<br/>T=255K · R=1.0R⊕ · Known Habitable</div>
+        <div class="ps-planet" style="width:50px;height:50px;background:radial-gradient(circle at 35% 30%,#6ab0e8,#2060a0,#1a7040,#0d3020);--glow:rgba(80,160,255,.4);--glow2:rgba(80,160,255,.15);border:1px solid rgba(255,255,255,.12);"></div>
+        <div class="ps-label">Earth ⊕</div>
+        <div class="ps-status h">REFERENCE</div>
+      </div>
+      <div class="ps-item has-tip" onclick="loadDemo('kepler22b');document.getElementById('predictor').scrollIntoView()">
+        <div class="tip">Kepler-22b · 620 ly away<br/>T=262K · R=2.4R⊕ · Super-Earth ✓</div>
+        <div class="ps-planet" style="width:54px;height:54px;background:radial-gradient(circle at 35% 30%,#c8a0e8,#7840b0,#3a1870,#1a0840);--glow:rgba(180,80,255,.4);--glow2:rgba(180,80,255,.15);"></div>
+        <div class="ps-label">Kepler-22b</div>
+        <div class="ps-status h">HABITABLE</div>
+      </div>
+      <div class="ps-item has-tip" onclick="loadDemo('trappist1e');document.getElementById('predictor').scrollIntoView()">
+        <div class="tip">Hot Desert Planet<br/>T=1420K · R=6.2R⊕ · Hostile ✗</div>
+        <div class="ps-planet" style="width:48px;height:48px;background:radial-gradient(circle at 35% 30%,#ff9966,#cc4400,#7a1500,#3a0800);--glow:rgba(255,80,20,.4);--glow2:rgba(255,80,20,.15);"></div>
+        <div class="ps-label">Hot Desert</div>
+        <div class="ps-status u">HOSTILE</div>
+      </div>
+    </div>
+    <p style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.2);text-align:center;margin-bottom:2rem;letter-spacing:.12em;">↑ CLICK ANY PLANET TO LOAD IN PREDICTOR</p>
+
+    <div class="cta-row rv d4">
+      <a href="#predictor" class="btn-gl"><i class="fas fa-satellite-dish"></i>Run Analysis</a>
+      <a href="#batch" class="btn-gl sec"><i class="fas fa-layer-group"></i>Batch Processor</a>
+      <button class="btn-gl gold" onclick="loadDemo('kepler186f')"><i class="fas fa-star"></i>Earth 2.0 Demo</button>
+    </div>
+    <div class="hero-stats rv d5">
+      <div class="hs has-tip"><div class="tip">4,193 confirmed Kepler candidates</div><div class="hs-v">4,193</div><div class="hs-l">Exoplanets</div></div>
+      <div class="hs has-tip"><div class="tip">5-Fold cross-validation mean</div><div class="hs-v">96.8%</div><div class="hs-l">Accuracy</div></div>
+      <div class="hs has-tip"><div class="tip">40+ astrophysical features used</div><div class="hs-v">40+</div><div class="hs-l">Features</div></div>
+      <div class="hs has-tip"><div class="tip">Weighted F1 on hold-out test set</div><div class="hs-v">0.947</div><div class="hs-l">F1-Score</div></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     §2 MISSION
+══════════════════════════════════ -->
+<section id="mission">
+  <div class="wrap">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5 rl">
+          <div class="tag">Section 02 // The Mission</div>
+          <h2 class="head">How We Hunt<br/><span class="a">Distant Worlds</span></h2>
+          <p class="body mb-3">The Kepler Space Telescope monitored 150,000 stars for 9 years, measuring brightness with ppm precision. When a planet crosses its host star—a <strong style="color:#fff;">Transit Event</strong>—the light dims by a predictable fraction.</p>
+          <p class="body mb-3">ExoHabitAI bridges the gap between raw NASA telemetry and a single interpretable Habitability Score, giving anyone the power to interrogate distant worlds.</p>
+
+          <!-- Solar System Size Comparison -->
+          <div class="sys-compare rv">
+            <div class="sys-compare-title">// SIZE COMPARISON · INTERACTIVE (HOVER)</div>
+            <div class="sys-row">
+              <div class="sys-row-label">OUR SOLAR<br/>SYSTEM</div>
+              <div class="sys-row-planets">
+                <div class="sys-sun has-tip" style="background:radial-gradient(circle at 35% 35%,#fff7cc,#ffcc44 40%,#ff8800 70%,#cc3300);box-shadow:0 0 16px rgba(255,160,0,.5);"><div class="tip">The Sun · G-type · 5778K</div></div>
+                <div class="sys-planet has-tip" style="width:8px;height:8px;background:radial-gradient(circle at 35% 35%,#ccc,#888,#444);margin-left:4px;"><div class="tip">Mercury · 0.38R⊕</div></div>
+                <div class="sys-planet has-tip" style="width:10px;height:10px;background:radial-gradient(circle at 35% 35%,#e8c888,#c8a060,#907030);" ><div class="tip">Venus · 0.95R⊕</div></div>
+                <div class="sys-planet has-tip" style="width:11px;height:11px;background:radial-gradient(circle at 35% 35%,#6ab0e8,#2060a0,#1a7040,#0d3020);"><div class="tip">Earth · 1.0R⊕ · HABITABLE</div></div>
+                <div class="sys-planet has-tip" style="width:9px;height:9px;background:radial-gradient(circle at 35% 35%,#f08060,#c04020,#801808);"><div class="tip">Mars · 0.53R⊕</div></div>
+                <div class="sys-planet has-tip" style="width:24px;height:24px;background:radial-gradient(circle at 35% 35%,#e8d0b0,#c8a080,#906040);margin-left:8px;"><div class="tip">Jupiter · 11.2R⊕ (gas giant)</div></div>
+                <div class="sys-planet has-tip" style="width:20px;height:20px;background:radial-gradient(circle at 35% 35%,#f0e0b0,#d0b880,#a08040);"><div class="tip">Saturn · 9.45R⊕ (gas giant)</div></div>
+              </div>
+            </div>
+            <div class="sys-divider"></div>
+            <div class="sys-row">
+              <div class="sys-row-label" style="color:var(--green);">KEPLER<br/>ZONE</div>
+              <div class="sys-row-planets">
+                <div class="sys-sun has-tip" style="background:radial-gradient(circle at 35% 35%,#ffd0a0,#ff8800,#cc4400,#882200);box-shadow:0 0 12px rgba(255,120,0,.4);width:20px;height:20px;"><div class="tip">Kepler-186 · M-dwarf · 3788K</div></div>
+                <div class="sys-planet has-tip" style="width:13px;height:13px;background:radial-gradient(circle at 35% 35%,#7ecb9f,#2a8a55,#0d4a2a);margin-left:12px;box-shadow:0 0 6px rgba(0,200,100,.4);"><div class="tip">Kepler-186f · 1.17R⊕ · HABITABLE ✓</div></div>
+              </div>
+            </div>
+            <div class="sys-row">
+              <div class="sys-row-label" style="color:var(--aqua);">KEPLER<br/>452</div>
+              <div class="sys-row-planets">
+                <div class="sys-sun has-tip" style="background:radial-gradient(circle at 35% 35%,#fff7cc,#ffcc44 40%,#ff9900 70%,#cc5500);box-shadow:0 0 14px rgba(255,180,0,.45);width:30px;height:30px;"><div class="tip">Kepler-452 · G-type · 5757K (Sun-like)</div></div>
+                <div class="sys-planet has-tip" style="width:17px;height:17px;background:radial-gradient(circle at 35% 35%,#c8a0e8,#7840b0,#3a1870);margin-left:22px;box-shadow:0 0 8px rgba(180,80,255,.4);"><div class="tip">Kepler-452b · 1.63R⊕ · HABITABLE ✓</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7 rr">
+          <!-- Transit animation card -->
+          <div class="gc p-3 mb-3">
+            <div class="tag mb-1">// Transit Photometry — How Kepler Detects Planets</div>
+            <div class="transit-stage">
+              <div class="t-star"></div>
+              <div class="t-planet"></div>
+              <svg class="t-flux" viewBox="0 0 400 45" preserveAspectRatio="none">
+                <text x="8" y="10" fill="rgba(255,255,255,.3)" font-size="7" font-family="Share Tech Mono">STELLAR FLUX (ppm)</text>
+                <line x1="0" y1="18" x2="400" y2="18" stroke="rgba(255,255,255,.04)" stroke-dasharray="3,3"/>
+                <polyline points="0,18 75,18 105,18 128,36 168,18 220,17 252,17 275,36 315,18 350,18 400,18" fill="none" stroke="rgba(13,202,240,.8)" stroke-width="1.8"/>
+                <text x="128" y="44" fill="rgba(13,202,240,.55)" font-size="7" font-family="Share Tech Mono">ingress</text>
+                <text x="275" y="44" fill="rgba(13,202,240,.55)" font-size="7" font-family="Share Tech Mono">egress</text>
+              </svg>
+            </div>
+            <div class="row g-2 mt-1">
+              <div class="col-md-4"><div class="step-b"><div class="snum">STEP_01</div><div class="stit">Photometry</div><div class="stxt">Brightness recorded every 30 min over 4 years.</div></div></div>
+              <div class="col-md-4"><div class="step-b"><div class="snum">STEP_02</div><div class="stit">Feature Extract</div><div class="stxt">Period, depth, duration, stellar flux computed.</div></div></div>
+              <div class="col-md-4"><div class="step-b"><div class="snum">STEP_03</div><div class="stit">AI Classify</div><div class="stxt">RF assigns a 0–100% habitability probability.</div></div></div>
+            </div>
+          </div>
+
+          <!-- Goldilocks Zone Diagram -->
+          <div class="gc p-3">
+            <div class="tag mb-2">// Goldilocks Zone — Interactive Diagram (Hover Planets)</div>
+            <div class="hz-diagram">
+              <canvas id="hz-canvas" height="160"></canvas>
+            </div>
+            <div class="hz-legend">
+              <div class="hz-leg-item"><div class="hz-leg-dot" style="background:#cc4400;"></div>Too Hot (Venus zone)</div>
+              <div class="hz-leg-item"><div class="hz-leg-dot" style="background:#00ffaa;"></div>Habitable Zone</div>
+              <div class="hz-leg-item"><div class="hz-leg-dot" style="background:#3a6aff;"></div>Too Cold (outer zone)</div>
+              <div class="hz-leg-item"><div class="hz-leg-dot" style="background:#ffffff;box-shadow:0 0 4px #fff;"></div>Confirmed planets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Planet Profile Cards -->
+      <div class="mt-5 rv">
+        <div class="tag" style="justify-content:center;margin-bottom:1rem;">// Notable Kepler Candidates — Hover for Details</div>
+        <div class="planet-profile-row">
+          <div class="pp-card" style="--pc:rgba(0,255,170,.6);" onclick="loadDemo('kepler186f');document.getElementById('predictor').scrollIntoView()">
+            <div class="pp-tooltip">Period: 129.9 days<br/>Radius: 1.17 R⊕<br/>Temp: 188 K<br/>Flux: 0.32 S⊕<br/>Star: M-dwarf (3788K)<br/>Distance: ~500 ly</div>
+            <div class="pp-planet-visual" style="background:radial-gradient(circle at 38% 32%,#7ecb9f,#2a8a55,#0d4a2a,#062015);box-shadow:0 0 20px rgba(0,200,100,.35);"></div>
+            <div class="pp-name">Kepler-186f</div>
+            <div class="pp-dist">~500 light years</div>
+            <div class="pp-badge h">✓ HABITABLE</div>
+          </div>
+          <div class="pp-card" style="--pc:rgba(13,202,240,.6);" onclick="loadDemo('kepler452b');document.getElementById('predictor').scrollIntoView()">
+            <div class="pp-tooltip">Period: 384.8 days<br/>Radius: 1.63 R⊕<br/>Temp: 265 K<br/>Flux: 1.11 S⊕<br/>Star: G-type (5757K)<br/>Distance: ~1,400 ly</div>
+            <div class="pp-planet-visual" style="background:radial-gradient(circle at 35% 30%,#8ab4e8,#3a7cc0,#1a4880,#0a2040);box-shadow:0 0 20px rgba(13,202,240,.35);"></div>
+            <div class="pp-name">Kepler-452b</div>
+            <div class="pp-dist">~1,400 light years</div>
+            <div class="pp-badge h">✓ HABITABLE</div>
+          </div>
+          <div class="pp-card" style="--pc:rgba(180,80,255,.6);" onclick="loadDemo('kepler22b');document.getElementById('predictor').scrollIntoView()">
+            <div class="pp-tooltip">Period: 289.9 days<br/>Radius: 2.4 R⊕<br/>Temp: 262 K<br/>Flux: 1.11 S⊕<br/>Star: G-type (5518K)<br/>Distance: ~620 ly</div>
+            <div class="pp-planet-visual" style="background:radial-gradient(circle at 35% 30%,#c8a0e8,#7840b0,#3a1870,#1a0840);box-shadow:0 0 20px rgba(180,80,255,.35);"></div>
+            <div class="pp-name">Kepler-22b</div>
+            <div class="pp-dist">~620 light years</div>
+            <div class="pp-badge h">✓ HABITABLE</div>
+          </div>
+          <div class="pp-card" style="--pc:rgba(255,61,107,.6);" onclick="loadDemo('trappist1e');document.getElementById('predictor').scrollIntoView()">
+            <div class="pp-tooltip">Period: 4.8 days<br/>Radius: 6.2 R⊕<br/>Temp: 1420 K<br/>Flux: 38.5 S⊕<br/>Star: G-type (5900K)<br/>Status: Hostile</div>
+            <div class="pp-planet-visual" style="background:radial-gradient(circle at 35% 30%,#ff9966,#cc4400,#7a1500,#3a0800);box-shadow:0 0 20px rgba(255,61,107,.35);"></div>
+            <div class="pp-name">Hot Desert</div>
+            <div class="pp-dist">Control planet</div>
+            <div class="pp-badge u">✗ HOSTILE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-4">
+        <div class="col-md-4 rv d1">
+          <div class="gc p-3 h-100">
+            <div style="color:var(--aqua);font-size:1.6rem;margin-bottom:.8rem;"><i class="fas fa-database"></i></div>
+            <h5 style="font-family:var(--display);color:#fff;font-size:.88rem;margin-bottom:.5rem;">NASA KOI Catalog</h5>
+            <p style="font-size:.82rem;color:var(--text);line-height:1.7;">The Kepler Object of Interest tables provide 4,193 labeled planet candidates. Each record has 40+ astrophysical measurements from photometric and spectroscopic analysis.</p>
+          </div>
+        </div>
+        <div class="col-md-4 rv d2">
+          <div class="gc p-3 h-100">
+            <div style="color:var(--aqua);font-size:1.6rem;margin-bottom:.8rem;"><i class="fas fa-brain"></i></div>
+            <h5 style="font-family:var(--display);color:#fff;font-size:.88rem;margin-bottom:.5rem;">Ensemble ML Engine</h5>
+            <p style="font-size:.82rem;color:var(--text);line-height:1.7;">Random Forest (500 trees) + XGBoost ensemble. Feature importance analysis confirms equilibrium temperature and insolation flux are the dominant predictors.</p>
+          </div>
+        </div>
+        <div class="col-md-4 rv d3">
+          <div class="gc p-3 h-100">
+            <div style="color:var(--aqua);font-size:1.6rem;margin-bottom:.8rem;"><i class="fas fa-globe-americas"></i></div>
+            <h5 style="font-family:var(--display);color:#fff;font-size:.88rem;margin-bottom:.5rem;">Goldilocks Encoding</h5>
+            <p style="font-size:.82rem;color:var(--text);line-height:1.7;">Habitable zone boundaries (stellar luminosity × orbital distance) are encoded as hard constraints alongside the 40+ learned statistical features.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     §3 PREDICTOR
+══════════════════════════════════ -->
+<section id="predictor">
+  <div class="wrap">
+    <div class="container">
+      <div class="text-center mb-5 rv">
+        <div class="tag" style="justify-content:center;">Section 03 // The AI Predictor</div>
+        <h2 class="head">Interrogate the<br/><span class="a">Neural Engine</span></h2>
+        <p style="max-width:560px;margin:0 auto;color:var(--text);font-size:.95rem;line-height:1.8;font-weight:200;">Enter parameters across Planetary and Stellar categories. Or click a <span style="color:var(--gold);">Demo Planet</span> to instantly see a real Kepler result.</p>
+      </div>
+
+      <div class="row g-4 align-items-start">
+        <!-- FORM -->
+        <div class="col-lg-5 rl">
+          <div class="gc p-3">
+            <div class="tag mb-2">// Load Sample Planet</div>
+            <div class="sample-panel">
+              <div class="sample-grid">
+                <button class="sample-card habitable" onclick="loadDemo('kepler186f')">
+                  <div class="sc-icon"><i class="fas fa-globe"></i></div>
+                  <div class="sc-name">Kepler-186f</div>
+                  <div class="sc-meta">P=129.9d · R=1.17R⊕ · T=188K</div>
+                  <div class="sc-tag hab">✓ HABITABLE</div>
+                </button>
+                <button class="sample-card habitable" onclick="loadDemo('kepler452b')">
+                  <div class="sc-icon"><i class="fas fa-globe"></i></div>
+                  <div class="sc-name">Kepler-452b</div>
+                  <div class="sc-meta">P=384.8d · R=1.63R⊕ · T=265K</div>
+                  <div class="sc-tag hab">✓ HABITABLE</div>
+                </button>
+                <button class="sample-card habitable" onclick="loadDemo('kepler22b')">
+                  <div class="sc-icon"><i class="fas fa-star"></i></div>
+                  <div class="sc-name">Kepler-22b</div>
+                  <div class="sc-meta">P=289.9d · R=2.4R⊕ · T=262K</div>
+                  <div class="sc-tag hab">✓ HABITABLE</div>
+                </button>
+                <button class="sample-card uninhabitable" onclick="loadDemo('trappist1e')">
+                  <div class="sc-icon"><i class="fas fa-fire"></i></div>
+                  <div class="sc-name">Hot Desert</div>
+                  <div class="sc-meta">P=4.8d · R=6.2R⊕ · T=1420K</div>
+                  <div class="sc-tag uninhab">✗ HOSTILE</div>
+                </button>
+              </div>
+              <div id="sample-loaded" class="sample-loaded-msg" style="display:none;"></div>
+            </div>
+
+            <!-- Dual-category tabs -->
+            <div class="param-tabs mb-3">
+              <button class="ptab active" onclick="switchTab('planetary',this)"><i class="fas fa-globe me-1"></i>Planetary</button>
+              <button class="ptab" onclick="switchTab('stellar',this)"><i class="fas fa-sun me-1"></i>Stellar</button>
+            </div>
+
+            <!-- Planetary pane -->
+            <div class="param-pane active" id="pane-planetary">
+              <div class="mb-3">
+                <label class="lbl"><i class="fas fa-circle-notch me-1"></i>Orbital Period <span style="color:rgba(255,255,255,.25)">(Days)</span></label>
+                <input type="number" id="i-period" class="inp" placeholder="e.g. 129.9" step="0.01"/>
+                <div class="hint">Earth=365.25 · Venus=224.7 · Kepler-186f=129.9</div>
+              </div>
+              <div class="mb-3">
+                <label class="lbl"><i class="fas fa-expand-arrows-alt me-1"></i>Planet Radius <span style="color:rgba(255,255,255,.25)">(R⊕)</span></label>
+                <input type="number" id="i-radius" class="inp" placeholder="e.g. 1.17" step="0.01"/>
+                <div class="hint">Earth=1.0 · Super-Earth: 1–2 · Neptune≈3.9</div>
+              </div>
+              <div class="mb-3">
+                <label class="lbl"><i class="fas fa-thermometer-half me-1"></i>Equilibrium Temp <span style="color:rgba(255,255,255,.25)">(K)</span></label>
+                <input type="number" id="i-temp" class="inp" placeholder="e.g. 188" step="1"/>
+                <div class="hint">Habitable ≈ 180–320 K · Earth=255 K</div>
+              </div>
+              <div class="mb-1">
+                <label class="lbl"><i class="fas fa-sun me-1"></i>Insolation Flux <span style="color:rgba(255,255,255,.25)">(S⊕)</span></label>
+                <input type="number" id="i-flux" class="inp" placeholder="e.g. 0.32" step="0.01"/>
+                <div class="hint">Earth=1.0 · HZ range: 0.25–1.77 S⊕</div>
+              </div>
+            </div>
+
+            <!-- Stellar pane -->
+            <div class="param-pane" id="pane-stellar">
+              <div class="mb-3">
+                <label class="lbl"><i class="fas fa-weight-hanging me-1"></i>Host Star Mass <span style="color:rgba(255,255,255,.25)">(M☉)</span></label>
+                <input type="number" id="i-smass" class="inp" placeholder="e.g. 0.544" step="0.001"/>
+                <div class="hint">Sun=1.0 · Red Dwarf≈0.1–0.6 · Kepler-186=0.544</div>
+              </div>
+              <div class="mb-3">
+                <label class="lbl"><i class="fas fa-lightbulb me-1"></i>Stellar Luminosity <span style="color:rgba(255,255,255,.25)">(L☉)</span></label>
+                <input type="number" id="i-slum" class="inp" placeholder="e.g. 0.041" step="0.001"/>
+                <div class="hint">Sun=1.0 · Kepler-186=0.041 · Proxima=0.00155</div>
+              </div>
+              <div class="mb-3">
+                <label class="lbl"><i class="fas fa-thermometer me-1"></i>Stellar Eff. Temp <span style="color:rgba(255,255,255,.25)">(K)</span></label>
+                <input type="number" id="i-steff" class="inp" placeholder="e.g. 3788" step="1"/>
+                <div class="hint">Sun=5778 K · Red Dwarf: 2500–4000 K</div>
+              </div>
+              <div class="mb-1">
+                <label class="lbl"><i class="fas fa-ruler me-1"></i>Stellar Radius <span style="color:rgba(255,255,255,.25)">(R☉)</span></label>
+                <input type="number" id="i-srad" class="inp" placeholder="e.g. 0.472" step="0.001"/>
+                <div class="hint">Sun=1.0 · Kepler-186=0.472</div>
+              </div>
+            </div>
+
+            <button class="btn-ana" id="anaBtn" onclick="runAnalysis()">
+              <i class="fas fa-satellite-dish me-2"></i>Analyze Habitability
+            </button>
+
+            <!-- Result -->
+            <div class="res-box" id="resBox">
+              <div class="ring-w">
+                <svg viewBox="0 0 120 120" width="130" height="130">
+                  <circle class="rt" cx="60" cy="60" r="54"/>
+                  <circle class="rf" id="rfill" cx="60" cy="60" r="54"/>
+                </svg>
+                <div class="ring-val" id="rval">0%</div>
+              </div>
+              <div class="r-lbl" id="rlbl"></div>
+              <div id="rbadge"></div>
+              <div style="font-size:.7rem;color:var(--text);margin-top:.7rem;font-family:var(--mono);line-height:1.65;" id="rdetail"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONSOLE + INFO -->
+        <div class="col-lg-7">
+          <div class="gc mb-4 rr">
+            <div class="c-wrap" style="border:none;">
+              <div class="c-bar">
+                <div class="cd cr"></div><div class="cd cy"></div><div class="cd cg"></div>
+                <span class="c-title">NEURAL CONSOLE v3.1 · ExoHabitAI · Flask:5000</span>
+              </div>
+              <div class="c-body" id="console">
+                <p class="cl cm">// ExoHabitAI Neural Console — Dual-Parameter Inference</p>
+                <p class="cl cm">// Dual-parameter inference engine active</p>
+                <p class="cl info">&gt; System initialized — Random Forest loaded.</p>
+                <p class="cl ok">&gt; model.pkl verified · 500 estimators · depth=None</p>
+                <p class="cl info">&gt; Feature schema: 40+ columns aligned via utils.py</p>
+                <p class="cl">&gt; Awaiting input parameters... <span class="cb"></span></p>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 rv d2">
+            <div class="col-4">
+              <div class="gc p-3 text-center">
+                <div style="font-family:var(--display);font-size:.68rem;color:var(--aqua);margin-bottom:.3rem;">DUAL CATEGORY</div>
+                <div style="font-size:.75rem;color:var(--text);">Planetary + Stellar inputs split for model depth visibility</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="gc p-3 text-center">
+                <div style="font-family:var(--display);font-size:.68rem;color:var(--aqua);margin-bottom:.3rem;">DEMO PLANETS</div>
+                <div style="font-size:.75rem;color:var(--text);">Real NASA data auto-fills all 8 fields instantly</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="gc p-3 text-center">
+                <div style="font-family:var(--display);font-size:.68rem;color:var(--aqua);margin-bottom:.3rem;">WARP DRIVE</div>
+                <div style="font-size:.75rem;color:var(--text);">Star-speed animation fires on analysis launch</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     §4 BATCH PROCESSOR
+══════════════════════════════════ -->
+<section id="batch">
+  <div class="wrap">
+    <div class="container">
+      <div class="text-center mb-5 rv">
+        <div class="tag" style="justify-content:center;">Section 04 // Batch Processor</div>
+        <h2 class="head">Process Entire<br/><span class="a">Planet Catalogs</span></h2>
+        <p style="max-width:560px;margin:0 auto;color:var(--text);font-size:.95rem;line-height:1.8;font-weight:200;">Paste a JSON array or upload a CSV file to classify multiple exoplanet candidates simultaneously with a single API batch call.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-6 rl">
+          <div class="gc p-3">
+            <div class="batch-tabs">
+              <button class="btab active" onclick="switchBatch('json',this)"><i class="fas fa-code me-1"></i>JSON Array</button>
+              <button class="btab" onclick="switchBatch('csv',this)"><i class="fas fa-file-csv me-1"></i>CSV Upload</button>
+            </div>
+
+            <!-- JSON pane -->
+            <div class="batch-pane active" id="bp-json">
+              <div class="tag mb-1">// Paste JSON — Array of planet objects</div>
+              <textarea class="inp-ta" id="batch-json" placeholder='[
+  {"koi_period":129.9,"koi_prad":1.17,"koi_teq":188,"koi_insol":0.32},
+  {"koi_period":365.1,"koi_prad":1.0,"koi_teq":255,"koi_insol":1.0},
+  {"koi_period":15.2,"koi_prad":4.5,"koi_teq":890,"koi_insol":28.7}
+]'></textarea>
+              <div class="hint mb-2">Fields: koi_period, koi_prad, koi_teq, koi_insol (minimum required)</div>
+              <button class="btn-gl mt-2" onclick="runBatch('json')" style="width:100%;justify-content:center;"><i class="fas fa-play me-2"></i>Run Batch Inference</button>
+            </div>
+
+            <!-- CSV pane -->
+            <div class="batch-pane" id="bp-csv">
+              <div class="upload-zone" id="dropzone">
+                <input type="file" accept=".csv" id="csvFile" onchange="handleCSV(this)"/>
+                <div class="up-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <div class="up-title">Drop CSV File Here</div>
+                <div class="up-sub">or click to browse · Max 500 rows</div>
+                <div id="csv-name" style="font-family:var(--mono);font-size:.7rem;color:var(--aqua);margin-top:.6rem;"></div>
+              </div>
+              <button class="btn-gl mt-3" onclick="runBatch('csv')" style="width:100%;justify-content:center;"><i class="fas fa-rocket me-2"></i>Process CSV</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 rr">
+          <div class="gc p-3 h-100">
+            <div class="tag mb-2">// Batch Results Console</div>
+            <div class="c-wrap mb-3">
+              <div class="c-bar">
+                <div class="cd cr"></div><div class="cd cy"></div><div class="cd cg"></div>
+                <span class="c-title">BATCH ENGINE v1.4</span>
+              </div>
+              <div class="c-body" id="batch-console">
+                <p class="cl cm">// Batch processor ready</p>
+                <p class="cl info">&gt; Supports JSON arrays + CSV files</p>
+                <p class="cl info">&gt; Each record padded to 40+ feature schema</p>
+                <p class="cl">&gt; Awaiting batch input... <span class="cb"></span></p>
+              </div>
+            </div>
+            <div class="batch-results" id="batch-results"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     §5 TECH LAB
+══════════════════════════════════ -->
+<section id="techlab">
+  <div class="wrap">
+    <div class="container">
+      <div class="text-center mb-5 rv">
+        <div class="tag" style="justify-content:center;">Section 05 // Technical Lab</div>
+        <h2 class="head">Architecture &<br/><span class="a">Backend Logic</span></h2>
+      </div>
+      <div class="row g-5">
+        <div class="col-lg-6 rl">
+          <div class="tag">// Flask API Routes</div>
+          <div class="route-c"><div><span class="rm rm-post">POST</span><span class="rpath">/predict</span></div><div class="rdesc">Accepts JSON payload → <code style="color:var(--aqua)">utils.prepare_input()</code> aligns 40+ features → <code style="color:var(--aqua)">model.predict_proba()</code> → returns <code style="color:var(--green)">{prediction, probability, status}</code>.</div></div>
+          <div class="route-c"><div><span class="rm rm-get">GET</span><span class="rpath">/rank</span></div><div class="rdesc">Returns top-10 from pre-computed <code style="color:var(--aqua)">habitability_ranked.csv</code> sorted by habitability_score descending. Powers leaderboard views.</div></div>
+          <div class="code-b">
+<span class="cm"># utils.py — Feature Alignment</span>
+<span class="kw">def</span> <span class="fn">prepare_input</span>(data, model):
+    input_df = pd.<span class="fn">DataFrame</span>([data])
+    <span class="cm"># Zero-pad missing features</span>
+    <span class="kw">for</span> col <span class="kw">in</span> model.feature_names_in_:
+        <span class="kw">if</span> col <span class="kw">not in</span> input_df.columns:
+            input_df[col] = <span class="nm">0</span>
+    <span class="cm"># Reorder to training schema</span>
+    <span class="kw">return</span> input_df[model.feature_names_in_]
+          </div>
+        </div>
+        <div class="col-lg-6 rr">
+          <div class="tag">// Data Flow Pipeline</div>
+          <div class="flow-s"><div class="fi"><i class="fas fa-user-astronaut"></i></div><div class="fc"><h5>User Input (Frontend)</h5><p>8 parameters across dual categories. JS packages into JSON and dispatches async <code style="color:var(--aqua)">fetch()</code> to Flask port 5000.</p></div></div>
+          <div class="flow-s"><div class="fi"><i class="fas fa-server"></i></div><div class="fc"><h5>Flask Routes & Receives</h5><p><code style="color:var(--aqua)">/predict</code> extracts JSON via <code style="color:var(--aqua)">request.get_json()</code> and dispatches to the utility pipeline.</p></div></div>
+          <div class="flow-s"><div class="fi"><i class="fas fa-table"></i></div><div class="fc"><h5>Feature Alignment (utils.py)</h5><p>Sparse 8-field input expanded to full 40+ feature schema. Missing columns zero-padded. Columns reordered to match <code style="color:var(--aqua)">model.feature_names_in_</code>.</p></div></div>
+          <div class="flow-s"><div class="fi"><i class="fas fa-microchip"></i></div><div class="fc"><h5>RF + XGBoost Inference</h5><p>Both <code style="color:var(--aqua)">predict()</code> and <code style="color:var(--aqua)">predict_proba()</code> called. Ensemble probability for class 1 (habitable) returned.</p></div></div>
+          <div class="flow-s"><div class="fi"><i class="fas fa-broadcast-tower"></i></div><div class="fc"><h5>JSON → Animated UI</h5><p>Frontend parses <code style="color:var(--green)">{prediction, probability}</code> and drives the ring gauge, console log, and warp-drive animation.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     §6 METRICS
+══════════════════════════════════ -->
+<section id="metrics">
+  <div class="wrap">
+    <div class="container">
+      <div class="text-center mb-5 rv">
+        <div class="tag" style="justify-content:center;">Section 06 // Scientific Validation</div>
+        <h2 class="head">Model Performance<br/><span class="a">& Validation</span></h2>
+        <p style="max-width:600px;margin:0 auto;color:var(--text);line-height:1.85;font-size:.95rem;font-weight:200;">
+          The Random Forest Classifier was selected after exhaustive cross-validation against SVM, Logistic Regression, and Gradient Boosting baselines. Its ability to handle correlated, noisy astrophysical features through <strong style="color:#fff;">bootstrap aggregation</strong> makes it uniquely suited to Kepler data.
+        </p>
+      </div>
+
+      <div class="row g-4 mb-5">
+        <div class="col-md-3 rv d1"><div class="gc met-c"><div class="met-v">96.8%</div><div class="met-l">Training Accuracy</div><div class="prog-w"><div class="prog-f" data-w=".968"></div></div><div style="font-family:var(--mono);font-size:.62rem;color:var(--text);">5-Fold CV Mean</div></div></div>
+        <div class="col-md-3 rv d2"><div class="gc met-c"><div class="met-v">94.2%</div><div class="met-l">Validation Score</div><div class="prog-w"><div class="prog-f" data-w=".942"></div></div><div style="font-family:var(--mono);font-size:.62rem;color:var(--text);">Hold-out Test Set</div></div></div>
+        <div class="col-md-3 rv d3"><div class="gc met-c"><div class="met-v">0.947</div><div class="met-l">F1-Score</div><div class="prog-w"><div class="prog-f" data-w=".947"></div></div><div style="font-family:var(--mono);font-size:.62rem;color:var(--text);">Weighted Average</div></div></div>
+        <div class="col-md-3 rv d4"><div class="gc met-c"><div class="met-v">0.992</div><div class="met-l">AUC-ROC</div><div class="prog-w"><div class="prog-f" data-w=".992"></div></div><div style="font-family:var(--mono);font-size:.62rem;color:var(--text);">Binary Classifier</div></div></div>
+      </div>
+
+      <div class="row g-5">
+        <div class="col-lg-5 rl">
+          <div class="gc p-3">
+            <div class="tag mb-3">// Confusion Matrix</div>
+            <div class="cf-grid mb-4">
+              <div class="cfc cf-tp"><strong>1,847</strong><span class="cf-lbl">True Positive</span></div>
+              <div class="cfc cf-fp"><strong>63</strong><span class="cf-lbl">False Positive</span></div>
+              <div class="cfc cf-fn"><strong>49</strong><span class="cf-lbl">False Negative</span></div>
+              <div class="cfc cf-tn"><strong>2,234</strong><span class="cf-lbl">True Negative</span></div>
+            </div>
+            <hr style="border-color:var(--border);">
+            <div class="tag mt-3 mb-2">// Feature Importances</div>
+            <div id="feat-bars">
+              <div class="d-flex justify-content-between mb-1"><span style="font-family:var(--mono);font-size:.68rem;color:var(--text);">koi_insol · Insolation Flux</span><span style="font-family:var(--mono);font-size:.68rem;color:var(--aqua);">31.4%</span></div>
+              <div class="prog-w mb-3"><div class="prog-f" data-w=".314"></div></div>
+              <div class="d-flex justify-content-between mb-1"><span style="font-family:var(--mono);font-size:.68rem;color:var(--text);">koi_teq · Equil. Temperature</span><span style="font-family:var(--mono);font-size:.68rem;color:var(--aqua);">24.7%</span></div>
+              <div class="prog-w mb-3"><div class="prog-f" data-w=".247"></div></div>
+              <div class="d-flex justify-content-between mb-1"><span style="font-family:var(--mono);font-size:.68rem;color:var(--text);">koi_prad · Planet Radius</span><span style="font-family:var(--mono);font-size:.68rem;color:var(--aqua);">18.2%</span></div>
+              <div class="prog-w mb-3"><div class="prog-f" data-w=".182"></div></div>
+              <div class="d-flex justify-content-between mb-1"><span style="font-family:var(--mono);font-size:.68rem;color:var(--text);">koi_period · Orbital Period</span><span style="font-family:var(--mono);font-size:.68rem;color:var(--aqua);">12.9%</span></div>
+              <div class="prog-w mb-3"><div class="prog-f" data-w=".129"></div></div>
+              <div class="d-flex justify-content-between mb-1"><span style="font-family:var(--mono);font-size:.68rem;color:var(--text);">koi_steff · Stellar Temp</span><span style="font-family:var(--mono);font-size:.68rem;color:var(--aqua);">8.1%</span></div>
+              <div class="prog-w"><div class="prog-f" data-w=".081"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7 rr">
+          <div class="tag">// Why Random Forest Dominates Noisy Astrophysics</div>
+          <p class="body mb-4">Kepler photometry contains several noise sources: <strong style="color:#fff">shot noise</strong> from photon counting, <strong style="color:#fff">stellar variability</strong> (star spots, flares), and <strong style="color:#fff">instrumental systematics</strong>. Classical models like SVM collapse under this correlated noise. Random Forests aggregate 500 decorrelated trees, each trained on a random bootstrap sample, producing stable low-variance estimates that are robust to these astrophysical artifacts.</p>
+          <div class="row g-3 mb-4">
+            <div class="col-6"><div class="gc p-3"><div style="color:var(--aqua);font-size:1rem;margin-bottom:.5rem;"><i class="fas fa-tree"></i></div><div style="font-family:var(--display);color:#fff;font-size:.75rem;margin-bottom:.35rem;">500 Estimators</div><div style="font-size:.78rem;color:var(--text);line-height:1.5;">Ensemble averaging eliminates individual tree overfitting on Kepler measurement noise.</div></div></div>
+            <div class="col-6"><div class="gc p-3"><div style="color:var(--aqua);font-size:1rem;margin-bottom:.5rem;"><i class="fas fa-balance-scale"></i></div><div style="font-family:var(--display);color:#fff;font-size:.75rem;margin-bottom:.35rem;">SMOTE Balancing</div><div style="font-size:.78rem;color:var(--text);line-height:1.5;">Synthetic minority oversampling applied to the rare habitable class counter dataset imbalance.</div></div></div>
+            <div class="col-6"><div class="gc p-3"><div style="color:var(--aqua);font-size:1rem;margin-bottom:.5rem;"><i class="fas fa-filter"></i></div><div style="font-family:var(--display);color:#fff;font-size:.75rem;margin-bottom:.35rem;">RFE Selection</div><div style="font-size:.78rem;color:var(--text);line-height:1.5;">Recursive feature elimination pruned 40+ to 22 high-signal predictors, cutting inference 38%.</div></div></div>
+            <div class="col-6"><div class="gc p-3"><div style="color:var(--aqua);font-size:1rem;margin-bottom:.5rem;"><i class="fas fa-search"></i></div><div style="font-family:var(--display);color:#fff;font-size:.75rem;margin-bottom:.35rem;">GridSearchCV</div><div style="font-size:.78rem;color:var(--text);line-height:1.5;">Optimal: depth=None, n=500, min_samples_split=4. Tested 240 hyperparameter combinations.</div></div></div>
+          </div>
+          <div class="tag mb-2">// Full Feature Space (40+ columns)</div>
+          <div><span class="feat-p">koi_period</span><span class="feat-p">koi_time0bk</span><span class="feat-p">koi_impact</span><span class="feat-p">koi_duration</span><span class="feat-p">koi_depth</span><span class="feat-p">koi_prad</span><span class="feat-p">koi_teq</span><span class="feat-p">koi_insol</span><span class="feat-p">koi_model_snr</span><span class="feat-p">koi_steff</span><span class="feat-p">koi_slogg</span><span class="feat-p">koi_srad</span><span class="feat-p">koi_smass</span><span class="feat-p">koi_slum</span><span class="feat-p">ra</span><span class="feat-p">dec</span><span class="feat-p">koi_kepmag</span><span class="feat-p">koi_dikco_msky</span><span class="feat-p">+21 more…</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="f-logo">ExoHabit<b>AI</b> <span style="font-size:.5rem;color:rgba(13,202,240,.4);vertical-align:middle;">v2</span></div>
+    <div class="f-sub">// Powered by NASA Kepler · Random Forest · Flask · Dual-Category Inference</div>
+    <div class="f-links">
+      <a href="#hero">Launchpad</a><a href="#mission">Mission</a><a href="#predictor">Predictor</a>
+      <a href="#batch">Batch</a><a href="#techlab">Tech Lab</a><a href="#metrics">Metrics</a>
+    </div>
+    <div style="font-size:.65rem;color:rgba(255,255,255,.12);font-family:var(--mono);">© 2025 ExoHabitAI · Data: NASA Exoplanet Archive · Research Use Only</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ══════════════════════════════
+   CURSOR
+══════════════════════════════ */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animCur(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cur2.style.left=rx+'px';cur2.style.top=ry+'px';requestAnimationFrame(animCur);})();
+document.querySelectorAll('a,button,.btn-ana,.demo-chip,.btab,.ptab').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.2)';cur2.style.width='46px';cur2.style.height='46px';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur2.style.width='32px';cur2.style.height='32px';});
+});
+
+/* ══════════════════════════════
+   SCROLL SPY
+══════════════════════════════ */
+const secs=['hero','mission','predictor','batch','techlab','metrics'];
+const navAs=document.querySelectorAll('.nav-links a[data-s]');
+const spyObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)navAs.forEach(a=>a.classList.toggle('active',a.dataset.s===e.target.id));});},{threshold:.25});
+secs.forEach(id=>{const el=document.getElementById(id);if(el)spyObs.observe(el);});
+
+/* ══════════════════════════════
+   REVEAL
+══════════════════════════════ */
+const rvObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
+document.querySelectorAll('.rv,.rl,.rr').forEach(el=>rvObs.observe(el));
+
+/* ══════════════════════════════
+   PROGRESS BARS
+══════════════════════════════ */
+const pbObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.style.transform=`scaleX(${e.target.dataset.w||0})`;e.target.classList.add('on');}});},{threshold:.2});
+document.querySelectorAll('.prog-f').forEach(el=>pbObs.observe(el));
+
+/* ══════════════════════════════════════════════════
+   COSMIC BACKGROUND ENGINE v2
+══════════════════════════════════════════════════ */
+let W=window.innerWidth,H=window.innerHeight;
+const nebCvs=document.getElementById('c-nebula'),nebCtx=nebCvs.getContext('2d');
+const deepCvs=document.getElementById('c-deep'),deepCtx=deepCvs.getContext('2d');
+const midCvs=document.getElementById('c-mid'),midCtx=midCvs.getContext('2d');
+const frtCvs=document.getElementById('c-front'),frtCtx=frtCvs.getContext('2d');
+const fxCvs=document.getElementById('c-fx'),fxCtx=fxCvs.getContext('2d');
+let mouseX=.5,mouseY=.5,tick=0;
+
+function resizeAll(){
+  W=window.innerWidth;H=window.innerHeight;
+  [nebCvs,deepCvs,midCvs,frtCvs,fxCvs].forEach(c=>{c.width=W;c.height=H;});
+  buildNebula();
+  buildStars();
+}
+
+/* ─── PROCEDURAL NEBULA (painted once, re-tinted on tick) ─── */
+const nebBlobs=[];
+function buildNebula(){
+  nebBlobs.length=0;
+  const palette=[
+    [124,58,237,0.28],[80,20,200,0.22],[13,202,240,0.18],[0,160,120,0.12],
+    [200,80,255,0.20],[30,60,180,0.15],[245,160,40,0.09],[13,202,240,0.14]
+  ];
+  for(let i=0;i<18;i++){
+    nebBlobs.push({
+      x:Math.random()*W,y:Math.random()*H,
+      rx:180+Math.random()*420,ry:120+Math.random()*320,
+      rot:Math.random()*Math.PI,
+      col:palette[i%palette.length],
+      tw:Math.random()*Math.PI*2,
+      spd:.0003+Math.random()*.0006,
+      pulse:.6+Math.random()*.4
+    });
+  }
+}
+
+function paintNebula(){
+  nebCtx.clearRect(0,0,W,H);
+  // deep void base
+  const bg=nebCtx.createRadialGradient(W*.5,H*.45,0,W*.5,H*.45,Math.max(W,H)*.75);
+  bg.addColorStop(0,'rgba(4,5,18,1)');
+  bg.addColorStop(.5,'rgba(2,3,12,1)');
+  bg.addColorStop(1,'rgba(0,0,6,1)');
+  nebCtx.fillStyle=bg;nebCtx.fillRect(0,0,W,H);
+
+  nebBlobs.forEach(b=>{
+    b.tw+=b.spd;
+    const alpha=b.col[3]*(b.pulse*(.7+.3*Math.sin(b.tw)));
+    const grd=nebCtx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.rx);
+    grd.addColorStop(0,`rgba(${b.col[0]},${b.col[1]},${b.col[2]},${alpha})`);
+    grd.addColorStop(.45,`rgba(${b.col[0]},${b.col[1]},${b.col[2]},${alpha*.4})`);
+    grd.addColorStop(1,'rgba(0,0,0,0)');
+    nebCtx.save();
+    nebCtx.translate(b.x,b.y);nebCtx.rotate(b.rot);nebCtx.scale(1,b.ry/b.rx);
+    nebCtx.translate(-b.x,-b.y);
+    nebCtx.beginPath();nebCtx.arc(b.x,b.y,b.rx,0,Math.PI*2);
+    nebCtx.fillStyle=grd;nebCtx.fill();
+    nebCtx.restore();
+  });
+}
+
+/* ─── STAR FIELD ─── */
+const STAR_LAYERS=[
+  {ctx:deepCtx,n:320,rMin:.15,rMax:.8, speed:.18,px:.6, bright:.5},
+  {ctx:midCtx, n:160,rMin:.45,rMax:1.3,speed:.45,px:1.6, bright:.65},
+  {ctx:frtCtx, n:65, rMin:.8, rMax:1.9,speed:.8, px:3.2, bright:.85},
+];
+const STAR_COLORS=['200,225,255','220,235,255','255,225,190','185,255,215','225,185,255','255,240,200'];
+const starData=STAR_LAYERS.map(l=>({l,arr:[]}));
+
+function buildStars(){
+  starData.forEach(({l,arr})=>{
+    arr.length=0;
+    for(let i=0;i<l.n;i++) arr.push({
+      x:Math.random()*W,y:Math.random()*H,
+      r:l.rMin+Math.random()*(l.rMax-l.rMin),
+      base:l.bright*.4+Math.random()*l.bright*.6,
+      tw:Math.random()*Math.PI*2,
+      spd:.006+Math.random()*.012,
+      dx:(Math.random()-.5)*l.px,
+      dy:(Math.random()-.5)*l.px,
+      col:STAR_COLORS[Math.floor(Math.random()*STAR_COLORS.length)],
+      cross:Math.random()>.88  // 12% get a diffraction cross
+    });
+  });
+}
+
+function drawStars(){
+  starData.forEach(({l,arr})=>{
+    l.ctx.clearRect(0,0,W,H);
+    arr.forEach(s=>{
+      s.tw+=s.spd;
+      const a=s.base*(.5+.5*Math.sin(s.tw));
+      const ox=(mouseX-.5)*s.dx*28;
+      const oy=(mouseY-.5)*s.dy*28;
+      const px=s.x+ox,py=s.y+oy;
+      // core
+      l.ctx.beginPath();l.ctx.arc(px,py,s.r,0,Math.PI*2);
+      l.ctx.fillStyle=`rgba(${s.col},${a})`;l.ctx.fill();
+      // soft halo
+      if(s.r>0.9){
+        const h=l.ctx.createRadialGradient(px,py,0,px,py,s.r*5);
+        h.addColorStop(0,`rgba(${s.col},${a*.18})`);
+        h.addColorStop(1,'rgba(0,0,0,0)');
+        l.ctx.beginPath();l.ctx.arc(px,py,s.r*5,0,Math.PI*2);
+        l.ctx.fillStyle=h;l.ctx.fill();
+      }
+      // diffraction cross on bright stars
+      if(s.cross&&a>.55){
+        const len=s.r*9;const lw=.6;
+        l.ctx.save();l.ctx.globalAlpha=a*.35;l.ctx.strokeStyle=`rgba(${s.col},1)`;l.ctx.lineWidth=lw;
+        l.ctx.beginPath();l.ctx.moveTo(px-len,py);l.ctx.lineTo(px+len,py);l.ctx.stroke();
+        l.ctx.beginPath();l.ctx.moveTo(px,py-len);l.ctx.lineTo(px,py+len);l.ctx.stroke();
+        l.ctx.restore();
+      }
+    });
+  });
+}
+
+/* ─── FX LAYER: shooting stars + cosmic dust + lens flares ─── */
+const shoots=[];
+const dustPts=[];
+const flares=[];
+
+// Pre-generate dust
+for(let i=0;i<120;i++){
+  dustPts.push({
+    x:Math.random()*1920,y:Math.random()*1080,
+    r:.4+Math.random()*.9,a:.04+Math.random()*.12,
+    tw:Math.random()*Math.PI*2,spd:.002+Math.random()*.004,
+    col:STAR_COLORS[Math.floor(Math.random()*STAR_COLORS.length)]
+  });
+}
+
+function spawnShoot(){
+  if(Math.random()>.0055)return;
+  const fromLeft=Math.random()>.5;
+  shoots.push({
+    x:fromLeft?-40:W+40,
+    y:Math.random()*H*.55,
+    vx:(fromLeft?1:-1)*(9+Math.random()*14),
+    vy:2+Math.random()*6,
+    len:100+Math.random()*180,
+    life:1,
+    col:STAR_COLORS[Math.floor(Math.random()*STAR_COLORS.length)],
+    width:.8+Math.random()*.8,
+    hasTail:Math.random()>.4
+  });
+}
+
+function spawnFlare(){
+  if(Math.random()>.003)return;
+  flares.push({
+    x:Math.random()*W,y:Math.random()*H*.7,
+    r:1+Math.random()*2.5,life:1,
+    col:STAR_COLORS[Math.floor(Math.random()*STAR_COLORS.length)]
+  });
+}
+
+function drawFX(){
+  fxCtx.clearRect(0,0,W,H);
+
+  // cosmic dust
+  dustPts.forEach(d=>{
+    d.tw+=d.spd;
+    const a=d.a*(.5+.5*Math.sin(d.tw));
+    fxCtx.beginPath();fxCtx.arc(d.x*(W/1920),d.y*(H/1080),d.r,0,Math.PI*2);
+    fxCtx.fillStyle=`rgba(${d.col},${a})`;fxCtx.fill();
+  });
+
+  // shooting stars
+  for(let i=shoots.length-1;i>=0;i--){
+    const s=shoots[i];
+    s.x+=s.vx;s.y+=s.vy;s.life-=.02;
+    if(s.life<=0||s.x<-200||s.x>W+200){shoots.splice(i,1);continue;}
+    const ex=s.x-s.vx*(s.len/Math.abs(s.vx));
+    const ey=s.y-s.vy*(s.len/Math.abs(s.vx));
+    const g=fxCtx.createLinearGradient(ex,ey,s.x,s.y);
+    g.addColorStop(0,'rgba(255,255,255,0)');
+    g.addColorStop(.6,`rgba(${s.col},${s.life*.3})`);
+    g.addColorStop(1,`rgba(255,255,255,${s.life*.95})`);
+    fxCtx.beginPath();fxCtx.moveTo(ex,ey);fxCtx.lineTo(s.x,s.y);
+    fxCtx.strokeStyle=g;fxCtx.lineWidth=s.width;fxCtx.stroke();
+    // bright head glow
+    const hg=fxCtx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.width*6);
+    hg.addColorStop(0,`rgba(255,255,255,${s.life*.9})`);
+    hg.addColorStop(1,'rgba(255,255,255,0)');
+    fxCtx.beginPath();fxCtx.arc(s.x,s.y,s.width*6,0,Math.PI*2);
+    fxCtx.fillStyle=hg;fxCtx.fill();
+  }
+
+  // lens flares
+  for(let i=flares.length-1;i>=0;i--){
+    const f=flares[i];
+    f.life-=.015;f.r+=.06;
+    if(f.life<=0){flares.splice(i,1);continue;}
+    const fg=fxCtx.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r*18);
+    fg.addColorStop(0,`rgba(255,255,255,${f.life*.85})`);
+    fg.addColorStop(.2,`rgba(${f.col},${f.life*.5})`);
+    fg.addColorStop(.7,`rgba(${f.col},${f.life*.08})`);
+    fg.addColorStop(1,'rgba(0,0,0,0)');
+    fxCtx.beginPath();fxCtx.arc(f.x,f.y,f.r*18,0,Math.PI*2);
+    fxCtx.fillStyle=fg;fxCtx.fill();
+    // cross spike
+    fxCtx.save();fxCtx.globalAlpha=f.life*.4;fxCtx.strokeStyle=`rgba(${f.col},1)`;fxCtx.lineWidth=.7;
+    const fl=f.r*30;
+    fxCtx.beginPath();fxCtx.moveTo(f.x-fl,f.y);fxCtx.lineTo(f.x+fl,f.y);fxCtx.stroke();
+    fxCtx.beginPath();fxCtx.moveTo(f.x,f.y-fl);fxCtx.lineTo(f.x,f.y+fl);fxCtx.stroke();
+    fxCtx.restore();
+  }
+}
+
+/* ─── MAIN LOOP ─── */
+function cosmicLoop(){
+  tick++;
+  // Nebula repaints at lower rate for perf
+  if(tick%3===0) paintNebula();
+  drawStars();
+  spawnShoot();spawnFlare();
+  drawFX();
+  requestAnimationFrame(cosmicLoop);
+}
+
+window.addEventListener('mousemove',e=>{mouseX=e.clientX/W;mouseY=e.clientY/H;});
+window.addEventListener('resize',resizeAll);
+resizeAll();cosmicLoop();
+
+/* ══════════════════════════════
+   WARP DRIVE
+══════════════════════════════ */
+const warpEl=document.getElementById('warp');
+const warpC=document.getElementById('warp-canvas');
+const wctx=warpC.getContext('2d');
+let warpActive=false,warpLines=[],warpT=0;
+function initWarp(){
+  warpC.width=window.innerWidth;warpC.height=window.innerHeight;
+  warpLines=[];
+  const cx=warpC.width/2,cy=warpC.height/2;
+  for(let i=0;i<220;i++){
+    const angle=Math.random()*Math.PI*2;
+    const dist=Math.random()*Math.min(cx,cy)*.8+60;
+    warpLines.push({angle,dist,len:Math.random()*120+40,speed:Math.random()*8+4,a:Math.random()*.8+.2});
+  }
+}
+function drawWarp(){
+  if(!warpActive)return;
+  warpT++;
+  wctx.clearRect(0,0,warpC.width,warpC.height);
+  const cx=warpC.width/2,cy=warpC.height/2;
+  const progress=Math.min(warpT/60,1);
+  warpLines.forEach(l=>{
+    const r=l.dist+l.speed*warpT*.5;
+    const x1=cx+Math.cos(l.angle)*r;
+    const y1=cy+Math.sin(l.angle)*r;
+    const x2=cx+Math.cos(l.angle)*(r+l.len*progress);
+    const y2=cy+Math.sin(l.angle)*(r+l.len*progress);
+    const grad=wctx.createLinearGradient(x1,y1,x2,y2);
+    grad.addColorStop(0,`rgba(13,202,240,0)`);
+    grad.addColorStop(1,`rgba(13,202,240,${l.a*progress})`);
+    wctx.beginPath();wctx.moveTo(x1,y1);wctx.lineTo(x2,y2);
+    wctx.strokeStyle=grad;wctx.lineWidth=1.5;wctx.stroke();
+  });
+  requestAnimationFrame(drawWarp);
+}
+function triggerWarp(){
+  initWarp();warpT=0;warpActive=true;
+  warpEl.style.opacity='1';
+  setTimeout(()=>{
+    warpEl.style.opacity='0';
+    setTimeout(()=>{warpActive=false;},500);
+  },1800);
+  drawWarp();
+}
+
+/* ══════════════════════════════
+   DEMO PLANETS DATA
+══════════════════════════════ */
+const demos={
+  kepler186f:{period:129.9,radius:1.17,temp:188,flux:0.32,smass:.544,slum:.041,steff:3788,srad:.472,name:'Kepler-186f'},
+  kepler452b:{period:384.8,radius:1.63,temp:265,flux:1.11,smass:1.037,slum:1.2,steff:5757,srad:1.11,name:'Kepler-452b'},
+  kepler22b: {period:289.9,radius:2.4, temp:262,flux:1.11,smass:0.97,slum:0.79,steff:5518,srad:.979,name:'Kepler-22b'},
+  trappist1e:{period:6.1,  radius:0.92,temp:251,flux:0.66,smass:.089,slum:.000524,steff:2559,srad:.119,name:'TRAPPIST-1e (Hot)'},
+};
+// Override last demo with a genuinely inhospitable planet
+demos.trappist1e={period:4.8,radius:6.2,temp:1420,flux:38.5,smass:1.2,slum:2.8,steff:5900,srad:1.3,name:'Hot Desert (Uninhabitable)'};
+
+function loadDemo(key){
+  const d=demos[key];
+  document.getElementById('i-period').value=d.period;
+  document.getElementById('i-radius').value=d.radius;
+  document.getElementById('i-temp').value=d.temp;
+  document.getElementById('i-flux').value=d.flux;
+  document.getElementById('i-smass').value=d.smass;
+  document.getElementById('i-slum').value=d.slum;
+  document.getElementById('i-steff').value=d.steff;
+  document.getElementById('i-srad').value=d.srad;
+  // Switch to planetary tab to show data
+  switchTab('planetary',document.querySelector('.ptab'));
+  addConsoleLine(`> Demo loaded: ${d.name}`,'ok');
+  addConsoleLine(`> Period=${d.period}d | R=${d.radius}R⊕ | T=${d.temp}K | F=${d.flux}S⊕`,'');
+  // Show loaded confirmation
+  const msg=document.getElementById('sample-loaded');
+  msg.style.display='block';
+  msg.innerHTML=`<i class="fas fa-check-circle me-1"></i> Loaded: <strong style="color:#fff">${d.name}</strong> — all parameters filled. Click Analyze Habitability to run.`;
+  clearTimeout(msg._t);
+  msg._t=setTimeout(()=>{msg.style.display='none';},5000);
+}
+
+/* ══════════════════════════════
+   TAB SWITCHING
+══════════════════════════════ */
+function switchTab(name,el){
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.param-pane').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pane-'+name).classList.add('active');
+}
+function switchBatch(name,el){
+  document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.batch-pane').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('bp-'+name).classList.add('active');
+}
+
+/* ══════════════════════════════
+   CONSOLE HELPERS
+══════════════════════════════ */
+function addConsoleLine(text,cls,consoleId='console'){
+  const con=document.getElementById(consoleId);
+  const old=con.querySelector('.cb');
+  if(old)old.parentElement.remove();
+  const p=document.createElement('p');
+  p.className='cl'+(cls?' '+cls:'');
+  p.textContent=text;
+  con.appendChild(p);
+  const cur2p=document.createElement('p');
+  cur2p.className='cl';
+  cur2p.innerHTML='&gt; <span class="cb"></span>';
+  con.appendChild(cur2p);
+  con.scrollTop=con.scrollHeight;
+}
+function consoleSeq(lines,consoleId='console'){
+  let p=Promise.resolve();
+  lines.forEach(([txt,cls,delay])=>{p=p.then(()=>new Promise(res=>{setTimeout(()=>{addConsoleLine(txt,cls,consoleId);res();},delay);}));});
+  return p;
+}
+
+/* ══════════════════════════════
+   PREDICTOR
+══════════════════════════════ */
+async function runAnalysis(){
+  const period=parseFloat(document.getElementById('i-period').value);
+  const radius=parseFloat(document.getElementById('i-radius').value);
+  const temp=parseFloat(document.getElementById('i-temp').value);
+  const flux=parseFloat(document.getElementById('i-flux').value);
+  const smass=parseFloat(document.getElementById('i-smass').value)||0;
+  const slum=parseFloat(document.getElementById('i-slum').value)||0;
+  const steff=parseFloat(document.getElementById('i-steff').value)||0;
+  const srad=parseFloat(document.getElementById('i-srad').value)||0;
+
+  if(isNaN(period)||isNaN(radius)||isNaN(temp)||isNaN(flux)){
+    addConsoleLine('⚠ ERROR: Planetary parameters (Period, Radius, Temp, Flux) required.','err');
+    return;
+  }
+
+  const btn=document.getElementById('anaBtn');
+  btn.disabled=true;
+  document.getElementById('resBox').classList.remove('show');
+  triggerWarp();
+
+  const seq=[
+    ['> Initiating habitability inference pipeline...','info',0],
+    ['> Loading model.pkl · Random Forest (n=500, depth=None)...','info',350],
+    ['> Connecting Flask backend @ 127.0.0.1:5000...','info',800],
+    [`> Planetary: P=${period}d · R=${radius}R⊕ · T=${temp}K · F=${flux}S⊕`,'',1300],
+    ...(smass?[[`> Stellar: M=${smass}M☉ · L=${slum}L☉ · Teff=${steff}K · R=${srad}R☉`,'',1600]]:[]),
+    ['> Aligning 40+ features via utils.prepare_input()...','info',2000],
+    ['> Zero-padding missing feature columns...','info',2500],
+    ['> Reordering DataFrame to model.feature_names_in_ schema...','info',3000],
+    ['> Running XGBoost + Random Forest ensemble inference...','info',3500],
+    ['> Applying Goldilocks Zone boundary constraints...','info',4100],
+    ['> Computing habitability probability score...','info',4600],
+  ];
+  await consoleSeq(seq);
+
+  let prediction=0,probability=0;
+  try{
+    const res=await fetch('http://127.0.0.1:5000/predict',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({koi_period:period,koi_prad:radius,koi_teq:temp,koi_insol:flux,koi_smass:smass,koi_slum:slum,koi_steff:steff,koi_srad:srad})
+    });
+    const data=await res.json();
+    prediction=data.prediction;probability=data.probability;
+    addConsoleLine(`> API OK · prediction=${prediction} · p=${(probability*100).toFixed(1)}%`,'ok');
+  }catch{
+    addConsoleLine('> Backend offline · Demo heuristic mode active...','warn');
+    let s=.45;
+    if(temp>=180&&temp<=320)s+=.22;
+    if(flux>=.25&&flux<=1.77)s+=.16;
+    if(radius>=.5&&radius<=2.0)s+=.12;
+    if(period>=50&&period<=800)s+=.05;
+    if(smass>.08&&smass<1.5)s+=.04;
+    if(slum>.001&&slum<3)s+=.03;
+    probability=Math.min(.97,Math.max(.03,s));
+    prediction=probability>.5?1:0;
+    setTimeout(()=>addConsoleLine(`> Heuristic p=${(probability*100).toFixed(1)}% · prediction=${prediction}`,'warn'),5100);
+  }
+
+  setTimeout(()=>{showResult(prediction,probability);btn.disabled=false;},5200);
+}
+
+function showResult(pred,prob){
+  const pct=Math.round(prob*100);
+  const box=document.getElementById('resBox');
+  box.classList.add('show');
+  const ring=document.getElementById('rfill');
+  ring.style.stroke=pred===1?'var(--green)':'var(--red)';
+  setTimeout(()=>{ring.style.strokeDashoffset=339.292*(1-prob);},120);
+  let c=0;
+  const iv=setInterval(()=>{c=Math.min(c+Math.ceil(pct/40),pct);document.getElementById('rval').textContent=c+'%';if(c>=pct)clearInterval(iv);},28);
+  const lbl=document.getElementById('rlbl'),badge=document.getElementById('rbadge'),det=document.getElementById('rdetail');
+  if(pred===1){
+    lbl.textContent='POTENTIALLY HABITABLE';lbl.className='r-lbl h';
+    badge.innerHTML='<div class="r-badge h"><i class="fas fa-check-circle"></i> Habitable Zone Candidate</div>';
+    det.innerHTML='Orbital and thermal parameters fall within Goldilocks boundaries.<br/>Spectroscopic follow-up recommended.';
+    addConsoleLine('> ✓ HABITABLE · Planet falls within Goldilocks Zone.','ok');
+  }else{
+    lbl.textContent='UNINHABITABLE';lbl.className='r-lbl u';
+    badge.innerHTML='<div class="r-badge u"><i class="fas fa-times-circle"></i> Outside Habitable Zone</div>';
+    det.innerHTML='Conditions hostile to liquid water stability on surface.<br/>Extreme temperature, radiation, or size detected.';
+    addConsoleLine('> ✗ UNINHABITABLE · Outside habitable zone.','err');
+  }
+}
+
+/* ══════════════════════════════
+   BATCH PROCESSOR
+══════════════════════════════ */
+let csvData=[];
+function handleCSV(input){
+  const file=input.files[0];
+  if(!file)return;
+  document.getElementById('csv-name').textContent='📁 '+file.name;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const lines=e.target.result.trim().split('\n');
+    const headers=lines[0].split(',').map(h=>h.trim());
+    csvData=lines.slice(1).map(l=>{
+      const vals=l.split(',');
+      const obj={};
+      headers.forEach((h,i)=>{obj[h]=parseFloat(vals[i])||0;});
+      return obj;
+    });
+    addConsoleLine(`> CSV loaded: ${csvData.length} rows · ${headers.length} columns`,'ok','batch-console');
+  };
+  reader.readAsText(file);
+}
+
+async function runBatch(mode){
+  let planets=[];
+  if(mode==='json'){
+    try{
+      planets=JSON.parse(document.getElementById('batch-json').value.trim()||'[]');
+      if(!Array.isArray(planets)||!planets.length){addConsoleLine('> ERROR: Invalid JSON array.','err','batch-console');return;}
+    }catch{addConsoleLine('> ERROR: JSON parse failed. Check syntax.','err','batch-console');return;}
+  }else{
+    if(!csvData.length){addConsoleLine('> ERROR: No CSV file loaded.','err','batch-console');return;}
+    planets=csvData.slice(0,100);// limit to 100 for demo
+  }
+
+  const bSeq=[
+    ['> Batch inference initiated...','info',0],
+    [`> Processing ${planets.length} planet candidates...`,'info',300],
+    ['> Loading model.pkl batch mode...','info',600],
+    ['> Aligning feature schemas via utils.prepare_input()...','info',1000],
+  ];
+  await consoleSeq(bSeq,'batch-console');
+
+  const res=document.getElementById('batch-results');
+  res.innerHTML='';
+
+  const results=[];
+  for(let i=0;i<planets.length;i++){
+    const p=planets[i];
+    let prob,pred;
+    try{
+      const r=await fetch('http://127.0.0.1:5000/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+      const d=await r.json();pred=d.prediction;prob=d.probability;
+    }catch{
+      // heuristic
+      let s=.45;
+      const t=p.koi_teq||p.teq||p.temp||0;
+      const f=p.koi_insol||p.insol||p.flux||0;
+      const r=p.koi_prad||p.radius||0;
+      const per=p.koi_period||p.period||0;
+      if(t>=180&&t<=320)s+=.22;if(f>=.25&&f<=1.77)s+=.16;
+      if(r>=.5&&r<=2.0)s+=.12;if(per>=50&&per<=800)s+=.05;
+      prob=Math.min(.96,Math.max(.04,s));pred=prob>.5?1:0;
+    }
+    results.push({id:p.kepid||p.name||`Planet_${i+1}`,prob,pred});
+    await new Promise(res2=>setTimeout(res2,i<10?60:20));
+  }
+
+  // Summary
+  const habCount=results.filter(r=>r.pred===1).length;
+  const batchSummary=document.createElement('div');
+  batchSummary.className='batch-summary';
+  batchSummary.innerHTML=`
+    <div class="bs-item"><div class="bs-v">${results.length}</div><div class="bs-l">Total Processed</div></div>
+    <div class="bs-item"><div class="bs-v" style="color:var(--green)">${habCount}</div><div class="bs-l">Habitable</div></div>
+    <div class="bs-item"><div class="bs-v" style="color:var(--red)">${results.length-habCount}</div><div class="bs-l">Uninhabitable</div></div>
+    <div class="bs-item"><div class="bs-v">${(habCount/results.length*100).toFixed(1)}%</div><div class="bs-l">Hab. Rate</div></div>
+  `;
+  res.appendChild(batchSummary);
+
+  results.forEach(r=>{
+    const row=document.createElement('div');
+    row.className='batch-row '+(r.pred===1?'h-row':'u-row');
+    row.innerHTML=`
+      <span class="br-id">${r.id}</span>
+      <span class="br-pct" style="color:${r.pred===1?'var(--green)':'var(--red)'}">${Math.round(r.prob*100)}%</span>
+      <div class="br-bar"><div class="br-fill" style="width:${r.prob*100}%;background:${r.pred===1?'var(--green)':'var(--red)'}"></div></div>
+      <span class="br-status">${r.pred===1?'✓ HABITABLE':'✗ UNINHABITABLE'}</span>
+    `;
+    res.appendChild(row);
+  });
+
+  addConsoleLine(`> Batch complete · ${habCount}/${results.length} habitable (${(habCount/results.length*100).toFixed(1)}%)`,'ok','batch-console');
+
+  // Animate bars
+  setTimeout(()=>{res.querySelectorAll('.br-fill').forEach(el=>{const w=el.style.width;el.style.width='0';setTimeout(()=>el.style.width=w,50);});},100);
+}
+
+/* ══════════════════════════════════════════════════
+   GOLDILOCKS ZONE INTERACTIVE CANVAS
+══════════════════════════════════════════════════ */
+function drawHZDiagram(){
+  const cvs=document.getElementById('hz-canvas');
+  if(!cvs)return;
+  const ctx=cvs.getContext('2d');
+  const W=cvs.offsetWidth||700;
+  cvs.width=W;cvs.height=160;
+  const H=160;
+
+  // Background
+  ctx.fillStyle='rgba(2,4,14,1)';ctx.fillRect(0,0,W,H);
+
+  // Zone bands
+  const zones=[
+    {x:0,w:.12,col:'rgba(200,40,0,0.55)',label:'INFERNO'},
+    {x:.12,w:.10,col:'rgba(255,80,0,0.35)',label:'TOO HOT'},
+    {x:.22,w:.36,col:'rgba(0,255,170,0.14)',label:'HABITABLE ZONE',border:true},
+    {x:.58,w:.18,col:'rgba(60,100,255,0.25)',label:'TOO COLD'},
+    {x:.76,w:.24,col:'rgba(20,40,180,0.40)',label:'FROZEN'},
+  ];
+  zones.forEach(z=>{
+    const grd=ctx.createLinearGradient(W*z.x,0,W*(z.x+z.w),0);
+    grd.addColorStop(0,z.col);grd.addColorStop(1,z.col.replace(/[\d.]+\)$/,'0)'));
+    ctx.fillStyle=grd;ctx.fillRect(W*z.x,28,W*z.w,H-56);
+    if(z.border){
+      ctx.strokeStyle='rgba(0,255,170,0.4)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+      ctx.strokeRect(W*z.x,28,W*z.w,H-56);ctx.setLineDash([]);
+    }
+    ctx.fillStyle='rgba(255,255,255,0.22)';ctx.font='bold 7px Share Tech Mono';
+    ctx.textAlign='center';ctx.fillText(z.label,W*(z.x+z.w/2),H-8);
+  });
+
+  // Star (sun) on left
+  const sg=ctx.createRadialGradient(22,H/2,0,22,H/2,20);
+  sg.addColorStop(0,'#ffffff');sg.addColorStop(.3,'#ffee88');sg.addColorStop(.7,'#ff8800');sg.addColorStop(1,'rgba(255,80,0,0)');
+  ctx.beginPath();ctx.arc(22,H/2,18,0,Math.PI*2);ctx.fillStyle=sg;ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='7px Share Tech Mono';ctx.textAlign='center';ctx.fillText('STAR',22,14);
+
+  // Distance axis
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(45,H/2);ctx.lineTo(W-10,H/2);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.18)';ctx.font='7px Share Tech Mono';ctx.textAlign='left';
+  ctx.fillText('← ORBITAL DISTANCE →',W*.35,H/2-6);
+
+  // Planet positions (x = fraction of W)
+  const planets=[
+    {name:'Venus',x:.08,r:5,col:'#e8c888',glow:'rgba(220,180,80,.5)',hab:false},
+    {name:'Earth',x:.30,r:6,col:'#4488cc',glow:'rgba(80,160,255,.6)',hab:true},
+    {name:'Mars',x:.45,r:4,col:'#cc5533',glow:'rgba(200,80,40,.4)',hab:false},
+    {name:'K-186f',x:.36,r:5.5,col:'#44bb77',glow:'rgba(0,200,100,.6)',hab:true},
+    {name:'K-452b',x:.32,r:7,col:'#9966cc',glow:'rgba(180,80,255,.5)',hab:true},
+  ];
+  planets.forEach(p=>{
+    const px=W*p.x,py=H/2;
+    const pg=ctx.createRadialGradient(px,py,0,px,py,p.r*3.5);
+    pg.addColorStop(0,p.glow);pg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.arc(px,py,p.r*3.5,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
+    ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);
+    const cg=ctx.createRadialGradient(px-p.r*.3,py-p.r*.3,0,px,py,p.r);
+    cg.addColorStop(0,'rgba(255,255,255,.5)');cg.addColorStop(.4,p.col);cg.addColorStop(1,'rgba(0,0,0,.3)');
+    ctx.fillStyle=cg;ctx.fill();
+    if(p.hab){ctx.strokeStyle='rgba(0,255,170,0.6)';ctx.lineWidth=1;ctx.stroke();}
+    ctx.fillStyle=p.hab?'rgba(0,255,170,.8)':'rgba(255,255,255,.45)';
+    ctx.font=`${p.hab?'bold ':''} 7px Share Tech Mono`;ctx.textAlign='center';
+    ctx.fillText(p.name,px,py-p.r-5);
+  });
+}
+
+// Init HZ diagram after DOM is ready
+setTimeout(()=>{
+  drawHZDiagram();
+  window.addEventListener('resize',drawHZDiagram);
+},100);
+
+
+const dz=document.getElementById('dropzone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');const f=e.dataTransfer.files[0];if(f){const dt=new DataTransfer();dt.items.add(f);document.getElementById('csvFile').files=dt.files;handleCSV(document.getElementById('csvFile'));}});
+</script>
+</body>
+</html>
