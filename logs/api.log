@@ -177,3 +177,70 @@
 2026-03-19 00:43:11,250 | INFO | Prediction request received: {'Planet_Radius': 2.5, 'Planet_Mass': 10, 'Orbital_Period': 20, 'Semi_Major_Axis': 0.12, 'Planet_Density': 3.5, 'Equilibrium_Temp': 600, 'Stellar_Temp': 5200, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': 0, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
 2026-03-19 00:43:11,254 | INFO | Prediction completed | prediction=1 | probability=0.9995276927947998
 2026-03-19 00:43:11,255 | INFO | 127.0.0.1 - - [19/Mar/2026 00:43:11] "POST /predict HTTP/1.1" 200 -
+2026-03-21 21:55:07,592 | INFO | ExoHabitAI API starting...
+2026-03-21 21:55:18,342 | INFO | Model loaded successfully
+2026-03-21 21:55:18,344 | INFO | Starting Flask development server
+2026-03-21 21:55:18,404 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-21 21:55:18,404 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-21 21:55:18,407 | INFO |  * Restarting with stat
+2026-03-21 21:55:19,503 | INFO | ExoHabitAI API starting...
+2026-03-21 21:55:20,691 | INFO | Model loaded successfully
+2026-03-21 21:55:20,693 | INFO | Starting Flask development server
+2026-03-21 21:55:20,703 | WARNING |  * Debugger is active!
+2026-03-21 21:55:20,721 | INFO |  * Debugger PIN: 643-343-624
+2026-03-21 22:02:50,714 | INFO |  * Detected change in 'D:\\Desktop\\B13-ExoHabitAI\\backend\\app.py', reloading
+2026-03-21 22:02:51,136 | INFO |  * Restarting with stat
+2026-03-21 22:02:52,419 | INFO | ExoHabitAI API starting...
+2026-03-21 22:02:53,712 | INFO | Model loaded successfully
+2026-03-21 22:02:53,715 | INFO | Starting Flask development server
+2026-03-21 22:02:53,727 | WARNING |  * Debugger is active!
+2026-03-21 22:02:53,733 | INFO |  * Debugger PIN: 643-343-624
+2026-03-21 22:06:50,725 | INFO | ExoHabitAI API starting...
+2026-03-21 22:06:50,726 | ERROR | Model loading failed: No module named 'xgboost'
+2026-03-21 22:06:50,727 | INFO | Starting Flask development server
+2026-03-21 22:06:50,754 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-21 22:06:50,755 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-21 22:06:50,759 | INFO |  * Restarting with stat
+2026-03-21 22:06:51,765 | INFO | ExoHabitAI API starting...
+2026-03-21 22:06:51,766 | ERROR | Model loading failed: No module named 'xgboost'
+2026-03-21 22:06:51,767 | INFO | Starting Flask development server
+2026-03-21 22:06:51,776 | WARNING |  * Debugger is active!
+2026-03-21 22:06:51,780 | INFO |  * Debugger PIN: 148-999-929
+2026-03-23 11:44:24,440 | INFO | ExoHabitAI API starting...
+2026-03-23 11:44:33,511 | INFO | Model loaded successfully
+2026-03-23 11:44:33,513 | INFO | Starting Flask development server
+2026-03-23 11:44:33,572 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-23 11:44:33,572 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-23 11:44:33,574 | INFO |  * Restarting with stat
+2026-03-23 11:44:34,673 | INFO | ExoHabitAI API starting...
+2026-03-23 11:44:35,920 | INFO | Model loaded successfully
+2026-03-23 11:44:35,922 | INFO | Starting Flask development server
+2026-03-23 11:44:35,932 | WARNING |  * Debugger is active!
+2026-03-23 11:44:35,951 | INFO |  * Debugger PIN: 643-343-624
+2026-03-23 11:50:25,572 | INFO | 127.0.0.1 - - [23/Mar/2026 11:50:25] "OPTIONS /predict HTTP/1.1" 200 -
+2026-03-23 12:01:01,603 | INFO | ExoHabitAI API starting...
+2026-03-23 12:01:02,895 | INFO | Model loaded successfully
+2026-03-23 12:01:02,897 | INFO | Starting Flask development server
+2026-03-23 12:01:02,929 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-23 12:01:02,929 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-23 12:01:02,931 | INFO |  * Restarting with stat
+2026-03-23 12:01:04,097 | INFO | ExoHabitAI API starting...
+2026-03-23 12:01:05,415 | INFO | Model loaded successfully
+2026-03-23 12:01:05,419 | INFO | Starting Flask development server
+2026-03-23 12:01:05,430 | WARNING |  * Debugger is active!
+2026-03-23 12:01:05,436 | INFO |  * Debugger PIN: 643-343-624
+2026-03-23 12:01:41,531 | INFO | 127.0.0.1 - - [23/Mar/2026 12:01:41] "OPTIONS /predict HTTP/1.1" 200 -
+2026-03-23 12:27:40,703 | INFO | 127.0.0.1 - - [23/Mar/2026 12:27:40] "OPTIONS /predict HTTP/1.1" 200 -
+2026-03-24 09:55:46,718 | INFO | ExoHabitAI API starting...

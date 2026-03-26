@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExoHabitAI – Discover Habitable Worlds</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #00000a;
+  --deep-space: #020818;
+  --nebula-dark: #050d2a;
+  --glass: rgba(8,20,60,0.45);
+  --glass-bright: rgba(15,35,90,0.6);
+  --border-glow: rgba(56,200,255,0.25);
+  --border-active: rgba(56,200,255,0.7);
+  --cyan: #38c8ff;
+  --violet: #a855f7;
+  --electric: #00f5ff;
+  --green-hab: #00ff88;
+  --red-dead: #ff4466;
+  --amber-warn: #ffb020;
+  --text: #c8e0ff;
+  --text-dim: #5a7899;
+  --text-bright: #eaf4ff;
+  --font-display: 'Orbitron', monospace;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{
+  font-family:var(--font-body);
+  background:var(--void);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--cyan);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 12px var(--cyan),0 0 24px rgba(56,200,255,0.4);
+  transition:width 0.15s,height 0.15s,background 0.15s;
+  mix-blend-mode:screen;
+}
+#cursor-ring{
+  position:fixed;width:40px;height:40px;
+  border:1px solid rgba(56,200,255,0.5);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width 0.3s,height 0.3s,border-color 0.3s;
+}
+body:hover #cursor{opacity:1;}
+
+/* ── THREE.JS CANVAS ── */
+#space-canvas{
+  position:fixed;inset:0;z-index:0;
+  pointer-events:none;
+}
+
+/* ── CURSOR TRAIL ── */
+.trail-dot{
+  position:fixed;width:4px;height:4px;
+  background:var(--electric);border-radius:50%;
+  pointer-events:none;z-index:9997;
+  opacity:0;transform:translate(-50%,-50%);
+}
+
+/* ── PAGE SYSTEM ── */
+.page{
+  position:fixed;inset:0;z-index:10;
+  overflow-y:auto;overflow-x:hidden;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.6s;
+}
+.page.active{opacity:1;pointer-events:all;}
+
+/* ── WARP OVERLAY ── */
+#warp-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:radial-gradient(ellipse at center,rgba(56,200,255,0.9) 0%,rgba(0,0,10,0) 70%);
+  opacity:0;pointer-events:none;
+  transform:scale(0);
+  border-radius:50%;
+}
+
+/* ── GLASS PANEL ── */
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border:0.5px solid var(--border-glow);
+  border-radius:16px;
+}
+.glass-bright{
+  background:var(--glass-bright);
+  backdrop-filter:blur(24px);
+  border:0.5px solid var(--border-active);
+  border-radius:16px;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2.5rem;
+  background:rgba(0,0,10,0.6);
+  backdrop-filter:blur(20px);
+  border-bottom:0.5px solid var(--border-glow);
+}
+.nav-logo{
+  font-family:var(--font-display);
+  font-size:1.1rem;font-weight:700;
+  color:var(--cyan);
+  letter-spacing:3px;
+  text-shadow:0 0 20px rgba(56,200,255,0.8);
+  cursor:pointer;
+}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{
+  font-family:var(--font-body);font-size:0.85rem;
+  font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text-dim);text-decoration:none;
+  transition:color 0.2s,text-shadow 0.2s;
+}
+.nav-links a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan);}
+
+/* ═══════════════════════════════════════
+   PAGE 1 — LANDING
+═══════════════════════════════════════ */
+#page-landing{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  min-height:100vh;text-align:center;
+  padding:2rem;
+}
+.landing-inner{position:relative;z-index:1;}
+.entry-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:0.7rem;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--electric);
+  background:rgba(0,245,255,0.06);
+  border:0.5px solid rgba(0,245,255,0.3);
+  padding:8px 20px;border-radius:100px;
+  margin-bottom:2rem;
+  animation:fadeUp 0.8s ease both;
+}
+.entry-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--electric);
+  box-shadow:0 0 8px var(--electric);
+  animation:blink 1.5s infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+.landing-title{
+  font-family:var(--font-display);
+  font-size:clamp(3rem,9vw,7rem);
+  font-weight:900;line-height:0.95;
+  letter-spacing:-2px;
+  margin-bottom:1rem;
+  animation:fadeUp 0.9s 0.15s ease both;
+}
+.title-line1{
+  display:block;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan) 40%,var(--violet) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(56,200,255,0.4));
+}
+.title-line2{
+  display:block;font-size:0.55em;letter-spacing:8px;
+  color:var(--text-dim);font-weight:400;
+  -webkit-text-fill-color:var(--text-dim);
+  margin-top:0.3rem;
+}
+
+.landing-sub{
+  font-size:1.1rem;font-weight:300;
+  color:var(--text-dim);
+  max-width:500px;margin:1.5rem auto 3rem;
+  line-height:1.7;letter-spacing:0.3px;
+  animation:fadeUp 0.9s 0.3s ease both;
+}
+
+.btn-enter{
+  position:relative;display:inline-flex;
+  align-items:center;gap:12px;
+  font-family:var(--font-display);
+  font-size:0.85rem;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;
+  color:#000;background:var(--cyan);
+  padding:1rem 3rem;border:none;border-radius:100px;
+  cursor:none;overflow:hidden;
+  box-shadow:0 0 40px rgba(56,200,255,0.5),0 0 80px rgba(56,200,255,0.2);
+  animation:fadeUp 0.9s 0.45s ease both;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.btn-enter::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  transform:translateX(-100%);transition:transform 0.5s;
+}
+.btn-enter:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 60px rgba(56,200,255,0.7),0 0 120px rgba(56,200,255,0.3);
+}
+.btn-enter:hover::before{transform:translateX(100%);}
+.btn-enter .arrow{
+  transition:transform 0.3s;font-size:1.2em;
+}
+.btn-enter:hover .arrow{transform:translateX(6px);}
+
+.landing-stats{
+  display:flex;gap:4rem;margin-top:5rem;
+  animation:fadeUp 0.9s 0.6s ease both;
+}
+.lstat{text-align:center;}
+.lstat-num{
+  font-family:var(--font-display);font-size:2rem;
+  font-weight:700;color:var(--text-bright);
+  text-shadow:0 0 20px rgba(168,85,247,0.5);
+}
+.lstat-label{
+  font-size:0.72rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text-dim);
+  margin-top:4px;
+}
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:0.65rem;
+  letter-spacing:2px;color:var(--text-dim);
+  animation:fadeUp 1s 1s ease both;
+}
+.scroll-hint-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,transparent,var(--cyan));
+  animation:scrollPulse 2s infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══════════════════════════════════════
+   PAGE 2 — DASHBOARD
+═══════════════════════════════════════ */
+#page-dashboard{padding-top:80px;}
+.dash-hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:4rem 2.5rem;
+  max-width:1200px;margin:0 auto;
+  gap:4rem;
+}
+.dash-hero-text{flex:1;}
+.section-eyebrow{
+  font-family:var(--font-mono);font-size:0.68rem;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--electric);margin-bottom:0.75rem;
+  display:flex;align-items:center;gap:8px;
+}
+.section-eyebrow::before{
+  content:'';width:24px;height:1px;
+  background:var(--electric);
+}
+.dash-title{
+  font-family:var(--font-display);
+  font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:700;line-height:1.1;
+  letter-spacing:-1px;margin-bottom:1.25rem;
+}
+.dash-title span{
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.dash-desc{
+  font-size:1rem;font-weight:300;
+  color:var(--text-dim);line-height:1.8;
+  max-width:480px;margin-bottom:2.5rem;
+}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-size:0.75rem;
+  font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--cyan);
+  background:transparent;
+  border:1px solid var(--cyan);
+  padding:0.85rem 2rem;border-radius:100px;cursor:none;
+  transition:all 0.3s;
+  box-shadow:0 0 20px rgba(56,200,255,0.1),inset 0 0 20px rgba(56,200,255,0.03);
+}
+.btn-ghost:hover{
+  background:rgba(56,200,255,0.08);
+  box-shadow:0 0 40px rgba(56,200,255,0.3),inset 0 0 30px rgba(56,200,255,0.08);
+  transform:translateY(-2px);
+}
+
+/* Feature cards */
+.feature-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1rem;max-width:440px;
+}
+.feat-card{
+  padding:1.5rem;border-radius:16px;
+  transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;
+  position:relative;overflow:hidden;
+  cursor:none;
+}
+.feat-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 30%,rgba(56,200,255,0.05),transparent 60%);
+  opacity:0;transition:opacity 0.3s;
+}
+.feat-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(56,200,255,0.4);
+  box-shadow:0 8px 32px rgba(56,200,255,0.15);
+}
+.feat-card:hover::before{opacity:1;}
+.feat-icon{font-size:2rem;margin-bottom:0.75rem;filter:drop-shadow(0 0 8px currentColor);}
+.feat-title{font-family:var(--font-display);font-size:0.75rem;font-weight:600;letter-spacing:1px;margin-bottom:0.4rem;color:var(--text-bright);}
+.feat-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.5;}
+
+/* Stats row */
+.stats-row{
+  display:flex;gap:1px;
+  max-width:1200px;margin:0 auto 6rem;
+  padding:0 2.5rem;
+}
+.stat-block{
+  flex:1;padding:2rem 1.75rem;
+  background:var(--glass);
+  border-top:2px solid;
+  transition:background 0.3s;
+  cursor:none;
+}
+.stat-block:hover{background:var(--glass-bright);}
+.stat-block:nth-child(1){border-color:var(--cyan);}
+.stat-block:nth-child(2){border-color:var(--violet);}
+.stat-block:nth-child(3){border-color:var(--electric);}
+.stat-block:nth-child(4){border-color:var(--green-hab);}
+.stat-n{
+  font-family:var(--font-display);font-size:2.2rem;
+  font-weight:900;color:var(--text-bright);
+  line-height:1;margin-bottom:6px;
+}
+.stat-l{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);}
+
+/* How it works */
+.how-section{
+  max-width:1200px;margin:0 auto;
+  padding:4rem 2.5rem 8rem;
+}
+.how-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;margin-top:3rem;
+  position:relative;
+}
+.how-grid::before{
+  content:'';position:absolute;
+  top:40px;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-glow),var(--cyan),var(--border-glow),transparent);
+  z-index:0;
+}
+.how-card{
+  padding:2rem 1.5rem;border-radius:16px;
+  position:relative;z-index:1;
+  transition:transform 0.3s,box-shadow 0.3s;
+  cursor:none;
+}
+.how-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(56,200,255,0.1);
+}
+.how-step{
+  font-family:var(--font-display);
+  font-size:3rem;font-weight:900;line-height:1;
+  margin-bottom:1rem;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.how-title{font-family:var(--font-display);font-size:0.78rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-bright);margin-bottom:0.6rem;}
+.how-desc{font-size:0.85rem;color:var(--text-dim);line-height:1.6;}
+
+/* ═══════════════════════════════════════
+   PAGE 3 — PREDICT
+═══════════════════════════════════════ */
+#page-predict{padding-top:80px;}
+.predict-wrap{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;
+  padding:4rem 1.5rem 6rem;
+  max-width:900px;margin:0 auto;
+}
+.predict-header{text-align:center;margin-bottom:3rem;}
+.predict-title{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:700;letter-spacing:-1px;
+  margin-bottom:0.75rem;
+}
+.predict-sub{font-size:0.95rem;color:var(--text-dim);font-weight:300;}
+
+/* API Config */
+.api-bar{
+  width:100%;display:flex;gap:1rem;
+  align-items:flex-end;margin-bottom:1.5rem;
+  flex-wrap:wrap;
+}
+.api-bar .field-wrap{flex:1;min-width:200px;}
+
+/* Form */
+.predict-form{width:100%;padding:2.5rem;}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.75rem;
+  margin-bottom:2rem;
+}
+.field-wrap{display:flex;flex-direction:column;gap:0.4rem;}
+.field-label{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text-dim);font-family:var(--font-mono);
+}
+.field-label-left{display:flex;align-items:center;gap:6px;}
+.field-val{
+  font-family:var(--font-display);font-size:0.88rem;
+  font-weight:600;color:var(--cyan);
+  transition:color 0.2s;
+}
+
+/* Tooltip */
+.tip-wrap{position:relative;display:inline-block;}
+.tip-icon{
+  width:15px;height:15px;border-radius:50%;
+  border:1px solid rgba(56,200,255,0.3);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:9px;color:var(--text-dim);cursor:help;
+  font-style:normal;font-weight:600;
+  transition:border-color 0.2s;
+}
+.tip-icon:hover{border-color:var(--cyan);color:var(--cyan);}
+.tip-text{
+  position:absolute;bottom:calc(100% + 8px);left:50%;
+  transform:translateX(-50%);
+  background:#0a1630;border:0.5px solid var(--border-glow);
+  color:var(--text-dim);font-size:0.72rem;
+  padding:8px 12px;border-radius:8px;
+  white-space:nowrap;opacity:0;pointer-events:none;
+  transition:opacity 0.2s;z-index:50;
+  max-width:220px;white-space:normal;text-align:center;line-height:1.4;
+  font-family:var(--font-body);letter-spacing:0;text-transform:none;font-weight:400;
+}
+.tip-wrap:hover .tip-text{opacity:1;}
+
+/* Range slider */
+input[type="range"]{
+  -webkit-appearance:none;width:100%;height:3px;
+  background:rgba(56,200,255,0.12);
+  border-radius:4px;outline:none;margin:0.4rem 0;
+  cursor:none;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  background:var(--cyan);border-radius:50%;
+  cursor:none;
+  box-shadow:0 0 10px rgba(56,200,255,0.6);
+  transition:transform 0.15s,box-shadow 0.15s;
+}
+input[type="range"]:hover::-webkit-slider-thumb{
+  transform:scale(1.25);
+  box-shadow:0 0 18px rgba(56,200,255,0.9);
+}
+input[type="range"]::-webkit-slider-runnable-track{
+  background:linear-gradient(to right,rgba(56,200,255,0.3) var(--pct,50%),rgba(56,200,255,0.08) var(--pct,50%));
+  height:3px;border-radius:4px;
+}
+
+/* Number input */
+input[type="number"]{
+  background:rgba(255,255,255,0.03);
+  border:0.5px solid rgba(56,200,255,0.15);
+  border-radius:8px;color:var(--text-bright);
+  font-family:var(--font-body);font-size:0.9rem;
+  padding:8px 12px;width:100%;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s,background 0.2s;
+}
+input[type="number"]:focus{
+  border-color:var(--cyan);
+  background:rgba(56,200,255,0.04);
+  box-shadow:0 0 0 3px rgba(56,200,255,0.08),0 0 20px rgba(56,200,255,0.08);
+}
+input[type="number"]::-webkit-inner-spin-button{opacity:0;}
+input[type="text"]{
+  background:rgba(255,255,255,0.03);
+  border:0.5px solid rgba(56,200,255,0.15);
+  border-radius:8px;color:var(--text-bright);
+  font-family:var(--font-body);font-size:0.875rem;
+  padding:10px 14px;width:100%;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+input[type="text"]:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(56,200,255,0.08);
+}
+
+/* Star type */
+.star-row{
+  padding:1.5rem 0;
+  border-top:0.5px solid rgba(56,200,255,0.08);
+  border-bottom:0.5px solid rgba(56,200,255,0.08);
+  margin-bottom:2rem;
+}
+.star-opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:0.75rem;}
+.star-opt{
+  display:flex;align-items:center;gap:6px;
+  font-size:0.82rem;color:var(--text-dim);
+  cursor:none;padding:6px 14px;
+  border:0.5px solid rgba(56,200,255,0.12);
+  border-radius:100px;transition:all 0.2s;
+  font-family:var(--font-body);font-weight:500;
+}
+.star-opt:hover{border-color:rgba(56,200,255,0.35);color:var(--text);}
+.star-opt.selected{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(56,200,255,0.07);
+  box-shadow:0 0 12px rgba(56,200,255,0.15);
+}
+.star-opt input{display:none;}
+
+/* Action row */
+.action-row{
+  display:flex;align-items:center;gap:1.25rem;
+  flex-wrap:wrap;
+}
+.btn-predict{
+  position:relative;display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-size:0.78rem;
+  font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:#000;
+  background:linear-gradient(135deg,var(--cyan),#0088ff);
+  padding:0.9rem 2.5rem;border:none;border-radius:100px;
+  cursor:none;overflow:hidden;
+  box-shadow:0 0 30px rgba(56,200,255,0.35);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.btn-predict:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 50px rgba(56,200,255,0.6);
+}
+.btn-predict:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.btn-sm{
+  font-family:var(--font-body);font-size:0.82rem;
+  color:var(--text-dim);background:transparent;
+  border:0.5px solid rgba(56,200,255,0.15);
+  padding:0.85rem 1.5rem;border-radius:100px;
+  cursor:none;transition:all 0.2s;
+}
+.btn-sm:hover{border-color:rgba(56,200,255,0.4);color:var(--text);}
+.conn-badge{
+  font-family:var(--font-mono);font-size:0.72rem;
+  padding:6px 12px;border-radius:6px;margin-top:6px;
+  display:none;
+}
+.conn-badge.ok{background:rgba(0,255,136,0.08);color:var(--green-hab);border:0.5px solid rgba(0,255,136,0.2);}
+.conn-badge.err{background:rgba(255,68,102,0.08);color:var(--red-dead);border:0.5px solid rgba(255,68,102,0.2);}
+.conn-badge.testing{background:rgba(56,200,255,0.06);color:var(--cyan);border:0.5px solid rgba(56,200,255,0.2);}
+
+/* ── LOADING ── */
+#loading-overlay{
+  position:fixed;inset:0;z-index:400;
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:rgba(0,0,10,0.92);
+  backdrop-filter:blur(20px);
+}
+#loading-overlay.active{display:flex;}
+.loader-planet{
+  width:100px;height:100px;position:relative;margin-bottom:2rem;
+}
+.loader-core{
+  width:60px;height:60px;border-radius:50%;
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 35% 35%,#6b21a8,#030718);
+  box-shadow:0 0 30px rgba(168,85,247,0.6),0 0 60px rgba(168,85,247,0.2);
+  animation:coreSpin 3s linear infinite;
+}
+@keyframes coreSpin{from{box-shadow:0 0 30px rgba(168,85,247,0.6),0 0 60px rgba(168,85,247,0.2);}
+  50%{box-shadow:0 0 40px rgba(56,200,255,0.6),0 0 80px rgba(56,200,255,0.2);}
+  to{box-shadow:0 0 30px rgba(168,85,247,0.6),0 0 60px rgba(168,85,247,0.2);}}
+.loader-ring{
+  width:100%;height:35px;
+  border:2px solid rgba(56,200,255,0.6);
+  border-radius:50%;
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) rotateX(70deg);
+  animation:ringOrbit 1.5s linear infinite;
+  box-shadow:0 0 16px rgba(56,200,255,0.4);
+}
+@keyframes ringOrbit{from{transform:translate(-50%,-50%) rotateX(70deg) rotateZ(0deg);}
+  to{transform:translate(-50%,-50%) rotateX(70deg) rotateZ(360deg);}}
+.loader-text{
+  font-family:var(--font-display);font-size:0.75rem;
+  letter-spacing:4px;text-transform:uppercase;
+  color:var(--cyan);animation:textPulse 1.5s infinite;
+}
+@keyframes textPulse{0%,100%{opacity:0.5;}50%{opacity:1;}}
+.loader-sub{
+  font-family:var(--font-mono);font-size:0.65rem;
+  color:var(--text-dim);margin-top:0.5rem;letter-spacing:1px;
+}
+
+/* Error */
+.err-box{
+  display:none;margin-top:1rem;padding:0.875rem 1rem;
+  background:rgba(255,68,102,0.07);
+  border:0.5px solid rgba(255,68,102,0.25);
+  border-radius:8px;color:var(--red-dead);
+  font-size:0.82rem;font-family:var(--font-mono);letter-spacing:0.3px;
+}
+.err-box.show{display:block;}
+
+/* ═══════════════════════════════════════
+   PAGE 4 — RESULTS
+═══════════════════════════════════════ */
+#page-results{padding-top:80px;}
+.results-wrap{
+  min-height:100vh;padding:4rem 1.5rem 8rem;
+  max-width:1100px;margin:0 auto;
+}
+.results-title{
+  font-family:var(--font-display);font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:700;letter-spacing:-1px;text-align:center;
+  margin-bottom:3rem;
+}
+.result-grid{
+  display:grid;grid-template-columns:1fr 1.4fr;
+  gap:1.5rem;margin-bottom:2rem;
+}
+@media(max-width:700px){.result-grid{grid-template-columns:1fr;}}
+
+/* Circle progress */
+.result-main{padding:3rem 2rem;display:flex;flex-direction:column;align-items:center;}
+.circle-wrap{position:relative;width:180px;height:180px;margin-bottom:2rem;}
+.circle-svg{width:180px;height:180px;transform:rotate(-90deg);}
+.c-bg{fill:none;stroke:rgba(255,255,255,0.05);stroke-width:10;}
+.c-fill{
+  fill:none;stroke-width:10;stroke-linecap:round;
+  stroke-dasharray:502;stroke-dashoffset:502;
+  transition:stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1),stroke 0.5s;
+}
+.c-glow{
+  fill:none;stroke-width:18;stroke-linecap:round;
+  stroke-dasharray:502;stroke-dashoffset:502;
+  opacity:0.2;
+  transition:stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1),stroke 0.5s;
+  filter:blur(6px);
+}
+.circle-inner{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.circle-pct{
+  font-family:var(--font-display);font-size:2.4rem;
+  font-weight:900;line-height:1;
+  transition:color 0.5s;
+}
+.circle-label{
+  font-size:0.65rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text-dim);
+  margin-top:4px;font-family:var(--font-mono);
+}
+.verdict{
+  font-family:var(--font-display);font-size:1.1rem;
+  font-weight:700;letter-spacing:1px;text-align:center;
+  margin-bottom:0.5rem;text-transform:uppercase;
+}
+.verdict-desc{font-size:0.85rem;color:var(--text-dim);text-align:center;line-height:1.6;max-width:260px;}
+
+/* Habitat zone badge */
+.zone-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:0.7rem;
+  letter-spacing:2px;text-transform:uppercase;
+  padding:8px 18px;border-radius:100px;margin-top:1.25rem;
+  transition:all 0.5s;
+}
+.zone-badge.hab{
+  background:rgba(0,255,136,0.08);color:var(--green-hab);
+  border:0.5px solid rgba(0,255,136,0.3);
+  box-shadow:0 0 20px rgba(0,255,136,0.1);
+}
+.zone-badge.no-hab{
+  background:rgba(255,68,102,0.08);color:var(--red-dead);
+  border:0.5px solid rgba(255,68,102,0.3);
+}
+.zone-badge.warn{
+  background:rgba(255,176,32,0.08);color:var(--amber-warn);
+  border:0.5px solid rgba(255,176,32,0.3);
+}
+
+/* Factor bars */
+.result-detail{padding:2rem;}
+.detail-hd{
+  font-family:var(--font-mono);font-size:0.68rem;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:8px;
+}
+.detail-hd::after{content:'';flex:1;height:1px;background:rgba(56,200,255,0.12);}
+.factor{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.6rem 0;
+  border-bottom:0.5px solid rgba(56,200,255,0.05);
+}
+.factor-name{font-size:0.8rem;color:var(--text-dim);min-width:130px;}
+.factor-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;}
+.factor-bar{height:100%;border-radius:4px;width:0%;transition:width 1s 0.6s ease;}
+.factor-pct{font-family:var(--font-display);font-size:0.78rem;font-weight:600;min-width:36px;text-align:right;}
+
+/* Conditions row */
+.conditions{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1rem;margin-top:1.5rem;
+}
+@media(max-width:700px){.conditions{grid-template-columns:1fr 1fr;}}
+.cond-card{
+  padding:1.25rem;border-radius:12px;text-align:center;
+  transition:transform 0.3s;cursor:none;
+}
+.cond-card:hover{transform:translateY(-3px);}
+.cond-icon{font-size:1.75rem;margin-bottom:0.5rem;filter:drop-shadow(0 0 6px currentColor);}
+.cond-label{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;font-family:var(--font-mono);}
+.cond-val{font-family:var(--font-display);font-size:1.1rem;font-weight:700;}
+
+/* Back button */
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-display);font-size:0.72rem;
+  font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text-dim);background:transparent;
+  border:0.5px solid rgba(56,200,255,0.15);
+  padding:0.75rem 1.5rem;border-radius:100px;
+  cursor:none;transition:all 0.2s;margin-bottom:2rem;
+}
+.back-btn:hover{color:var(--cyan);border-color:var(--cyan);}
+
+/* Rankings */
+.rank-section{margin-top:2.5rem;}
+.rank-card{
+  display:flex;align-items:center;gap:1.25rem;
+  padding:1rem 1.25rem;
+  background:rgba(8,20,60,0.3);
+  border:0.5px solid rgba(56,200,255,0.08);
+  border-radius:12px;margin-bottom:8px;
+  transition:border-color 0.2s,background 0.2s,transform 0.2s;
+  cursor:none;
+}
+.rank-card:hover{
+  border-color:rgba(56,200,255,0.25);
+  background:rgba(8,20,60,0.55);
+  transform:translateX(4px);
+}
+.rank-num{
+  font-family:var(--font-display);font-size:0.78rem;
+  font-weight:700;color:var(--violet);min-width:30px;text-align:center;
+}
+.rank-name{font-weight:600;font-size:0.9rem;color:var(--text-bright);}
+.rank-meta{font-size:0.75rem;color:var(--text-dim);margin-top:2px;}
+.rank-prob{
+  margin-left:auto;text-align:right;
+}
+.rank-pct{font-family:var(--font-display);font-size:0.9rem;font-weight:700;color:var(--green-hab);}
+.rank-bar-bg{width:80px;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:5px;overflow:hidden;}
+.rank-bar{height:100%;background:linear-gradient(90deg,#00994d,var(--green-hab));border-radius:2px;}
+
+/* ═══════════════════════════════════════
+   PAGE 5 — ABOUT
+═══════════════════════════════════════ */
+#page-about{padding-top:80px;}
+.about-wrap{max-width:1100px;margin:0 auto;padding:4rem 2.5rem 8rem;}
+.about-hero{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;margin-bottom:8rem;
+}
+.about-title{
+  font-family:var(--font-display);
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:700;line-height:1.1;letter-spacing:-1px;
+  margin-bottom:1.5rem;
+}
+.about-body{font-size:0.95rem;color:var(--text-dim);line-height:1.8;margin-bottom:1.5rem;}
+.about-visual{
+  position:relative;height:320px;
+}
+.orbit-ring{
+  position:absolute;border:1px solid rgba(56,200,255,0.1);
+  border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.orbit-ring:nth-child(1){width:100px;height:100px;animation:orbitSpin 4s linear infinite;}
+.orbit-ring:nth-child(2){width:180px;height:180px;animation:orbitSpin 8s linear infinite reverse;}
+.orbit-ring:nth-child(3){width:260px;height:260px;animation:orbitSpin 14s linear infinite;}
+@keyframes orbitSpin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+.orbit-dot{
+  position:absolute;width:10px;height:10px;border-radius:50%;
+  top:0;left:50%;transform:translateX(-50%);
+}
+.orbit-ring:nth-child(1) .orbit-dot{background:var(--cyan);box-shadow:0 0 10px var(--cyan);top:-5px;left:calc(50% - 5px);}
+.orbit-ring:nth-child(2) .orbit-dot{background:var(--violet);box-shadow:0 0 10px var(--violet);top:-5px;left:calc(50% - 5px);}
+.orbit-ring:nth-child(3) .orbit-dot{background:var(--green-hab);box-shadow:0 0 10px var(--green-hab);top:-5px;left:calc(50% - 5px);}
+.orbit-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#6b21a8,var(--deep-space));
+  box-shadow:0 0 30px rgba(168,85,247,0.6);
+}
+
+/* Pipeline */
+.pipeline{margin-bottom:8rem;}
+.pipe-title{
+  font-family:var(--font-display);font-size:1.8rem;
+  font-weight:700;letter-spacing:-0.5px;
+  margin-bottom:3rem;text-align:center;
+}
+.pipe-steps{display:flex;flex-direction:column;gap:0;}
+.pipe-step{
+  display:flex;gap:2rem;padding:2rem 0;
+  border-bottom:0.5px solid rgba(56,200,255,0.06);
+  transition:background 0.2s;cursor:none;
+  position:relative;
+}
+.pipe-step:hover{background:rgba(56,200,255,0.02);border-radius:12px;padding-left:1rem;}
+.pipe-num{
+  font-family:var(--font-display);font-size:3rem;font-weight:900;
+  line-height:1;min-width:60px;
+  background:linear-gradient(135deg,rgba(56,200,255,0.3),rgba(168,85,247,0.3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.pipe-content{}
+.pipe-name{font-family:var(--font-display);font-size:0.85rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-bright);margin-bottom:0.4rem;}
+.pipe-desc{font-size:0.88rem;color:var(--text-dim);line-height:1.6;}
+.pipe-tag{
+  display:inline-block;font-size:0.65rem;letter-spacing:1.5px;
+  text-transform:uppercase;padding:3px 10px;border-radius:100px;
+  margin-top:0.5rem;font-family:var(--font-mono);
+  background:rgba(56,200,255,0.06);color:var(--cyan);
+  border:0.5px solid rgba(56,200,255,0.2);
+}
+
+/* Model card */
+.model-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;}
+.model-card{padding:2rem;border-radius:16px;transition:transform 0.3s,box-shadow 0.3s;cursor:none;}
+.model-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(56,200,255,0.08);}
+.model-name{font-family:var(--font-display);font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-bright);margin-bottom:0.75rem;}
+.model-metric{display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0;border-bottom:0.5px solid rgba(56,200,255,0.06);font-size:0.82rem;}
+.metric-name{color:var(--text-dim);}
+.metric-val{font-family:var(--font-display);font-weight:600;}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.in{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.in{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-right.in{opacity:1;transform:none;}
+
+/* ── FOOTER ── */
+footer{
+  border-top:0.5px solid rgba(56,200,255,0.1);
+  padding:2rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:0.75rem;
+  position:relative;z-index:1;
+  background:rgba(0,0,10,0.4);backdrop-filter:blur(12px);
+}
+footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{font-size:0.75rem;color:var(--text-dim);text-decoration:none;letter-spacing:1px;transition:color 0.2s;cursor:none;}
+.footer-links a:hover{color:var(--cyan);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .dash-hero{flex-direction:column;gap:2rem;padding:3rem 1.5rem;}
+  .feature-grid{max-width:100%;}
+  .how-grid{grid-template-columns:1fr 1fr;}
+  .how-grid::before{display:none;}
+  .stats-row{flex-wrap:wrap;}
+  .stat-block{min-width:45%;}
+  .about-hero{grid-template-columns:1fr;gap:2rem;}
+  .about-visual{height:220px;}
+  .model-cards{grid-template-columns:1fr;}
+  nav{padding:1rem 1.25rem;}
+  .nav-links{display:none;}
+  .landing-stats{gap:2rem;}
+  .conditions{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Three.js space background -->
+<canvas id="space-canvas"></canvas>
+
+<!-- Warp transition overlay -->
+<div id="warp-overlay"></div>
+
+<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="loader-planet">
+    <div class="loader-core"></div>
+    <div class="loader-ring"></div>
+  </div>
+  <p class="loader-text">Analyzing Parameters</p>
+  <p class="loader-sub" id="loader-sub">Initializing habitability model...</p>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav" style="display:none;">
+  <div class="nav-logo" onclick="goPage('dashboard')">ExoHabitAI</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="goPage('dashboard');return false;">Home</a></li>
+    <li><a href="#" onclick="goPage('predict');return false;">Predict</a></li>
+    <li><a href="#" onclick="goPage('results');return false;">Rankings</a></li>
+    <li><a href="#" onclick="goPage('about');return false;">About</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ PAGE 1: LANDING ═══ -->
+<div class="page active" id="page-landing">
+  <div class="landing-inner" style="position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;">
+    <div class="entry-badge">AI-Powered Space Exploration System</div>
+    <h1 class="landing-title">
+      <span class="title-line1">ExoHabitAI</span>
+      <span class="title-line2">Discover Habitable Worlds</span>
+    </h1>
+    <p class="landing-sub">Machine learning meets astrophysics. Enter planetary parameters and uncover which distant worlds could harbor life — across the galaxy.</p>
+    <button class="btn-enter" onclick="enterUniverse()">
+      Enter the Universe <span class="arrow">→</span>
+    </button>
+    <div class="landing-stats">
+      <div class="lstat"><div class="lstat-num" id="count-planets">0</div><div class="lstat-label">Exoplanets catalogued</div></div>
+      <div class="lstat"><div class="lstat-num">15</div><div class="lstat-label">Parameters analyzed</div></div>
+      <div class="lstat"><div class="lstat-num">99.8%</div><div class="lstat-label">Model accuracy</div></div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll to explore</span>
+      <div class="scroll-hint-line"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 2: DASHBOARD ═══ -->
+<div class="page" id="page-dashboard">
+  <div class="dash-hero">
+    <div class="dash-hero-text reveal-left">
+      <p class="section-eyebrow">Mission Control</p>
+      <h2 class="dash-title">Predict planetary<br><span>habitability</span><br>with AI</h2>
+      <p class="dash-desc">Our Random Forest model, trained on 991 confirmed exoplanets from the NASA Exoplanet Archive, predicts habitability with near-perfect accuracy using 15 astrophysical features.</p>
+      <button class="btn-ghost" onclick="goPage('predict')">Start Analysis →</button>
+    </div>
+    <div class="feature-grid reveal-right">
+      <div class="glass feat-card">
+        <div class="feat-icon" style="color:var(--cyan);">🌡️</div>
+        <div class="feat-title">Thermal Analysis</div>
+        <div class="feat-desc">Equilibrium temperature and stellar flux for liquid water potential.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon" style="color:var(--violet);">🪐</div>
+        <div class="feat-title">Composition</div>
+        <div class="feat-desc">Mass & radius constraints to distinguish rocky worlds from gas giants.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon" style="color:var(--electric);">⭐</div>
+        <div class="feat-title">Stellar Data</div>
+        <div class="feat-desc">Host star temperature, luminosity and spectral type compatibility.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon" style="color:var(--green-hab);">🔄</div>
+        <div class="feat-title">Orbital Stability</div>
+        <div class="feat-desc">Semi-major axis and orbital period for long-term stability scoring.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-block">
+      <div class="stat-n">991</div>
+      <div class="stat-l">Training samples</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-n">15</div>
+      <div class="stat-l">Features used</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-n">1.000</div>
+      <div class="stat-l">ROC-AUC score</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-n">5-fold</div>
+      <div class="stat-l">Cross-validated</div>
+    </div>
+  </div>
+
+  <div class="how-section">
+    <div class="reveal" style="text-align:center;margin-bottom:1rem;">
+      <p class="section-eyebrow" style="justify-content:center;">Methodology</p>
+      <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;letter-spacing:-1px;">How ExoHabitAI works</h2>
+    </div>
+    <div class="how-grid">
+      <div class="glass how-card reveal"><div class="how-step">01</div><div class="how-title">Data Collection</div><p class="how-desc">Sourced from NASA Exoplanet Archive. 39,386 raw observations filtered to 6,107 unique confirmed planets using validated default parameter sets.</p></div>
+      <div class="glass how-card reveal" style="transition-delay:0.1s;"><div class="how-step">02</div><div class="how-title">Feature Engineering</div><p class="how-desc">Habitability Score Index (HSI), Stellar Compatibility Index, Orbital Stability Factor, and Stellar Flux computed from raw planetary/stellar parameters.</p></div>
+      <div class="glass how-card reveal" style="transition-delay:0.2s;"><div class="how-step">03</div><div class="how-title">Model Training</div><p class="how-desc">Random Forest classifier with hyperparameter tuning (GridSearchCV, 5-fold CV). Evaluated on Accuracy, Precision, Recall, F1-Score, and ROC-AUC.</p></div>
+      <div class="glass how-card reveal" style="transition-delay:0.3s;"><div class="how-step">04</div><div class="how-title">Prediction API</div><p class="how-desc">Flask REST API serves the model in real-time. Accepts 14 planetary parameters, derives Stellar Flux, and returns a probability-based habitability score.</p></div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2026 ExoHabitAI — Infosys Springboard B13</p>
+    <div class="footer-links">
+      <a href="#" onclick="goPage('predict');return false;">Predict</a>
+      <a href="#" onclick="goPage('about');return false;">About</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ PAGE 3: PREDICT ═══ -->
+<div class="page" id="page-predict">
+  <div class="predict-wrap">
+    <div class="predict-header reveal">
+      <p class="section-eyebrow" style="justify-content:center;">Core Engine</p>
+      <h2 class="predict-title">Habitability <span style="background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Prediction</span></h2>
+      <p class="predict-sub">Enter planetary and stellar parameters. The AI derives Stellar Flux automatically and returns a probability score.</p>
+    </div>
+
+    <!-- API config -->
+    <div class="glass" style="width:100%;padding:1.5rem;margin-bottom:1.5rem;" id="api-config-panel">
+      <div class="api-bar">
+        <div class="field-wrap">
+          <label class="field-label"><span class="field-label-left">Flask API endpoint</span></label>
+          <input type="text" id="api-url" value="http://localhost:5000" placeholder="http://localhost:5000">
+        </div>
+        <button class="btn-sm" onclick="testConn()" style="white-space:nowrap;">Test connection</button>
+      </div>
+      <div class="conn-badge" id="conn-badge"></div>
+    </div>
+
+    <!-- Main form -->
+    <div class="glass-bright predict-form reveal" style="width:100%;">
+      <div class="form-grid" id="form-grid"></div>
+
+      <!-- Star type -->
+      <div class="star-row">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:0;">
+          <span style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);">Host Star Spectral Type</span>
+          <span class="tip-wrap"><i class="tip-icon">?</i><span class="tip-text">G and K-type stars are most Earth-like. M dwarfs are common but have high flare activity. A/F stars are hotter and may be too harsh.</span></span>
+        </div>
+        <div class="star-opts" id="star-opts"></div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn-predict" id="predict-btn" onclick="runPrediction()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="currentColor" opacity="0.7"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Analyze Habitability
+        </button>
+        <button class="btn-sm" onclick="loadExample()">Load example</button>
+        <button class="btn-sm" onclick="resetForm()">Reset</button>
+        <button class="btn-sm" onclick="fetchRankings()">Load rankings →</button>
+      </div>
+      <div class="err-box" id="err-box"></div>
+    </div>
+
+    <!-- Rankings panel -->
+    <div class="glass" style="width:100%;padding:2rem;margin-top:2rem;" id="rankings-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+        <div class="detail-hd" style="margin:0;">Top Habitable Candidates</div>
+        <button class="btn-sm" style="font-size:0.72rem;padding:6px 14px;" onclick="fetchRankings()">Refresh</button>
+      </div>
+      <div id="rankings-loading" style="color:var(--text-dim);font-size:0.82rem;text-align:center;padding:2rem 0;font-family:var(--font-mono);">Connect API and click "Load rankings"</div>
+      <div id="rankings-container"></div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2026 ExoHabitAI — Infosys Springboard B13</p>
+    <div class="footer-links">
+      <a href="#" onclick="goPage('dashboard');return false;">Home</a>
+      <a href="#" onclick="goPage('about');return false;">About</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ PAGE 4: RESULTS ═══ -->
+<div class="page" id="page-results">
+  <div class="results-wrap">
+    <button class="back-btn" onclick="goPage('predict')">← Back to prediction</button>
+    <div class="reveal">
+      <p class="section-eyebrow">Analysis complete</p>
+      <h2 class="results-title">Habitability <span style="background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Report</span></h2>
+    </div>
+
+    <div class="result-grid reveal">
+      <!-- Circle + verdict -->
+      <div class="glass result-main">
+        <div class="circle-wrap">
+          <svg class="circle-svg" viewBox="0 0 180 180">
+            <circle class="c-bg" cx="90" cy="90" r="80"/>
+            <circle class="c-glow" id="c-glow" cx="90" cy="90" r="80"/>
+            <circle class="c-fill" id="c-fill" cx="90" cy="90" r="80"/>
+          </svg>
+          <div class="circle-inner">
+            <span class="circle-pct" id="r-pct">—</span>
+            <span class="circle-label">Habitability</span>
+          </div>
+        </div>
+        <div class="verdict" id="r-verdict">—</div>
+        <p class="verdict-desc" id="r-desc"></p>
+        <div class="zone-badge" id="r-zone">—</div>
+      </div>
+
+      <!-- Factor bars -->
+      <div class="glass result-detail">
+        <div class="detail-hd">Parameter influence</div>
+        <div id="factor-list"></div>
+      </div>
+    </div>
+
+    <!-- Conditions row -->
+    <div class="conditions reveal" id="cond-row"></div>
+
+    <!-- Rankings in results page too -->
+    <div class="rank-section reveal" id="rank-section" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+        <div class="detail-hd" style="margin:0;">Top ranked planets</div>
+      </div>
+      <div id="rank-list"></div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2026 ExoHabitAI — Infosys Springboard B13</p>
+    <div class="footer-links">
+      <a href="#" onclick="goPage('dashboard');return false;">Home</a>
+      <a href="#" onclick="goPage('predict');return false;">New prediction</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ PAGE 5: ABOUT ═══ -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-hero">
+      <div class="reveal-left">
+        <p class="section-eyebrow">The Science</p>
+        <h2 class="about-title">AI-driven exoplanet<br><span style="background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">habitability</span><br>research</h2>
+        <p class="about-body">ExoHabitAI transforms the NASA Exoplanet Archive into an intelligent habitability classifier. By training a Random Forest model on 991 confirmed exoplanets — filtered from 39,386 observations — we can predict whether a new planet could support life from 14 key parameters.</p>
+        <p class="about-body">The Habitability Score Index (HSI) is our custom metric: a geometric mean of radius, temperature, and flux similarity to Earth. Planets above the HSI median are classified as potentially habitable.</p>
+      </div>
+      <div class="about-visual reveal-right">
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="orbit-center"></div>
+      </div>
+    </div>
+
+    <div class="pipeline reveal">
+      <h3 class="pipe-title">Data Pipeline</h3>
+      <div class="pipe-steps">
+        <div class="pipe-step"><div class="pipe-num">01</div><div class="pipe-content"><div class="pipe-name">Data collection</div><p class="pipe-desc">NASA Exoplanet Archive (Planetary Systems Composite). 39,386 rows × 289 features. Filtered to unique confirmed exoplanets using default_flag = 1.</p><span class="pipe-tag">NASA Archive</span><span class="pipe-tag" style="margin-left:6px;color:var(--violet);border-color:rgba(168,85,247,0.3);background:rgba(168,85,247,0.06);">6,107 planets</span></div></div>
+        <div class="pipe-step"><div class="pipe-num">02</div><div class="pipe-content"><div class="pipe-name">Preprocessing</div><p class="pipe-desc">Median imputation for missing values (~85% insolation flux, ~81% density, ~50% mass). Z-score filtering (|z|&lt;3) then IQR capping. Log→linear luminosity conversion before imputation.</p><span class="pipe-tag">Python / Pandas</span></div></div>
+        <div class="pipe-step"><div class="pipe-num">03</div><div class="pipe-content"><div class="pipe-name">Feature engineering</div><p class="pipe-desc">Stellar Flux (inverse square law), Habitability Score Index (geometric mean of radius/temperature/flux similarity), Stellar Compatibility Index (Gaussian centered at 5778 K), Orbital Stability Factor (Kepler's Third Law).</p><span class="pipe-tag">Physics-based</span></div></div>
+        <div class="pipe-step"><div class="pipe-num">04</div><div class="pipe-content"><div class="pipe-name">Model training</div><p class="pipe-desc">4 models compared: Logistic Regression, Decision Tree (depth 5), Random Forest (n=100), XGBoost. Best selected by F1-score. GridSearchCV tuning: n_estimators=[100,200], max_depth=[5,10,None], min_samples_split=[2,5].</p><span class="pipe-tag">scikit-learn</span></div></div>
+        <div class="pipe-step"><div class="pipe-num">05</div><div class="pipe-content"><div class="pipe-name">API deployment</div><p class="pipe-desc">Flask REST API with 4 endpoints: /health, /model-info, /predict (POST), /rank (GET). Stellar Flux derived server-side. CORS-enabled. Logging via Python logging module.</p><span class="pipe-tag">Flask</span><span class="pipe-tag" style="margin-left:6px;color:var(--green-hab);border-color:rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);">Production-ready</span></div></div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h3 class="pipe-title">Model Performance</h3>
+      <div class="model-cards">
+        <div class="glass model-card">
+          <div class="model-name" style="color:var(--cyan);">Random Forest (Tuned)</div>
+          <div class="model-metric"><span class="metric-name">Accuracy</span><span class="metric-val" style="color:var(--green-hab);">100%</span></div>
+          <div class="model-metric"><span class="metric-name">Precision</span><span class="metric-val" style="color:var(--green-hab);">100%</span></div>
+          <div class="model-metric"><span class="metric-name">Recall</span><span class="metric-val" style="color:var(--green-hab);">100%</span></div>
+          <div class="model-metric"><span class="metric-name">F1-Score</span><span class="metric-val" style="color:var(--green-hab);">1.000</span></div>
+          <div class="model-metric"><span class="metric-name">ROC-AUC</span><span class="metric-val" style="color:var(--green-hab);">1.000</span></div>
+          <div class="model-metric"><span class="metric-name">CV F1 (5-fold)</span><span class="metric-val" style="color:var(--cyan);">0.981 ±0.009</span></div>
+        </div>
+        <div class="glass model-card">
+          <div class="model-name" style="color:var(--violet);">Logistic Regression</div>
+          <div class="model-metric"><span class="metric-name">Accuracy</span><span class="metric-val" style="color:var(--cyan);">98.99%</span></div>
+          <div class="model-metric"><span class="metric-name">Precision</span><span class="metric-val" style="color:var(--cyan);">100%</span></div>
+          <div class="model-metric"><span class="metric-name">Recall</span><span class="metric-val" style="color:var(--cyan);">98.0%</span></div>
+          <div class="model-metric"><span class="metric-name">F1-Score</span><span class="metric-val" style="color:var(--cyan);">0.990</span></div>
+          <div class="model-metric"><span class="metric-name">ROC-AUC</span><span class="metric-val" style="color:var(--cyan);">0.999</span></div>
+          <div class="model-metric"><span class="metric-name">Note</span><span class="metric-val" style="color:var(--text-dim);font-size:0.72rem;">Baseline</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2026 ExoHabitAI — Infosys Springboard B13</p>
+    <div class="footer-links">
+      <a href="#" onclick="goPage('dashboard');return false;">Home</a>
+      <a href="#" onclick="goPage('predict');return false;">Predict</a>
+    </div>
+  </footer>
+</div>
+
+<!-- THREE.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════
+//  THREE.JS SPACE BACKGROUND
+// ═══════════════════════════════════════════════════════
+(function(){
+  const canvas = document.getElementById('space-canvas');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000008, 1);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  camera.position.set(0,0,5);
+
+  // ── Stars ──
+  const starGeo = new THREE.BufferGeometry();
+  const starCount = 3000;
+  const starPos = new Float32Array(starCount*3);
+  for(let i=0;i<starCount*3;i++) starPos[i] = (Math.random()-0.5)*200;
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
+  const starMat = new THREE.PointsMaterial({color:0xaaccff, size:0.18, transparent:true, opacity:0.85});
+  scene.add(new THREE.Points(starGeo, starMat));
+
+  // ── Distant stars (smaller layer) ──
+  const starGeo2 = new THREE.BufferGeometry();
+  const s2 = new Float32Array(2000*3);
+  for(let i=0;i<2000*3;i++) s2[i]=(Math.random()-0.5)*400;
+  starGeo2.setAttribute('position', new THREE.BufferAttribute(s2,3));
+  scene.add(new THREE.Points(starGeo2, new THREE.PointsMaterial({color:0x6688aa,size:0.1,transparent:true,opacity:0.5})));
+
+  // ── Planets ──
+  const planets = [];
+  const pData = [
+    {r:0.4, color:0x1a6b9a, emissive:0x0a2244, x:6, y:2, z:-3, speed:0.003, spinSpeed:0.008},
+    {r:0.25, color:0x7c3aed, emissive:0x2d0a5e, x:-5, y:-1.5, z:-2, speed:0.005, spinSpeed:0.012},
+    {r:0.6, color:0x166534, emissive:0x042a14, x:4, y:-3, z:-5, speed:0.002, spinSpeed:0.005},
+    {r:0.15, color:0x9a3412, emissive:0x3d1005, x:-3, y:3, z:-4, speed:0.007, spinSpeed:0.015},
+    {r:0.35, color:0x1e40af, emissive:0x081840, x:8, y:0, z:-6, speed:0.004, spinSpeed:0.009},
+  ];
+  pData.forEach(pd => {
+    const geo = new THREE.SphereGeometry(pd.r, 32, 32);
+    const mat = new THREE.MeshPhongMaterial({
+      color:pd.color, emissive:pd.emissive,
+      shininess:40, specular:0x224488
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(pd.x, pd.y, pd.z);
+    scene._orbitAngle = mesh._orbitAngle = Math.random()*Math.PI*2;
+    mesh._orbitR = Math.sqrt(pd.x*pd.x + pd.y*pd.y);
+    mesh._orbitY = pd.y;
+    mesh._orbitSpeed = pd.speed;
+    mesh._spinSpeed = pd.spinSpeed;
+    mesh._baseX = pd.x;
+    scene.add(mesh);
+    planets.push(mesh);
+  });
+
+  // ── Asteroid belt ──
+  const astGeo = new THREE.BufferGeometry();
+  const astCount = 400;
+  const astPos = new Float32Array(astCount*3);
+  for(let i=0;i<astCount;i++){
+    const angle = Math.random()*Math.PI*2;
+    const r = 7 + Math.random()*3;
+    astPos[i*3] = Math.cos(angle)*r;
+    astPos[i*3+1] = (Math.random()-0.5)*0.8;
+    astPos[i*3+2] = Math.sin(angle)*r - 4;
+  }
+  astGeo.setAttribute('position', new THREE.BufferAttribute(astPos,3));
+  scene.add(new THREE.Points(astGeo, new THREE.PointsMaterial({color:0x887766,size:0.06,transparent:true,opacity:0.6})));
+
+  // ── Nebula (large transparent sphere) ──
+  const nebGeo = new THREE.SphereGeometry(30,16,16);
+  const nebMat = new THREE.MeshBasicMaterial({
+    color:0x110033, transparent:true, opacity:0.12, side:THREE.BackSide
+  });
+  scene.add(new THREE.Mesh(nebGeo, nebMat));
+
+  // ── Lights ──
+  scene.add(new THREE.AmbientLight(0x112244, 0.6));
+  const sun = new THREE.PointLight(0x4488ff, 2, 50);
+  sun.position.set(0,5,-5);
+  scene.add(sun);
+  const sun2 = new THREE.PointLight(0xaa44ff, 1, 40);
+  sun2.position.set(-8,-3,-8);
+  scene.add(sun2);
+
+  // ── Shooting stars ──
+  let shootTimer = 0;
+  const shoots = [];
+
+  function makeShoot(){
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array([
+      (Math.random()-0.5)*20, (Math.random()-0.5)*10, (Math.random()-0.5)*10,
+      (Math.random()-0.5)*20 + 3, (Math.random()-0.5)*10 - 1, (Math.random()-0.5)*10
+    ]);
+    geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    const mat = new THREE.LineBasicMaterial({color:0x88ddff, transparent:true, opacity:0.9});
+    const line = new THREE.Line(geo,mat);
+    line._life = 0;
+    scene.add(line);
+    shoots.push(line);
+  }
+
+  // Mouse parallax
+  let mouseX=0, mouseY=0;
+  document.addEventListener('mousemove', e=>{
+    mouseX = (e.clientX/window.innerWidth - 0.5)*2;
+    mouseY = (e.clientY/window.innerHeight - 0.5)*2;
+  });
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t += 0.01;
+
+    // Parallax camera drift
+    camera.position.x += (mouseX*0.8 - camera.position.x)*0.02;
+    camera.position.y += (-mouseY*0.5 - camera.position.y)*0.02;
+    camera.lookAt(0,0,0);
+
+    // Rotate star field slowly
+    scene.children[0].rotation.y = t*0.03;
+    scene.children[0].rotation.x = t*0.01;
+
+    // Orbit planets
+    planets.forEach(p => {
+      p._orbitAngle = (p._orbitAngle||0) + p._orbitSpeed;
+      p.position.x = Math.cos(p._orbitAngle) * Math.max(Math.abs(p._baseX), 3);
+      p.position.z = Math.sin(p._orbitAngle) * Math.max(Math.abs(p._baseX), 3) - 4;
+      p.rotation.y += p._spinSpeed;
+      // Pulsing glow
+      p.material.emissiveIntensity = 0.3 + Math.sin(t*1.5 + p._orbitAngle)*0.2;
+    });
+
+    // Shooting stars
+    shootTimer++;
+    if(shootTimer > 200 + Math.random()*300){ makeShoot(); shootTimer=0; }
+    for(let i=shoots.length-1;i>=0;i--){
+      const s=shoots[i];
+      s._life++;
+      s.material.opacity = Math.max(0, 0.9 - s._life*0.04);
+      const pos = s.geometry.attributes.position.array;
+      pos[0]-=0.25; pos[3]-=0.25;
+      pos[1]-=0.12; pos[4]-=0.12;
+      s.geometry.attributes.position.needsUpdate=true;
+      if(s._life>25){ scene.remove(s); shoots.splice(i,1); }
+    }
+
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  window.addEventListener('resize',()=>{
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+//  CUSTOM CURSOR
+// ═══════════════════════════════════════════════════════
+(function(){
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let rx=0,ry=0, cx=0,cy=0;
+  document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;});
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function tick(){
+    rx=lerp(rx,cx,0.18); ry=lerp(ry,cy,0.18);
+    cur.style.left=cx+'px'; cur.style.top=cy+'px';
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+  document.addEventListener('mousedown',()=>{cur.style.transform='translate(-50%,-50%) scale(0.7)';ring.style.transform='translate(-50%,-50%) scale(0.85)';});
+  document.addEventListener('mouseup',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';});
+  document.querySelectorAll('button,a,[onclick]').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      cur.style.width='18px';cur.style.height='18px';cur.style.background='var(--violet)';
+      ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(168,85,247,0.6)';
+    });
+    el.addEventListener('mouseleave',()=>{
+      cur.style.width='12px';cur.style.height='12px';cur.style.background='var(--cyan)';
+      ring.style.width='40px';ring.style.height='40px';ring.style.borderColor='rgba(56,200,255,0.5)';
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+//  PAGE ROUTING + WARP TRANSITION
+// ═══════════════════════════════════════════════════════
+let currentPage = 'landing';
+function goPage(name){
+  if(name===currentPage) return;
+  const overlay = document.getElementById('warp-overlay');
+  // Warp in
+  overlay.style.transition='none';
+  overlay.style.transform='scale(0)';overlay.style.opacity='0.9';
+  overlay.style.borderRadius='50%';
+  requestAnimationFrame(()=>{
+    overlay.style.transition='transform 0.4s cubic-bezier(0.4,0,0.2,1), border-radius 0.4s, opacity 0.3s 0.3s';
+    overlay.style.transform='scale(4)';overlay.style.borderRadius='0';
+    setTimeout(()=>{
+      // Switch page
+      document.getElementById('page-'+currentPage).classList.remove('active');
+      document.getElementById('page-'+name).classList.add('active');
+      document.getElementById('page-'+name).scrollTop=0;
+      currentPage=name;
+      const nav=document.getElementById('main-nav');
+      nav.style.display = name==='landing'?'none':'flex';
+      // Warp out
+      overlay.style.transition='opacity 0.35s';
+      overlay.style.opacity='0';
+      setTimeout(()=>{overlay.style.transform='scale(0)';},360);
+      // Trigger reveals
+      setTimeout(triggerReveal, 100);
+    }, 400);
+  });
+}
+
+function enterUniverse(){
+  // Animate warp zoom
+  const btn = document.querySelector('.btn-enter');
+  if(btn){btn.textContent='Entering...';btn.style.pointerEvents='none';}
+  setTimeout(()=>goPage('dashboard'), 100);
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCROLL REVEAL
+// ═══════════════════════════════════════════════════════
+function triggerReveal(){
+  const activePage = document.getElementById('page-'+currentPage);
+  if(!activePage) return;
+  const els = activePage.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:0.08});
+  els.forEach(el=>io.observe(el));
+}
+triggerReveal();
+
+// ═══════════════════════════════════════════════════════
+//  COUNTER ANIMATION
+// ═══════════════════════════════════════════════════════
+function animateCounter(el, target, suffix=''){
+  let cur=0; const step = target/80;
+  const t = setInterval(()=>{
+    cur = Math.min(cur+step, target);
+    el.textContent = Math.floor(cur).toLocaleString() + suffix;
+    if(cur>=target) clearInterval(t);
+  },18);
+}
+setTimeout(()=>animateCounter(document.getElementById('count-planets'),5600,'+'), 800);
+
+// ═══════════════════════════════════════════════════════
+//  FORM FIELD DEFINITIONS
+// ═══════════════════════════════════════════════════════
+const FIELDS = [
+  {id:'Planet_Radius',     label:'Planet Radius',          icon:'🪐', unit:'R⊕',   min:0.1,  max:20,   step:0.1,  val:1.5,   tip:'Radius in Earth radii. Rocky planets are typically below 1.6 R⊕.'},
+  {id:'Planet_Mass',       label:'Planet Mass',            icon:'⚖️', unit:'M⊕',   min:0.1,  max:100,  step:0.1,  val:4.0,   tip:'Mass in Earth masses. Below 10 M⊕ suggests a rocky composition.'},
+  {id:'Orbital_Period',    label:'Orbital Period',         icon:'🔄', unit:'days',  min:1,    max:1000, step:1,    val:15,    tip:'Days to complete one orbit. Short periods are common for K-star habitable candidates.'},
+  {id:'Semi_Major_Axis',   label:'Semi-Major Axis',        icon:'📏', unit:'AU',    min:0.01, max:5,    step:0.01, val:0.1,   tip:'Average star–planet distance. Habitable zone varies by star type and luminosity.'},
+  {id:'Planet_Density',    label:'Planet Density',         icon:'🪨', unit:'g/cm³', min:0.1,  max:15,   step:0.1,  val:4.5,   tip:'Higher density → rocky composition. Earth is 5.5 g/cm³.'},
+  {id:'Equilibrium_Temp',  label:'Equilibrium Temp',       icon:'🌡️', unit:'K',     min:100,  max:2000, step:1,    val:280,   tip:'Theoretical surface temperature. 180–320 K is the liquid water range.'},
+  {id:'Stellar_Temp',      label:'Stellar Temperature',    icon:'☀️', unit:'K',     min:2500, max:10000,step:10,   val:5300,  tip:'Host star temperature. Sun = 5778 K. G and K stars are most compatible.'},
+  {id:'Stellar_Luminosity',label:'Stellar Luminosity',     icon:'✨', unit:'L☉',   min:0.001,max:5,    step:0.001,val:0.4,   tip:'Star brightness relative to the Sun. Used by the API to derive stellar flux.'},
+  {id:'Stellar_Metallicity',label:'Stellar Metallicity',   icon:'⚗️', unit:'[Fe/H]',min:-1,   max:1,    step:0.01, val:-0.05, tip:'Log Fe/H vs Sun. 0 = solar metallicity. Affects planet formation probability.'},
+];
+
+// Build form
+(function buildForm(){
+  const grid = document.getElementById('form-grid');
+  FIELDS.forEach(f=>{
+    const pct = ((f.val-f.min)/(f.max-f.min)*100).toFixed(1);
+    grid.innerHTML += `
+    <div class="field-wrap">
+      <div class="field-label">
+        <span class="field-label-left">${f.icon} ${f.label} <span class="tip-wrap"><i class="tip-icon">?</i><span class="tip-text">${f.tip}</span></span></span>
+        <span class="field-val" id="${f.id}-val">${f.val} ${f.unit}</span>
+      </div>
+      <input type="range" id="${f.id}-range" min="${f.min}" max="${f.max}" step="${f.step}" value="${f.val}"
+        style="--pct:${pct}%"
+        oninput="syncF('${f.id}','${f.unit}',this)">
+      <input type="number" id="${f.id}-num" min="${f.min}" max="${f.max}" step="${f.step}" value="${f.val}"
+        oninput="syncR('${f.id}','${f.unit}',this)">
+    </div>`;
+  });
+
+  // Star type buttons
+  const starOpts = document.getElementById('star-opts');
+  const starData = [
+    {v:'A',label:'A',note:'Hot & bright'},
+    {v:'F',label:'F',note:'Sun-like (hotter)'},
+    {v:'G',label:'G ☀',note:'Sun-like'},
+    {v:'K',label:'K',note:'Most common',sel:true},
+    {v:'M',label:'M',note:'Red dwarf'},
+  ];
+  starData.forEach(s=>{
+    const lbl = document.createElement('label');
+    lbl.className = 'star-opt' + (s.sel?' selected':'');
+    lbl.innerHTML = `<input type="radio" name="star_type" value="${s.v}" ${s.sel?'checked':''}><strong>${s.label}</strong> <span style="font-size:0.72rem;color:var(--text-dim);">${s.note}</span>`;
+    lbl.addEventListener('click',()=>{
+      document.querySelectorAll('.star-opt').forEach(l=>l.classList.remove('selected'));
+      lbl.classList.add('selected');
+    });
+    starOpts.appendChild(lbl);
+  });
+})();
+
+function syncF(id,unit,el){
+  const v = parseFloat(el.value);
+  const f = FIELDS.find(x=>x.id===id);
+  const pct = ((v-f.min)/(f.max-f.min)*100).toFixed(1);
+  el.style.setProperty('--pct',pct+'%');
+  document.getElementById(id+'-num').value = v;
+  document.getElementById(id+'-val').textContent = v+' '+unit;
+}
+function syncR(id,unit,el){
+  const v = parseFloat(el.value)||0;
+  const f = FIELDS.find(x=>x.id===id);
+  const pct = ((v-f.min)/(f.max-f.min)*100).toFixed(1);
+  const rng = document.getElementById(id+'-range');
+  rng.value = v; rng.style.setProperty('--pct',pct+'%');
+  document.getElementById(id+'-val').textContent = v+' '+unit;
+}
+
+function loadExample(){
+  const ex = {Planet_Radius:1.5,Planet_Mass:4.0,Orbital_Period:15,Semi_Major_Axis:0.1,
+    Planet_Density:4.5,Equilibrium_Temp:280,Stellar_Temp:5300,Stellar_Luminosity:0.4,Stellar_Metallicity:-0.05};
+  FIELDS.forEach(f=>{
+    const v = ex[f.id]!==undefined?ex[f.id]:f.val;
+    const pct = ((v-f.min)/(f.max-f.min)*100).toFixed(1);
+    document.getElementById(f.id+'-num').value=v;
+    document.getElementById(f.id+'-range').value=v;
+    document.getElementById(f.id+'-range').style.setProperty('--pct',pct+'%');
+    document.getElementById(f.id+'-val').textContent=v+' '+f.unit;
+  });
+  document.querySelectorAll('.star-opt').forEach(l=>{
+    l.classList.remove('selected');
+    if(l.querySelector('input').value==='K') l.classList.add('selected');
+  });
+}
+
+function resetForm(){
+  FIELDS.forEach(f=>{
+    const pct = ((f.val-f.min)/(f.max-f.min)*100).toFixed(1);
+    document.getElementById(f.id+'-num').value=f.val;
+    document.getElementById(f.id+'-range').value=f.val;
+    document.getElementById(f.id+'-range').style.setProperty('--pct',pct+'%');
+    document.getElementById(f.id+'-val').textContent=f.val+' '+f.unit;
+  });
+  document.getElementById('err-box').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════
+//  API CONNECTION TEST
+// ═══════════════════════════════════════════════════════
+function getBase(){return document.getElementById('api-url').value.trim().replace(/\/+$/,'');}
+async function testConn(){
+  const badge = document.getElementById('conn-badge');
+  badge.style.display='block';badge.className='conn-badge testing';
+  badge.textContent='Testing connection…';
+  try{
+    const r = await fetch(getBase()+'/health',{method:'GET',signal:AbortSignal.timeout(4000)});
+    const j = await r.json();
+    badge.className='conn-badge ok';
+    badge.textContent='✓ Connected — model loaded: '+j.model_loaded;
+  }catch(e){
+    badge.className='conn-badge err';
+    badge.textContent='✗ Failed — '+e.message;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PREDICTION
+// ═══════════════════════════════════════════════════════
+let lastResult = null;
+async function runPrediction(){
+  const errBox = document.getElementById('err-box');
+  errBox.classList.remove('show');
+
+  const payload = {};
+  for(const f of FIELDS){
+    const v = parseFloat(document.getElementById(f.id+'-num').value);
+    if(isNaN(v)){
+      errBox.textContent='Please enter a valid number for "'+f.label+'".';
+      errBox.classList.add('show'); return;
+    }
+    payload[f.id]=v;
+  }
+  const starType = document.querySelector('input[name="star_type"]:checked')?.value||'K';
+  ['A','F','G','K','M'].forEach(t=>{payload['StarType_'+t]=t===starType?1:0;});
+
+  document.getElementById('predict-btn').disabled=true;
+  const ov = document.getElementById('loading-overlay');
+  ov.classList.add('active');
+  const msgs=['Initializing habitability model…','Computing stellar flux…','Running Random Forest…','Generating probability score…'];
+  let mi=0;
+  const subEl=document.getElementById('loader-sub');
+  subEl.textContent=msgs[0];
+  const msgInt=setInterval(()=>{mi=(mi+1)%msgs.length;subEl.textContent=msgs[mi];},900);
+
+  try{
+    const res = await fetch(getBase()+'/predict',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),signal:AbortSignal.timeout(10000)
+    });
+    const data = await res.json();
+    if(!res.ok||data.status==='error') throw new Error(data.message||'HTTP '+res.status);
+    lastResult={...data, payload};
+    clearInterval(msgInt);
+    ov.classList.remove('active');
+    document.getElementById('predict-btn').disabled=false;
+    showResults(data, payload);
+  }catch(err){
+    clearInterval(msgInt);
+    ov.classList.remove('active');
+    document.getElementById('predict-btn').disabled=false;
+    errBox.textContent='Error: '+err.message+'. Make sure Flask is running on '+getBase();
+    errBox.classList.add('show');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  RESULTS PAGE
+// ═══════════════════════════════════════════════════════
+function showResults(data, payload){
+  const prob = parseFloat(data.habitability_probability||0);
+  const pct = Math.round(prob*100);
+  const isHab = data.prediction===1;
+  const isBorder = prob>=0.35 && prob<0.5;
+
+  // Navigate to results page
+  goPage('results');
+
+  // Animate circle after transition
+  setTimeout(()=>{
+    const circumference = 2*Math.PI*80; // r=80 → ~502
+    const fill = document.getElementById('c-fill');
+    const glow = document.getElementById('c-glow');
+    const color = isHab?'#00ff88':isBorder?'#ffb020':'#ff4466';
+    fill.style.stroke=color; glow.style.stroke=color;
+    fill.style.strokeDashoffset=circumference;
+    glow.style.strokeDashoffset=circumference;
+    setTimeout(()=>{
+      const offset = circumference*(1-prob);
+      fill.style.strokeDashoffset=offset;
+      glow.style.strokeDashoffset=offset;
+    },200);
+
+    const pctEl=document.getElementById('r-pct');
+    pctEl.style.color=color;
+    let cp=0;
+    const ct=setInterval(()=>{cp=Math.min(cp+1,pct);pctEl.textContent=cp+'%';if(cp>=pct)clearInterval(ct);},16);
+
+    const vText = document.getElementById('r-verdict');
+    const vDesc = document.getElementById('r-desc');
+    const zBadge = document.getElementById('r-zone');
+    vText.textContent = data.label||(isHab?'Potentially Habitable':'Non-Habitable');
+    vText.style.color = color;
+
+    if(isHab){
+      vDesc.textContent='This planet meets composition, temperature, and insolation criteria. Recommended for observational follow-up.';
+      zBadge.textContent='🌱 Habitable Zone Candidate';
+      zBadge.className='zone-badge hab';
+    }else if(isBorder){
+      vDesc.textContent='Conditions are borderline. Some parameters fall outside the ideal habitable range.';
+      zBadge.textContent='⚠ Marginal Conditions';
+      zBadge.className='zone-badge warn';
+    }else{
+      vDesc.textContent='Key parameters are outside habitable ranges. Equilibrium temperature or stellar flux may be the limiting factor.';
+      zBadge.textContent='☠ Extreme Conditions';
+      zBadge.className='zone-badge no-hab';
+    }
+
+    // Factor bars — use real importances if API returns them, else derive from payload values
+    const fi = data.feature_importance || buildImportance(payload);
+    const list = document.getElementById('factor-list');
+    list.innerHTML='';
+    const sorted = Object.entries(fi).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    sorted.forEach(([key,score])=>{
+      const p2 = Math.round(score*100);
+      const c = score>0.5?'var(--green-hab)':score>0.25?'var(--cyan)':'var(--violet)';
+      const humanLabel = (FIELDS.find(f=>f.id===key)||{label:key.replace(/_/g,' ')}).label;
+      list.innerHTML+=`
+        <div class="factor">
+          <span class="factor-name">${humanLabel}</span>
+          <div class="factor-bar-bg"><div class="factor-bar" data-w="${p2}" style="background:${c};width:0%"></div></div>
+          <span class="factor-pct" style="color:${c}">${p2}%</span>
+        </div>`;
+    });
+    setTimeout(()=>{
+      document.querySelectorAll('.factor-bar').forEach(b=>{b.style.width=b.dataset.w+'%';});
+    },400);
+
+    // Conditions row
+    const condRow = document.getElementById('cond-row');
+    const conds = [
+      {icon:'🌡️',label:'Equilibrium Temp',val:payload.Equilibrium_Temp+' K',ok:payload.Equilibrium_Temp>=180&&payload.Equilibrium_Temp<=320},
+      {icon:'🪐',label:'Planet Radius',val:payload.Planet_Radius+' R⊕',ok:payload.Planet_Radius<=1.6},
+      {icon:'⚖️',label:'Planet Mass',val:payload.Planet_Mass+' M⊕',ok:payload.Planet_Mass<=10},
+      {icon:'⭐',label:'Stellar Temp',val:payload.Stellar_Temp+' K',ok:payload.Stellar_Temp>=3500&&payload.Stellar_Temp<=7000},
+      {icon:'📏',label:'Semi-Major Axis',val:payload.Semi_Major_Axis+' AU',ok:payload.Semi_Major_Axis>=0.04&&payload.Semi_Major_Axis<=2},
+      {icon:'✨',label:'Luminosity',val:payload.Stellar_Luminosity+' L☉',ok:payload.Stellar_Luminosity>=0.05&&payload.Stellar_Luminosity<=10},
+    ];
+    condRow.innerHTML = conds.map(c=>{
+      const col = c.ok?'var(--green-hab)':'var(--red-dead)';
+      return `<div class="glass cond-card">
+        <div class="cond-icon" style="color:${col}">${c.icon}</div>
+        <div class="cond-label">${c.label}</div>
+        <div class="cond-val" style="color:${col}">${c.val}</div>
+      </div>`;
+    }).join('');
+
+  }, 700);
+}
+
+function buildImportance(payload){
+  // Derive a normalized importance score from the payload values
+  const keys=['Equilibrium_Temp','Stellar_Flux_derived','Planet_Radius','Orbital_Period','Semi_Major_Axis','Planet_Mass','Stellar_Luminosity','Planet_Density','Stellar_Temp'];
+  const weights=[0.23,0.22,0.14,0.13,0.10,0.06,0.04,0.04,0.03];
+  const r={};
+  keys.forEach((k,i)=>{ r[k.replace('_derived','')]=weights[i]; });
+  return r;
+}
+
+// ═══════════════════════════════════════════════════════
+//  RANKINGS
+// ═══════════════════════════════════════════════════════
+async function fetchRankings(){
+  const loading = document.getElementById('rankings-loading');
+  const container = document.getElementById('rankings-container');
+  if(loading) {loading.textContent='Fetching habitable candidates…';loading.style.display='block';}
+  container.innerHTML='';
+  try{
+    const res = await fetch(getBase()+'/rank?n=20',{signal:AbortSignal.timeout(6000)});
+    const json = await res.json();
+    if(!res.ok||json.status==='error') throw new Error(json.message);
+    if(loading) loading.style.display='none';
+    renderRankings(json.top_planets, container);
+    // Also populate results page rank list if visible
+    populateResultRanks(json.top_planets);
+  }catch(e){
+    if(loading) loading.textContent='Could not load: '+e.message;
+  }
+}
+
+function renderRankings(planets, container){
+  container.innerHTML='';
+  planets.forEach((p,i)=>{
+    const prob = (p.Habitability_Probability*100).toFixed(3);
+    const st = ['A','F','G','K','M'].find(t=>p['StarType_'+t]===true||p['StarType_'+t]==1)||'?';
+    const card = document.createElement('div');
+    card.className='rank-card';
+    card.innerHTML=`
+      <div class="rank-num">#${i+1}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="rank-name">${p.Planet_Name}</div>
+        <div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type star</div>
+      </div>
+      <div class="rank-prob">
+        <div class="rank-pct">${prob}%</div>
+        <div class="rank-bar-bg"><div class="rank-bar" style="width:${Math.min(100,parseFloat(prob))}%"></div></div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function populateResultRanks(planets){
+  const sec = document.getElementById('rank-section');
+  const list = document.getElementById('rank-list');
+  if(!sec||!list) return;
+  sec.style.display='block';
+  list.innerHTML='';
+  planets.slice(0,10).forEach((p,i)=>{
+    const prob=(p.Habitability_Probability*100).toFixed(3);
+    const st=['A','F','G','K','M'].find(t=>p['StarType_'+t]===true||p['StarType_'+t]==1)||'?';
+    list.innerHTML+=`
+      <div class="rank-card">
+        <div class="rank-num">#${i+1}</div>
+        <div style="flex:1;">
+          <div class="rank-name">${p.Planet_Name}</div>
+          <div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type</div>
+        </div>
+        <div class="rank-prob">
+          <div class="rank-pct">${prob}%</div>
+          <div class="rank-bar-bg"><div class="rank-bar" style="width:${Math.min(100,parseFloat(prob))}%"></div></div>
+        </div>
+      </div>`;
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  SMOOTH NAV SCROLL (within pages)
+// ═══════════════════════════════════════════════════════
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+// Init reveals on current page
+setTimeout(triggerReveal, 300);
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+2026-03-25 15:00:07,172 | INFO | ExoHabitAI API starting...
+2026-03-25 15:00:19,385 | INFO | Model loaded successfully from D:\Desktop\B13-ExoHabitAI\backend\..\models\best_model.pkl
+2026-03-25 15:00:19,388 | INFO | Starting Flask development server
+2026-03-25 15:00:19,414 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-25 15:00:19,414 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-25 15:15:14,416 | INFO | ExoHabitAI API starting...
+2026-03-25 15:15:15,759 | INFO | Model loaded successfully from D:\Desktop\B13-ExoHabitAI\backend\..\models\best_model.pkl
+2026-03-25 15:15:15,762 | INFO | Starting Flask development server
+2026-03-25 15:15:15,785 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-25 15:15:15,785 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-25 15:16:03,125 | INFO | 127.0.0.1 - - [25/Mar/2026 15:16:03] "OPTIONS /predict HTTP/1.1" 200 -
+2026-03-25 15:16:03,379 | INFO | Prediction request received: {'Planet_Radius': 1.5, 'Planet_Mass': 4, 'Orbital_Period': 15, 'Semi_Major_Axis': 0.1, 'Planet_Density': 4.5, 'Equilibrium_Temp': 280, 'Stellar_Temp': 5300, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': -0.05, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-25 15:16:03,444 | INFO | Prediction completed | prediction=1 | probability=1.000000
+2026-03-25 15:16:03,447 | INFO | 127.0.0.1 - - [25/Mar/2026 15:16:03] "POST /predict HTTP/1.1" 200 -
+2026-03-25 15:18:21,726 | INFO | 127.0.0.1 - - [25/Mar/2026 15:18:21] "OPTIONS /predict HTTP/1.1" 200 -
+2026-03-25 15:18:21,967 | INFO | Prediction request received: {'Planet_Radius': 1.5, 'Planet_Mass': 4, 'Orbital_Period': 15, 'Semi_Major_Axis': 0.1, 'Planet_Density': 9.4, 'Equilibrium_Temp': 1166, 'Stellar_Temp': 5300, 'Stellar_Luminosity': 2.579, 'Stellar_Metallicity': -0.05, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-25 15:18:22,011 | INFO | Prediction completed | prediction=1 | probability=0.860000
+2026-03-25 15:18:22,013 | INFO | 127.0.0.1 - - [25/Mar/2026 15:18:22] "POST /predict HTTP/1.1" 200 -
+2026-03-26 06:16:00,117 | INFO | ExoHabitAI API starting...
+2026-03-26 06:16:14,983 | INFO | Model loaded successfully from D:\Desktop\B13-ExoHabitAI\backend\..\models\best_model.pkl
+2026-03-26 06:16:14,985 | INFO | Starting Flask development server
+2026-03-26 06:16:15,008 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-26 06:16:15,008 | INFO | [33mPress CTRL+C to quit[0m
+2026-03-26 06:16:24,855 | INFO | 127.0.0.1 - - [26/Mar/2026 06:16:24] "OPTIONS /predict HTTP/1.1" 200 -
+2026-03-26 06:16:25,114 | INFO | Prediction request received: {'Planet_Radius': 1.5, 'Planet_Mass': 4, 'Orbital_Period': 15, 'Semi_Major_Axis': 0.1, 'Planet_Density': 4.5, 'Equilibrium_Temp': 280, 'Stellar_Temp': 5300, 'Stellar_Luminosity': 0.4, 'Stellar_Metallicity': -0.05, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
+2026-03-26 06:16:25,185 | INFO | Prediction completed | prediction=1 | probability=1.000000
+2026-03-26 06:16:25,187 | INFO | 127.0.0.1 - - [26/Mar/2026 06:16:25] "POST /predict HTTP/1.1" 200 -
