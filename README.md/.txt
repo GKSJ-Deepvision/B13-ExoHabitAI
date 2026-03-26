@@ -1,0 +1,14 @@
+ ExoHabitAI Exoplanet Habitability Predictor
+
+ Overview
+The frontend of ExoHabitAI is built using HTML, CSS, and JavaScript. It provides a modern, interactive UI for users to input planetary data and visualize habitability predictions.
+
+ Technologies Used
+•	HTML5
+•	CSS3 (Glassmorphism + Animations)
+•	JavaScript (Vanilla JS)
+•	Chart.js (for visualization)
+
+ Conclusion
+
+The frontend provides a smooth and interactive experience for users to explore planetary habitability using AI.
