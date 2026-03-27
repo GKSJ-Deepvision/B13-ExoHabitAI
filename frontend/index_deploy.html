@@ -1048,7 +1048,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
       <div class="api-bar">
         <div class="field-wrap">
           <label class="field-label"><span class="field-label-left">Flask API endpoint</span></label>
-          <input type="text" id="api-url" value="http://localhost:5000" placeholder="http://localhost:5000">
+          <input type="text" id="api-url" value="" placeholder="http://localhost:5000 (leave empty when deployed)">
         </div>
         <button class="btn-sm" onclick="testConn()" style="white-space:nowrap;">Test connection</button>
       </div>
@@ -1220,7 +1220,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════
-//  THREE.JS SPACE BACKGROUND
+//  THREE.JS SPACE BACKGROUND  (unchanged)
 // ═══════════════════════════════════════════════════════
 (function(){
   const canvas = document.getElementById('space-canvas');
@@ -1228,12 +1228,9 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000008, 1);
-
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
   camera.position.set(0,0,5);
-
-  // ── Stars ──
   const starGeo = new THREE.BufferGeometry();
   const starCount = 3000;
   const starPos = new Float32Array(starCount*3);
@@ -1241,15 +1238,11 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
   starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
   const starMat = new THREE.PointsMaterial({color:0xaaccff, size:0.18, transparent:true, opacity:0.85});
   scene.add(new THREE.Points(starGeo, starMat));
-
-  // ── Distant stars (smaller layer) ──
   const starGeo2 = new THREE.BufferGeometry();
   const s2 = new Float32Array(2000*3);
   for(let i=0;i<2000*3;i++) s2[i]=(Math.random()-0.5)*400;
   starGeo2.setAttribute('position', new THREE.BufferAttribute(s2,3));
   scene.add(new THREE.Points(starGeo2, new THREE.PointsMaterial({color:0x6688aa,size:0.1,transparent:true,opacity:0.5})));
-
-  // ── Planets ──
   const planets = [];
   const pData = [
     {r:0.4, color:0x1a6b9a, emissive:0x0a2244, x:6, y:2, z:-3, speed:0.003, spinSpeed:0.008},
@@ -1260,23 +1253,16 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
   ];
   pData.forEach(pd => {
     const geo = new THREE.SphereGeometry(pd.r, 32, 32);
-    const mat = new THREE.MeshPhongMaterial({
-      color:pd.color, emissive:pd.emissive,
-      shininess:40, specular:0x224488
-    });
+    const mat = new THREE.MeshPhongMaterial({color:pd.color, emissive:pd.emissive, shininess:40, specular:0x224488});
     const mesh = new THREE.Mesh(geo, mat);
     mesh.position.set(pd.x, pd.y, pd.z);
-    scene._orbitAngle = mesh._orbitAngle = Math.random()*Math.PI*2;
-    mesh._orbitR = Math.sqrt(pd.x*pd.x + pd.y*pd.y);
-    mesh._orbitY = pd.y;
+    mesh._orbitAngle = Math.random()*Math.PI*2;
     mesh._orbitSpeed = pd.speed;
     mesh._spinSpeed = pd.spinSpeed;
     mesh._baseX = pd.x;
     scene.add(mesh);
     planets.push(mesh);
   });
-
-  // ── Asteroid belt ──
   const astGeo = new THREE.BufferGeometry();
   const astCount = 400;
   const astPos = new Float32Array(astCount*3);
@@ -1289,214 +1275,159 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
   }
   astGeo.setAttribute('position', new THREE.BufferAttribute(astPos,3));
   scene.add(new THREE.Points(astGeo, new THREE.PointsMaterial({color:0x887766,size:0.06,transparent:true,opacity:0.6})));
-
-  // ── Nebula (large transparent sphere) ──
   const nebGeo = new THREE.SphereGeometry(30,16,16);
-  const nebMat = new THREE.MeshBasicMaterial({
-    color:0x110033, transparent:true, opacity:0.12, side:THREE.BackSide
-  });
-  scene.add(new THREE.Mesh(nebGeo, nebMat));
-
-  // ── Lights ──
+  scene.add(new THREE.Mesh(nebGeo, new THREE.MeshBasicMaterial({color:0x110033,transparent:true,opacity:0.12,side:THREE.BackSide})));
   scene.add(new THREE.AmbientLight(0x112244, 0.6));
-  const sun = new THREE.PointLight(0x4488ff, 2, 50);
-  sun.position.set(0,5,-5);
-  scene.add(sun);
-  const sun2 = new THREE.PointLight(0xaa44ff, 1, 40);
-  sun2.position.set(-8,-3,-8);
-  scene.add(sun2);
-
-  // ── Shooting stars ──
+  const sun = new THREE.PointLight(0x4488ff, 2, 50); sun.position.set(0,5,-5); scene.add(sun);
+  const sun2 = new THREE.PointLight(0xaa44ff, 1, 40); sun2.position.set(-8,-3,-8); scene.add(sun2);
   let shootTimer = 0;
   const shoots = [];
-
   function makeShoot(){
     const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array([
-      (Math.random()-0.5)*20, (Math.random()-0.5)*10, (Math.random()-0.5)*10,
-      (Math.random()-0.5)*20 + 3, (Math.random()-0.5)*10 - 1, (Math.random()-0.5)*10
-    ]);
+    const pos = new Float32Array([(Math.random()-0.5)*20,(Math.random()-0.5)*10,(Math.random()-0.5)*10,(Math.random()-0.5)*20+3,(Math.random()-0.5)*10-1,(Math.random()-0.5)*10]);
     geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
-    const mat = new THREE.LineBasicMaterial({color:0x88ddff, transparent:true, opacity:0.9});
-    const line = new THREE.Line(geo,mat);
-    line._life = 0;
-    scene.add(line);
-    shoots.push(line);
+    const line = new THREE.Line(geo, new THREE.LineBasicMaterial({color:0x88ddff,transparent:true,opacity:0.9}));
+    line._life=0; scene.add(line); shoots.push(line);
   }
-
-  // Mouse parallax
   let mouseX=0, mouseY=0;
-  document.addEventListener('mousemove', e=>{
-    mouseX = (e.clientX/window.innerWidth - 0.5)*2;
-    mouseY = (e.clientY/window.innerHeight - 0.5)*2;
-  });
-
+  document.addEventListener('mousemove', e=>{mouseX=(e.clientX/window.innerWidth-0.5)*2; mouseY=(e.clientY/window.innerHeight-0.5)*2;});
   let t=0;
   function animate(){
-    requestAnimationFrame(animate);
-    t += 0.01;
-
-    // Parallax camera drift
-    camera.position.x += (mouseX*0.8 - camera.position.x)*0.02;
-    camera.position.y += (-mouseY*0.5 - camera.position.y)*0.02;
+    requestAnimationFrame(animate); t+=0.01;
+    camera.position.x += (mouseX*0.8-camera.position.x)*0.02;
+    camera.position.y += (-mouseY*0.5-camera.position.y)*0.02;
     camera.lookAt(0,0,0);
-
-    // Rotate star field slowly
-    scene.children[0].rotation.y = t*0.03;
-    scene.children[0].rotation.x = t*0.01;
-
-    // Orbit planets
-    planets.forEach(p => {
-      p._orbitAngle = (p._orbitAngle||0) + p._orbitSpeed;
-      p.position.x = Math.cos(p._orbitAngle) * Math.max(Math.abs(p._baseX), 3);
-      p.position.z = Math.sin(p._orbitAngle) * Math.max(Math.abs(p._baseX), 3) - 4;
-      p.rotation.y += p._spinSpeed;
-      // Pulsing glow
-      p.material.emissiveIntensity = 0.3 + Math.sin(t*1.5 + p._orbitAngle)*0.2;
+    scene.children[0].rotation.y=t*0.03; scene.children[0].rotation.x=t*0.01;
+    planets.forEach(p=>{
+      p._orbitAngle=(p._orbitAngle||0)+p._orbitSpeed;
+      p.position.x=Math.cos(p._orbitAngle)*Math.max(Math.abs(p._baseX),3);
+      p.position.z=Math.sin(p._orbitAngle)*Math.max(Math.abs(p._baseX),3)-4;
+      p.rotation.y+=p._spinSpeed;
+      p.material.emissiveIntensity=0.3+Math.sin(t*1.5+p._orbitAngle)*0.2;
     });
-
-    // Shooting stars
     shootTimer++;
-    if(shootTimer > 200 + Math.random()*300){ makeShoot(); shootTimer=0; }
+    if(shootTimer>200+Math.random()*300){makeShoot();shootTimer=0;}
     for(let i=shoots.length-1;i>=0;i--){
-      const s=shoots[i];
-      s._life++;
-      s.material.opacity = Math.max(0, 0.9 - s._life*0.04);
-      const pos = s.geometry.attributes.position.array;
-      pos[0]-=0.25; pos[3]-=0.25;
-      pos[1]-=0.12; pos[4]-=0.12;
+      const s=shoots[i]; s._life++;
+      s.material.opacity=Math.max(0,0.9-s._life*0.04);
+      const pos=s.geometry.attributes.position.array;
+      pos[0]-=0.25;pos[3]-=0.25;pos[1]-=0.12;pos[4]-=0.12;
       s.geometry.attributes.position.needsUpdate=true;
-      if(s._life>25){ scene.remove(s); shoots.splice(i,1); }
+      if(s._life>25){scene.remove(s);shoots.splice(i,1);}
     }
-
     renderer.render(scene,camera);
   }
   animate();
-
-  window.addEventListener('resize',()=>{
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-  });
+  window.addEventListener('resize',()=>{renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();});
 })();
 
 // ═══════════════════════════════════════════════════════
-//  CUSTOM CURSOR
+//  CUSTOM CURSOR  (unchanged)
 // ═══════════════════════════════════════════════════════
 (function(){
-  const cur = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-  let rx=0,ry=0, cx=0,cy=0;
+  const cur=document.getElementById('cursor');
+  const ring=document.getElementById('cursor-ring');
+  let rx=0,ry=0,cx=0,cy=0;
   document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;});
   function lerp(a,b,t){return a+(b-a)*t;}
-  function tick(){
-    rx=lerp(rx,cx,0.18); ry=lerp(ry,cy,0.18);
-    cur.style.left=cx+'px'; cur.style.top=cy+'px';
-    ring.style.left=rx+'px'; ring.style.top=ry+'px';
-    requestAnimationFrame(tick);
-  }
+  function tick(){rx=lerp(rx,cx,0.18);ry=lerp(ry,cy,0.18);cur.style.left=cx+'px';cur.style.top=cy+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(tick);}
   tick();
   document.addEventListener('mousedown',()=>{cur.style.transform='translate(-50%,-50%) scale(0.7)';ring.style.transform='translate(-50%,-50%) scale(0.85)';});
   document.addEventListener('mouseup',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';});
   document.querySelectorAll('button,a,[onclick]').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{
-      cur.style.width='18px';cur.style.height='18px';cur.style.background='var(--violet)';
-      ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(168,85,247,0.6)';
-    });
-    el.addEventListener('mouseleave',()=>{
-      cur.style.width='12px';cur.style.height='12px';cur.style.background='var(--cyan)';
-      ring.style.width='40px';ring.style.height='40px';ring.style.borderColor='rgba(56,200,255,0.5)';
-    });
+    el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';cur.style.background='var(--violet)';ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(168,85,247,0.6)';});
+    el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';cur.style.background='var(--cyan)';ring.style.width='40px';ring.style.height='40px';ring.style.borderColor='rgba(56,200,255,0.5)';});
   });
 })();
 
 // ═══════════════════════════════════════════════════════
-//  PAGE ROUTING + WARP TRANSITION
+//  PAGE ROUTING + WARP TRANSITION  (unchanged)
 // ═══════════════════════════════════════════════════════
-let currentPage = 'landing';
+let currentPage='landing';
 function goPage(name){
   if(name===currentPage) return;
-  const overlay = document.getElementById('warp-overlay');
-  // Warp in
-  overlay.style.transition='none';
-  overlay.style.transform='scale(0)';overlay.style.opacity='0.9';
-  overlay.style.borderRadius='50%';
+  const overlay=document.getElementById('warp-overlay');
+  overlay.style.transition='none';overlay.style.transform='scale(0)';overlay.style.opacity='0.9';overlay.style.borderRadius='50%';
   requestAnimationFrame(()=>{
     overlay.style.transition='transform 0.4s cubic-bezier(0.4,0,0.2,1), border-radius 0.4s, opacity 0.3s 0.3s';
     overlay.style.transform='scale(4)';overlay.style.borderRadius='0';
     setTimeout(()=>{
-      // Switch page
       document.getElementById('page-'+currentPage).classList.remove('active');
       document.getElementById('page-'+name).classList.add('active');
       document.getElementById('page-'+name).scrollTop=0;
       currentPage=name;
       const nav=document.getElementById('main-nav');
-      nav.style.display = name==='landing'?'none':'flex';
-      // Warp out
-      overlay.style.transition='opacity 0.35s';
-      overlay.style.opacity='0';
+      nav.style.display=name==='landing'?'none':'flex';
+      overlay.style.transition='opacity 0.35s';overlay.style.opacity='0';
       setTimeout(()=>{overlay.style.transform='scale(0)';},360);
-      // Trigger reveals
-      setTimeout(triggerReveal, 100);
-    }, 400);
+      setTimeout(triggerReveal,100);
+    },400);
   });
 }
-
 function enterUniverse(){
-  // Animate warp zoom
-  const btn = document.querySelector('.btn-enter');
+  const btn=document.querySelector('.btn-enter');
   if(btn){btn.textContent='Entering...';btn.style.pointerEvents='none';}
-  setTimeout(()=>goPage('dashboard'), 100);
+  setTimeout(()=>goPage('dashboard'),100);
 }
 
 // ═══════════════════════════════════════════════════════
-//  SCROLL REVEAL
+//  SCROLL REVEAL  (unchanged)
 // ═══════════════════════════════════════════════════════
 function triggerReveal(){
-  const activePage = document.getElementById('page-'+currentPage);
+  const activePage=document.getElementById('page-'+currentPage);
   if(!activePage) return;
-  const els = activePage.querySelectorAll('.reveal,.reveal-left,.reveal-right');
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
-  },{threshold:0.08});
+  const els=activePage.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.08});
   els.forEach(el=>io.observe(el));
 }
 triggerReveal();
 
 // ═══════════════════════════════════════════════════════
-//  COUNTER ANIMATION
+//  COUNTER ANIMATION  (unchanged)
 // ═══════════════════════════════════════════════════════
-function animateCounter(el, target, suffix=''){
-  let cur=0; const step = target/80;
-  const t = setInterval(()=>{
-    cur = Math.min(cur+step, target);
-    el.textContent = Math.floor(cur).toLocaleString() + suffix;
-    if(cur>=target) clearInterval(t);
-  },18);
+function animateCounter(el,target,suffix=''){
+  let cur=0;const step=target/80;
+  const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=Math.floor(cur).toLocaleString()+suffix;if(cur>=target)clearInterval(t);},18);
 }
-setTimeout(()=>animateCounter(document.getElementById('count-planets'),5600,'+'), 800);
+setTimeout(()=>animateCounter(document.getElementById('count-planets'),5600,'+'),800);
 
 // ═══════════════════════════════════════════════════════
 //  FORM FIELD DEFINITIONS
+//  ✅ IDs match exactly: model's FEATURE_ORDER (minus Stellar_Flux & StarType_*)
 // ═══════════════════════════════════════════════════════
 const FIELDS = [
-  {id:'Planet_Radius',     label:'Planet Radius',          icon:'🪐', unit:'R⊕',   min:0.1,  max:20,   step:0.1,  val:1.5,   tip:'Radius in Earth radii. Rocky planets are typically below 1.6 R⊕.'},
-  {id:'Planet_Mass',       label:'Planet Mass',            icon:'⚖️', unit:'M⊕',   min:0.1,  max:100,  step:0.1,  val:4.0,   tip:'Mass in Earth masses. Below 10 M⊕ suggests a rocky composition.'},
-  {id:'Orbital_Period',    label:'Orbital Period',         icon:'🔄', unit:'days',  min:1,    max:1000, step:1,    val:15,    tip:'Days to complete one orbit. Short periods are common for K-star habitable candidates.'},
-  {id:'Semi_Major_Axis',   label:'Semi-Major Axis',        icon:'📏', unit:'AU',    min:0.01, max:5,    step:0.01, val:0.1,   tip:'Average star–planet distance. Habitable zone varies by star type and luminosity.'},
-  {id:'Planet_Density',    label:'Planet Density',         icon:'🪨', unit:'g/cm³', min:0.1,  max:15,   step:0.1,  val:4.5,   tip:'Higher density → rocky composition. Earth is 5.5 g/cm³.'},
-  {id:'Equilibrium_Temp',  label:'Equilibrium Temp',       icon:'🌡️', unit:'K',     min:100,  max:2000, step:1,    val:280,   tip:'Theoretical surface temperature. 180–320 K is the liquid water range.'},
-  {id:'Stellar_Temp',      label:'Stellar Temperature',    icon:'☀️', unit:'K',     min:2500, max:10000,step:10,   val:5300,  tip:'Host star temperature. Sun = 5778 K. G and K stars are most compatible.'},
-  {id:'Stellar_Luminosity',label:'Stellar Luminosity',     icon:'✨', unit:'L☉',   min:0.001,max:5,    step:0.001,val:0.4,   tip:'Star brightness relative to the Sun. Used by the API to derive stellar flux.'},
-  {id:'Stellar_Metallicity',label:'Stellar Metallicity',   icon:'⚗️', unit:'[Fe/H]',min:-1,   max:1,    step:0.01, val:-0.05, tip:'Log Fe/H vs Sun. 0 = solar metallicity. Affects planet formation probability.'},
+  {id:'Planet_Radius',      label:'Planet Radius',       icon:'🪐', unit:'R⊕',    min:0.1,  max:20,    step:0.1,  val:1.5,   tip:'Radius in Earth radii. Rocky planets are typically below 1.6 R⊕.'},
+  {id:'Planet_Mass',        label:'Planet Mass',         icon:'⚖️', unit:'M⊕',    min:0.1,  max:100,   step:0.1,  val:4.0,   tip:'Mass in Earth masses. Below 10 M⊕ suggests a rocky composition.'},
+  {id:'Orbital_Period',     label:'Orbital Period',      icon:'🔄', unit:'days',   min:1,    max:1000,  step:1,    val:15,    tip:'Days to complete one orbit.'},
+  {id:'Semi_Major_Axis',    label:'Semi-Major Axis',     icon:'📏', unit:'AU',     min:0.01, max:5,     step:0.01, val:0.1,   tip:'Average star–planet distance. Habitable zone varies by star type.'},
+  {id:'Planet_Density',     label:'Planet Density',      icon:'🪨', unit:'g/cm³',  min:0.1,  max:15,    step:0.1,  val:4.5,   tip:'Higher density → rocky composition. Earth is 5.5 g/cm³.'},
+  {id:'Equilibrium_Temp',   label:'Equilibrium Temp',    icon:'🌡️', unit:'K',      min:100,  max:2000,  step:1,    val:280,   tip:'Theoretical surface temperature. 180–320 K is the liquid water range.'},
+  {id:'Stellar_Temp',       label:'Stellar Temperature', icon:'☀️', unit:'K',      min:2500, max:10000, step:10,   val:5300,  tip:'Host star temperature. Sun = 5778 K. G and K stars are most compatible.'},
+  {id:'Stellar_Luminosity', label:'Stellar Luminosity',  icon:'✨', unit:'L☉',    min:0.001,max:5,     step:0.001,val:0.4,   tip:'Star brightness relative to the Sun. Used to derive stellar flux.'},
+  {id:'Stellar_Metallicity',label:'Stellar Metallicity', icon:'⚗️', unit:'[Fe/H]', min:-1,   max:1,     step:0.01, val:-0.05, tip:'Log Fe/H vs Sun. 0 = solar metallicity.'},
 ];
 
-// Build form
+// ── Real feature importance from trained model ──────────────────────────
+// Used as fallback if API doesn't return feature_importance
+const STATIC_IMPORTANCE = {
+  Stellar_Flux:        0.2511,
+  Equilibrium_Temp:    0.2468,
+  Planet_Radius:       0.1106,
+  Orbital_Period:      0.0959,
+  Semi_Major_Axis:     0.0827,
+  Planet_Mass:         0.0759,
+  Planet_Density:      0.0447,
+  Stellar_Luminosity:  0.0407,
+  Stellar_Temp:        0.0240,
+  Stellar_Metallicity: 0.0156,
+};
+
+// ── Build form dynamically ──────────────────────────────────────────────
 (function buildForm(){
-  const grid = document.getElementById('form-grid');
+  const grid=document.getElementById('form-grid');
   FIELDS.forEach(f=>{
-    const pct = ((f.val-f.min)/(f.max-f.min)*100).toFixed(1);
-    grid.innerHTML += `
+    const pct=((f.val-f.min)/(f.max-f.min)*100).toFixed(1);
+    grid.innerHTML+=`
     <div class="field-wrap">
       <div class="field-label">
         <span class="field-label-left">${f.icon} ${f.label} <span class="tip-wrap"><i class="tip-icon">?</i><span class="tip-text">${f.tip}</span></span></span>
@@ -1509,65 +1440,49 @@ const FIELDS = [
         oninput="syncR('${f.id}','${f.unit}',this)">
     </div>`;
   });
-
   // Star type buttons
-  const starOpts = document.getElementById('star-opts');
-  const starData = [
-    {v:'A',label:'A',note:'Hot & bright'},
-    {v:'F',label:'F',note:'Sun-like (hotter)'},
-    {v:'G',label:'G ☀',note:'Sun-like'},
-    {v:'K',label:'K',note:'Most common',sel:true},
-    {v:'M',label:'M',note:'Red dwarf'},
-  ];
-  starData.forEach(s=>{
-    const lbl = document.createElement('label');
-    lbl.className = 'star-opt' + (s.sel?' selected':'');
-    lbl.innerHTML = `<input type="radio" name="star_type" value="${s.v}" ${s.sel?'checked':''}><strong>${s.label}</strong> <span style="font-size:0.72rem;color:var(--text-dim);">${s.note}</span>`;
-    lbl.addEventListener('click',()=>{
-      document.querySelectorAll('.star-opt').forEach(l=>l.classList.remove('selected'));
-      lbl.classList.add('selected');
-    });
+  const starOpts=document.getElementById('star-opts');
+  [{v:'A',label:'A',note:'Hot & bright'},{v:'F',label:'F',note:'Sun-like (hotter)'},{v:'G',label:'G ☀',note:'Sun-like'},{v:'K',label:'K',note:'Most common',sel:true},{v:'M',label:'M',note:'Red dwarf'}].forEach(s=>{
+    const lbl=document.createElement('label');
+    lbl.className='star-opt'+(s.sel?' selected':'');
+    lbl.innerHTML=`<input type="radio" name="star_type" value="${s.v}" ${s.sel?'checked':''}><strong>${s.label}</strong> <span style="font-size:0.72rem;color:var(--text-dim);">${s.note}</span>`;
+    lbl.addEventListener('click',()=>{document.querySelectorAll('.star-opt').forEach(l=>l.classList.remove('selected'));lbl.classList.add('selected');});
     starOpts.appendChild(lbl);
   });
 })();
 
 function syncF(id,unit,el){
-  const v = parseFloat(el.value);
-  const f = FIELDS.find(x=>x.id===id);
-  const pct = ((v-f.min)/(f.max-f.min)*100).toFixed(1);
+  const v=parseFloat(el.value);
+  const f=FIELDS.find(x=>x.id===id);
+  const pct=((v-f.min)/(f.max-f.min)*100).toFixed(1);
   el.style.setProperty('--pct',pct+'%');
-  document.getElementById(id+'-num').value = v;
-  document.getElementById(id+'-val').textContent = v+' '+unit;
+  document.getElementById(id+'-num').value=v;
+  document.getElementById(id+'-val').textContent=v+' '+unit;
 }
 function syncR(id,unit,el){
-  const v = parseFloat(el.value)||0;
-  const f = FIELDS.find(x=>x.id===id);
-  const pct = ((v-f.min)/(f.max-f.min)*100).toFixed(1);
-  const rng = document.getElementById(id+'-range');
-  rng.value = v; rng.style.setProperty('--pct',pct+'%');
-  document.getElementById(id+'-val').textContent = v+' '+unit;
+  const v=parseFloat(el.value)||0;
+  const f=FIELDS.find(x=>x.id===id);
+  const pct=((v-f.min)/(f.max-f.min)*100).toFixed(1);
+  const rng=document.getElementById(id+'-range');
+  rng.value=v;rng.style.setProperty('--pct',pct+'%');
+  document.getElementById(id+'-val').textContent=v+' '+unit;
 }
 
 function loadExample(){
-  const ex = {Planet_Radius:1.5,Planet_Mass:4.0,Orbital_Period:15,Semi_Major_Axis:0.1,
-    Planet_Density:4.5,Equilibrium_Temp:280,Stellar_Temp:5300,Stellar_Luminosity:0.4,Stellar_Metallicity:-0.05};
+  const ex={Planet_Radius:1.5,Planet_Mass:4.0,Orbital_Period:15,Semi_Major_Axis:0.1,Planet_Density:4.5,Equilibrium_Temp:280,Stellar_Temp:5300,Stellar_Luminosity:0.4,Stellar_Metallicity:-0.05};
   FIELDS.forEach(f=>{
-    const v = ex[f.id]!==undefined?ex[f.id]:f.val;
-    const pct = ((v-f.min)/(f.max-f.min)*100).toFixed(1);
+    const v=ex[f.id]!==undefined?ex[f.id]:f.val;
+    const pct=((v-f.min)/(f.max-f.min)*100).toFixed(1);
     document.getElementById(f.id+'-num').value=v;
     document.getElementById(f.id+'-range').value=v;
     document.getElementById(f.id+'-range').style.setProperty('--pct',pct+'%');
     document.getElementById(f.id+'-val').textContent=v+' '+f.unit;
   });
-  document.querySelectorAll('.star-opt').forEach(l=>{
-    l.classList.remove('selected');
-    if(l.querySelector('input').value==='K') l.classList.add('selected');
-  });
+  document.querySelectorAll('.star-opt').forEach(l=>{l.classList.remove('selected');if(l.querySelector('input').value==='K')l.classList.add('selected');});
 }
-
 function resetForm(){
   FIELDS.forEach(f=>{
-    const pct = ((f.val-f.min)/(f.max-f.min)*100).toFixed(1);
+    const pct=((f.val-f.min)/(f.max-f.min)*100).toFixed(1);
     document.getElementById(f.id+'-num').value=f.val;
     document.getElementById(f.id+'-range').value=f.val;
     document.getElementById(f.id+'-range').style.setProperty('--pct',pct+'%');
@@ -1577,16 +1492,19 @@ function resetForm(){
 }
 
 // ═══════════════════════════════════════════════════════
-//  API CONNECTION TEST
+//  API HELPERS
 // ═══════════════════════════════════════════════════════
-function getBase(){return document.getElementById('api-url').value.trim().replace(/\/+$/,'');}
+function getBase(){
+  const manual = document.getElementById('api-url').value.trim().replace(/\/+$/,'');
+  return manual || window.location.origin;
+}
+
 async function testConn(){
-  const badge = document.getElementById('conn-badge');
-  badge.style.display='block';badge.className='conn-badge testing';
-  badge.textContent='Testing connection…';
+  const badge=document.getElementById('conn-badge');
+  badge.style.display='block';badge.className='conn-badge testing';badge.textContent='Testing connection…';
   try{
-    const r = await fetch(getBase()+'/health',{method:'GET',signal:AbortSignal.timeout(4000)});
-    const j = await r.json();
+    const r=await fetch(getBase()+'/health',{method:'GET',signal:AbortSignal.timeout(4000)});
+    const j=await r.json();
     badge.className='conn-badge ok';
     badge.textContent='✓ Connected — model loaded: '+j.model_loaded;
   }catch(e){
@@ -1596,27 +1514,33 @@ async function testConn(){
 }
 
 // ═══════════════════════════════════════════════════════
-//  PREDICTION
+//  PREDICTION  ← MAIN INTEGRATION POINT
 // ═══════════════════════════════════════════════════════
-let lastResult = null;
+let lastResult=null;
+
 async function runPrediction(){
-  const errBox = document.getElementById('err-box');
+  const errBox=document.getElementById('err-box');
   errBox.classList.remove('show');
 
-  const payload = {};
+  // ── 1. Collect all 9 numeric inputs ──────────────────────────────────
+  const payload={};
   for(const f of FIELDS){
-    const v = parseFloat(document.getElementById(f.id+'-num').value);
+    const v=parseFloat(document.getElementById(f.id+'-num').value);
     if(isNaN(v)){
       errBox.textContent='Please enter a valid number for "'+f.label+'".';
-      errBox.classList.add('show'); return;
+      errBox.classList.add('show');return;
     }
     payload[f.id]=v;
   }
-  const starType = document.querySelector('input[name="star_type"]:checked')?.value||'K';
+
+  // ── 2. Add one-hot encoded star type ─────────────────────────────────
+  //  utils.py validate_input() expects: StarType_A, StarType_F, StarType_G, StarType_K, StarType_M
+  const starType=document.querySelector('input[name="star_type"]:checked')?.value||'K';
   ['A','F','G','K','M'].forEach(t=>{payload['StarType_'+t]=t===starType?1:0;});
 
+  // ── 3. Show loading overlay ───────────────────────────────────────────
   document.getElementById('predict-btn').disabled=true;
-  const ov = document.getElementById('loading-overlay');
+  const ov=document.getElementById('loading-overlay');
   ov.classList.add('active');
   const msgs=['Initializing habitability model…','Computing stellar flux…','Running Random Forest…','Generating probability score…'];
   let mi=0;
@@ -1624,18 +1548,25 @@ async function runPrediction(){
   subEl.textContent=msgs[0];
   const msgInt=setInterval(()=>{mi=(mi+1)%msgs.length;subEl.textContent=msgs[mi];},900);
 
+  // ── 4. POST to /predict ───────────────────────────────────────────────
   try{
-    const res = await fetch(getBase()+'/predict',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload),signal:AbortSignal.timeout(10000)
+    const res=await fetch(getBase()+'/predict',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),
+      signal:AbortSignal.timeout(10000)
     });
-    const data = await res.json();
+    const data=await res.json();
+
     if(!res.ok||data.status==='error') throw new Error(data.message||'HTTP '+res.status);
-    lastResult={...data, payload};
+
+    // ── 5. Save and render ────────────────────────────────────────────
+    lastResult={...data,payload};
     clearInterval(msgInt);
     ov.classList.remove('active');
     document.getElementById('predict-btn').disabled=false;
-    showResults(data, payload);
+    showResults(data,payload);
+
   }catch(err){
     clearInterval(msgInt);
     ov.classList.remove('active');
@@ -1648,28 +1579,24 @@ async function runPrediction(){
 // ═══════════════════════════════════════════════════════
 //  RESULTS PAGE
 // ═══════════════════════════════════════════════════════
-function showResults(data, payload){
-  const prob = parseFloat(data.habitability_probability||0);
-  const pct = Math.round(prob*100);
-  const isHab = data.prediction===1;
-  const isBorder = prob>=0.35 && prob<0.5;
+function showResults(data,payload){
+  const prob=parseFloat(data.habitability_probability||0);
+  const pct=Math.round(prob*100);
+  const isHab=data.prediction===1;
+  const isBorder=prob>=0.35&&prob<0.5;
 
-  // Navigate to results page
   goPage('results');
 
-  // Animate circle after transition
   setTimeout(()=>{
-    const circumference = 2*Math.PI*80; // r=80 → ~502
-    const fill = document.getElementById('c-fill');
-    const glow = document.getElementById('c-glow');
-    const color = isHab?'#00ff88':isBorder?'#ffb020':'#ff4466';
-    fill.style.stroke=color; glow.style.stroke=color;
-    fill.style.strokeDashoffset=circumference;
-    glow.style.strokeDashoffset=circumference;
+    const circumference=2*Math.PI*80;
+    const fill=document.getElementById('c-fill');
+    const glow=document.getElementById('c-glow');
+    const color=isHab?'#00ff88':isBorder?'#ffb020':'#ff4466';
+    fill.style.stroke=color;glow.style.stroke=color;
+    fill.style.strokeDashoffset=circumference;glow.style.strokeDashoffset=circumference;
     setTimeout(()=>{
-      const offset = circumference*(1-prob);
-      fill.style.strokeDashoffset=offset;
-      glow.style.strokeDashoffset=offset;
+      const offset=circumference*(1-prob);
+      fill.style.strokeDashoffset=offset;glow.style.strokeDashoffset=offset;
     },200);
 
     const pctEl=document.getElementById('r-pct');
@@ -1677,11 +1604,12 @@ function showResults(data, payload){
     let cp=0;
     const ct=setInterval(()=>{cp=Math.min(cp+1,pct);pctEl.textContent=cp+'%';if(cp>=pct)clearInterval(ct);},16);
 
-    const vText = document.getElementById('r-verdict');
-    const vDesc = document.getElementById('r-desc');
-    const zBadge = document.getElementById('r-zone');
-    vText.textContent = data.label||(isHab?'Potentially Habitable':'Non-Habitable');
-    vText.style.color = color;
+    const vText=document.getElementById('r-verdict');
+    const vDesc=document.getElementById('r-desc');
+    const zBadge=document.getElementById('r-zone');
+    // Use the label returned by Flask — it's set correctly by app.py
+    vText.textContent=data.label||(isHab?'Potentially Habitable':'Non-Habitable');
+    vText.style.color=color;
 
     if(isHab){
       vDesc.textContent='This planet meets composition, temperature, and insolation criteria. Recommended for observational follow-up.';
@@ -1697,15 +1625,15 @@ function showResults(data, payload){
       zBadge.className='zone-badge no-hab';
     }
 
-    // Factor bars — use real importances if API returns them, else derive from payload values
-    const fi = data.feature_importance || buildImportance(payload);
-    const list = document.getElementById('factor-list');
+    // ── Factor bars: use real importances from API response (or fallback) ──
+    const fi=data.feature_importance||STATIC_IMPORTANCE;
+    const list=document.getElementById('factor-list');
     list.innerHTML='';
-    const sorted = Object.entries(fi).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const sorted=Object.entries(fi).sort((a,b)=>b[1]-a[1]).slice(0,8);
     sorted.forEach(([key,score])=>{
-      const p2 = Math.round(score*100);
-      const c = score>0.5?'var(--green-hab)':score>0.25?'var(--cyan)':'var(--violet)';
-      const humanLabel = (FIELDS.find(f=>f.id===key)||{label:key.replace(/_/g,' ')}).label;
+      const p2=Math.round(score*100);
+      const c=score>0.2?'var(--green-hab)':score>0.1?'var(--cyan)':'var(--violet)';
+      const humanLabel=(FIELDS.find(f=>f.id===key)||{label:key.replace(/_/g,' ')}).label;
       list.innerHTML+=`
         <div class="factor">
           <span class="factor-name">${humanLabel}</span>
@@ -1713,73 +1641,60 @@ function showResults(data, payload){
           <span class="factor-pct" style="color:${c}">${p2}%</span>
         </div>`;
     });
-    setTimeout(()=>{
-      document.querySelectorAll('.factor-bar').forEach(b=>{b.style.width=b.dataset.w+'%';});
-    },400);
+    setTimeout(()=>{document.querySelectorAll('.factor-bar').forEach(b=>{b.style.width=b.dataset.w+'%';});},400);
 
-    // Conditions row
-    const condRow = document.getElementById('cond-row');
-    const conds = [
-      {icon:'🌡️',label:'Equilibrium Temp',val:payload.Equilibrium_Temp+' K',ok:payload.Equilibrium_Temp>=180&&payload.Equilibrium_Temp<=320},
-      {icon:'🪐',label:'Planet Radius',val:payload.Planet_Radius+' R⊕',ok:payload.Planet_Radius<=1.6},
-      {icon:'⚖️',label:'Planet Mass',val:payload.Planet_Mass+' M⊕',ok:payload.Planet_Mass<=10},
-      {icon:'⭐',label:'Stellar Temp',val:payload.Stellar_Temp+' K',ok:payload.Stellar_Temp>=3500&&payload.Stellar_Temp<=7000},
-      {icon:'📏',label:'Semi-Major Axis',val:payload.Semi_Major_Axis+' AU',ok:payload.Semi_Major_Axis>=0.04&&payload.Semi_Major_Axis<=2},
-      {icon:'✨',label:'Luminosity',val:payload.Stellar_Luminosity+' L☉',ok:payload.Stellar_Luminosity>=0.05&&payload.Stellar_Luminosity<=10},
+    // ── Conditions row ──────────────────────────────────────────────────
+    const condRow=document.getElementById('cond-row');
+    const conds=[
+      {icon:'🌡️',label:'Equilibrium Temp', val:payload.Equilibrium_Temp+' K',    ok:payload.Equilibrium_Temp>=180&&payload.Equilibrium_Temp<=320},
+      {icon:'🪐',label:'Planet Radius',    val:payload.Planet_Radius+' R⊕',      ok:payload.Planet_Radius<=1.6},
+      {icon:'⚖️',label:'Planet Mass',      val:payload.Planet_Mass+' M⊕',        ok:payload.Planet_Mass<=10},
+      {icon:'⭐',label:'Stellar Temp',     val:payload.Stellar_Temp+' K',         ok:payload.Stellar_Temp>=3500&&payload.Stellar_Temp<=7000},
+      {icon:'📏',label:'Semi-Major Axis',  val:payload.Semi_Major_Axis+' AU',     ok:payload.Semi_Major_Axis>=0.04&&payload.Semi_Major_Axis<=2},
+      {icon:'✨',label:'Luminosity',       val:payload.Stellar_Luminosity+' L☉', ok:payload.Stellar_Luminosity>=0.05&&payload.Stellar_Luminosity<=10},
     ];
-    condRow.innerHTML = conds.map(c=>{
-      const col = c.ok?'var(--green-hab)':'var(--red-dead)';
+    condRow.innerHTML=conds.map(c=>{
+      const col=c.ok?'var(--green-hab)':'var(--red-dead)';
       return `<div class="glass cond-card">
         <div class="cond-icon" style="color:${col}">${c.icon}</div>
         <div class="cond-label">${c.label}</div>
         <div class="cond-val" style="color:${col}">${c.val}</div>
       </div>`;
     }).join('');
-
-  }, 700);
-}
-
-function buildImportance(payload){
-  // Derive a normalized importance score from the payload values
-  const keys=['Equilibrium_Temp','Stellar_Flux_derived','Planet_Radius','Orbital_Period','Semi_Major_Axis','Planet_Mass','Stellar_Luminosity','Planet_Density','Stellar_Temp'];
-  const weights=[0.23,0.22,0.14,0.13,0.10,0.06,0.04,0.04,0.03];
-  const r={};
-  keys.forEach((k,i)=>{ r[k.replace('_derived','')]=weights[i]; });
-  return r;
+  },700);
 }
 
 // ═══════════════════════════════════════════════════════
 //  RANKINGS
 // ═══════════════════════════════════════════════════════
 async function fetchRankings(){
-  const loading = document.getElementById('rankings-loading');
-  const container = document.getElementById('rankings-container');
-  if(loading) {loading.textContent='Fetching habitable candidates…';loading.style.display='block';}
+  const loading=document.getElementById('rankings-loading');
+  const container=document.getElementById('rankings-container');
+  if(loading){loading.textContent='Fetching habitable candidates…';loading.style.display='block';}
   container.innerHTML='';
   try{
-    const res = await fetch(getBase()+'/rank?n=20',{signal:AbortSignal.timeout(6000)});
-    const json = await res.json();
+    const res=await fetch(getBase()+'/rank?n=20',{signal:AbortSignal.timeout(6000)});
+    const json=await res.json();
     if(!res.ok||json.status==='error') throw new Error(json.message);
     if(loading) loading.style.display='none';
-    renderRankings(json.top_planets, container);
-    // Also populate results page rank list if visible
+    renderRankings(json.top_planets,container);
     populateResultRanks(json.top_planets);
   }catch(e){
     if(loading) loading.textContent='Could not load: '+e.message;
   }
 }
 
-function renderRankings(planets, container){
+function renderRankings(planets,container){
   container.innerHTML='';
   planets.forEach((p,i)=>{
-    const prob = (p.Habitability_Probability*100).toFixed(3);
-    const st = ['A','F','G','K','M'].find(t=>p['StarType_'+t]===true||p['StarType_'+t]==1)||'?';
-    const card = document.createElement('div');
+    const prob=(p.Habitability_Probability*100).toFixed(3);
+    const st=['A','F','G','K','M'].find(t=>p['StarType_'+t]===true||p['StarType_'+t]==1)||'?';
+    const card=document.createElement('div');
     card.className='rank-card';
     card.innerHTML=`
       <div class="rank-num">#${i+1}</div>
       <div style="flex:1;min-width:0;">
-        <div class="rank-name">${p.Planet_Name}</div>
+        <div class="rank-name">${p.Planet_Name||'Unknown'}</div>
         <div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type star</div>
       </div>
       <div class="rank-prob">
@@ -1791,11 +1706,10 @@ function renderRankings(planets, container){
 }
 
 function populateResultRanks(planets){
-  const sec = document.getElementById('rank-section');
-  const list = document.getElementById('rank-list');
+  const sec=document.getElementById('rank-section');
+  const list=document.getElementById('rank-list');
   if(!sec||!list) return;
-  sec.style.display='block';
-  list.innerHTML='';
+  sec.style.display='block';list.innerHTML='';
   planets.slice(0,10).forEach((p,i)=>{
     const prob=(p.Habitability_Probability*100).toFixed(3);
     const st=['A','F','G','K','M'].find(t=>p['StarType_'+t]===true||p['StarType_'+t]==1)||'?';
@@ -1803,7 +1717,7 @@ function populateResultRanks(planets){
       <div class="rank-card">
         <div class="rank-num">#${i+1}</div>
         <div style="flex:1;">
-          <div class="rank-name">${p.Planet_Name}</div>
+          <div class="rank-name">${p.Planet_Name||'Unknown'}</div>
           <div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type</div>
         </div>
         <div class="rank-prob">
@@ -1814,18 +1728,8 @@ function populateResultRanks(planets){
   });
 }
 
-// ═══════════════════════════════════════════════════════
-//  SMOOTH NAV SCROLL (within pages)
-// ═══════════════════════════════════════════════════════
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
-  });
-});
-
-// Init reveals on current page
-setTimeout(triggerReveal, 300);
+// Init
+setTimeout(triggerReveal,300);
 </script>
 </body>
 </html>
