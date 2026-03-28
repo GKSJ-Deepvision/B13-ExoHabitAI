@@ -129,6 +129,22 @@ nav{
 }
 .nav-links a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan);}
 
+/* ── DASHBOARD NAV LINK HIGHLIGHT ── */
+.nav-links a.nav-dash{
+  color:var(--electric);
+  border:0.5px solid rgba(0,245,255,0.25);
+  padding:4px 14px;border-radius:100px;
+  background:rgba(0,245,255,0.04);
+  transition:all 0.2s;
+}
+.nav-links a.nav-dash:hover{
+  color:#fff;
+  background:rgba(0,245,255,0.1);
+  border-color:rgba(0,245,255,0.5);
+  box-shadow:0 0 16px rgba(0,245,255,0.2);
+  text-shadow:none;
+}
+
 /* ═══════════════════════════════════════
    PAGE 1 — LANDING
 ═══════════════════════════════════════ */
@@ -934,6 +950,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
     <li><a href="#" onclick="goPage('predict');return false;">Predict</a></li>
     <li><a href="#" onclick="goPage('results');return false;">Rankings</a></li>
     <li><a href="#" onclick="goPage('about');return false;">About</a></li>
+    <li><a href="/dashboard" target="_blank" class="nav-dash">✦ Dashboard</a></li>
   </ul>
 </nav>
 
@@ -1030,6 +1047,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
     <div class="footer-links">
       <a href="#" onclick="goPage('predict');return false;">Predict</a>
       <a href="#" onclick="goPage('about');return false;">About</a>
+      <a href="/dashboard" target="_blank">Dashboard</a>
     </div>
   </footer>
 </div>
@@ -1095,6 +1113,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
     <div class="footer-links">
       <a href="#" onclick="goPage('dashboard');return false;">Home</a>
       <a href="#" onclick="goPage('about');return false;">About</a>
+      <a href="/dashboard" target="_blank">Dashboard</a>
     </div>
   </footer>
 </div>
@@ -1150,6 +1169,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
     <div class="footer-links">
       <a href="#" onclick="goPage('dashboard');return false;">Home</a>
       <a href="#" onclick="goPage('predict');return false;">New prediction</a>
+      <a href="/dashboard" target="_blank">Dashboard</a>
     </div>
   </footer>
 </div>
@@ -1212,6 +1232,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
     <div class="footer-links">
       <a href="#" onclick="goPage('dashboard');return false;">Home</a>
       <a href="#" onclick="goPage('predict');return false;">Predict</a>
+      <a href="/dashboard" target="_blank">Dashboard</a>
     </div>
   </footer>
 </div>
@@ -1220,7 +1241,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════
-//  THREE.JS SPACE BACKGROUND  (unchanged)
+//  THREE.JS SPACE BACKGROUND
 // ═══════════════════════════════════════════════════════
 (function(){
   const canvas = document.getElementById('space-canvas');
@@ -1322,7 +1343,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
 })();
 
 // ═══════════════════════════════════════════════════════
-//  CUSTOM CURSOR  (unchanged)
+//  CUSTOM CURSOR
 // ═══════════════════════════════════════════════════════
 (function(){
   const cur=document.getElementById('cursor');
@@ -1341,7 +1362,7 @@ footer p{font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);}
 })();
 
 // ═══════════════════════════════════════════════════════
-//  PAGE ROUTING + WARP TRANSITION  (unchanged)
+//  PAGE ROUTING + WARP TRANSITION
 // ═══════════════════════════════════════════════════════
 let currentPage='landing';
 function goPage(name){
@@ -1371,7 +1392,7 @@ function enterUniverse(){
 }
 
 // ═══════════════════════════════════════════════════════
-//  SCROLL REVEAL  (unchanged)
+//  SCROLL REVEAL
 // ═══════════════════════════════════════════════════════
 function triggerReveal(){
   const activePage=document.getElementById('page-'+currentPage);
@@ -1383,7 +1404,7 @@ function triggerReveal(){
 triggerReveal();
 
 // ═══════════════════════════════════════════════════════
-//  COUNTER ANIMATION  (unchanged)
+//  COUNTER ANIMATION
 // ═══════════════════════════════════════════════════════
 function animateCounter(el,target,suffix=''){
   let cur=0;const step=target/80;
@@ -1392,8 +1413,7 @@ function animateCounter(el,target,suffix=''){
 setTimeout(()=>animateCounter(document.getElementById('count-planets'),5600,'+'),800);
 
 // ═══════════════════════════════════════════════════════
-//  FORM FIELD DEFINITIONS
-//  ✅ IDs match exactly: model's FEATURE_ORDER (minus Stellar_Flux & StarType_*)
+//  FORM FIELDS
 // ═══════════════════════════════════════════════════════
 const FIELDS = [
   {id:'Planet_Radius',      label:'Planet Radius',       icon:'🪐', unit:'R⊕',    min:0.1,  max:20,    step:0.1,  val:1.5,   tip:'Radius in Earth radii. Rocky planets are typically below 1.6 R⊕.'},
@@ -1407,22 +1427,12 @@ const FIELDS = [
   {id:'Stellar_Metallicity',label:'Stellar Metallicity', icon:'⚗️', unit:'[Fe/H]', min:-1,   max:1,     step:0.01, val:-0.05, tip:'Log Fe/H vs Sun. 0 = solar metallicity.'},
 ];
 
-// ── Real feature importance from trained model ──────────────────────────
-// Used as fallback if API doesn't return feature_importance
 const STATIC_IMPORTANCE = {
-  Stellar_Flux:        0.2511,
-  Equilibrium_Temp:    0.2468,
-  Planet_Radius:       0.1106,
-  Orbital_Period:      0.0959,
-  Semi_Major_Axis:     0.0827,
-  Planet_Mass:         0.0759,
-  Planet_Density:      0.0447,
-  Stellar_Luminosity:  0.0407,
-  Stellar_Temp:        0.0240,
-  Stellar_Metallicity: 0.0156,
+  Stellar_Flux:0.2511,Equilibrium_Temp:0.2468,Planet_Radius:0.1106,
+  Orbital_Period:0.0959,Semi_Major_Axis:0.0827,Planet_Mass:0.0759,
+  Planet_Density:0.0447,Stellar_Luminosity:0.0407,Stellar_Temp:0.0240,Stellar_Metallicity:0.0156,
 };
 
-// ── Build form dynamically ──────────────────────────────────────────────
 (function buildForm(){
   const grid=document.getElementById('form-grid');
   FIELDS.forEach(f=>{
@@ -1440,7 +1450,6 @@ const STATIC_IMPORTANCE = {
         oninput="syncR('${f.id}','${f.unit}',this)">
     </div>`;
   });
-  // Star type buttons
   const starOpts=document.getElementById('star-opts');
   [{v:'A',label:'A',note:'Hot & bright'},{v:'F',label:'F',note:'Sun-like (hotter)'},{v:'G',label:'G ☀',note:'Sun-like'},{v:'K',label:'K',note:'Most common',sel:true},{v:'M',label:'M',note:'Red dwarf'}].forEach(s=>{
     const lbl=document.createElement('label');
@@ -1467,7 +1476,6 @@ function syncR(id,unit,el){
   rng.value=v;rng.style.setProperty('--pct',pct+'%');
   document.getElementById(id+'-val').textContent=v+' '+unit;
 }
-
 function loadExample(){
   const ex={Planet_Radius:1.5,Planet_Mass:4.0,Orbital_Period:15,Semi_Major_Axis:0.1,Planet_Density:4.5,Equilibrium_Temp:280,Stellar_Temp:5300,Stellar_Luminosity:0.4,Stellar_Metallicity:-0.05};
   FIELDS.forEach(f=>{
@@ -1491,14 +1499,10 @@ function resetForm(){
   document.getElementById('err-box').classList.remove('show');
 }
 
-// ═══════════════════════════════════════════════════════
-//  API HELPERS
-// ═══════════════════════════════════════════════════════
 function getBase(){
   const manual = document.getElementById('api-url').value.trim().replace(/\/+$/,'');
   return manual || window.location.origin;
 }
-
 async function testConn(){
   const badge=document.getElementById('conn-badge');
   badge.style.display='block';badge.className='conn-badge testing';badge.textContent='Testing connection…';
@@ -1513,32 +1517,18 @@ async function testConn(){
   }
 }
 
-// ═══════════════════════════════════════════════════════
-//  PREDICTION  ← MAIN INTEGRATION POINT
-// ═══════════════════════════════════════════════════════
 let lastResult=null;
-
 async function runPrediction(){
   const errBox=document.getElementById('err-box');
   errBox.classList.remove('show');
-
-  // ── 1. Collect all 9 numeric inputs ──────────────────────────────────
   const payload={};
   for(const f of FIELDS){
     const v=parseFloat(document.getElementById(f.id+'-num').value);
-    if(isNaN(v)){
-      errBox.textContent='Please enter a valid number for "'+f.label+'".';
-      errBox.classList.add('show');return;
-    }
+    if(isNaN(v)){errBox.textContent='Please enter a valid number for "'+f.label+'".';errBox.classList.add('show');return;}
     payload[f.id]=v;
   }
-
-  // ── 2. Add one-hot encoded star type ─────────────────────────────────
-  //  utils.py validate_input() expects: StarType_A, StarType_F, StarType_G, StarType_K, StarType_M
   const starType=document.querySelector('input[name="star_type"]:checked')?.value||'K';
   ['A','F','G','K','M'].forEach(t=>{payload['StarType_'+t]=t===starType?1:0;});
-
-  // ── 3. Show loading overlay ───────────────────────────────────────────
   document.getElementById('predict-btn').disabled=true;
   const ov=document.getElementById('loading-overlay');
   ov.classList.add('active');
@@ -1547,46 +1537,26 @@ async function runPrediction(){
   const subEl=document.getElementById('loader-sub');
   subEl.textContent=msgs[0];
   const msgInt=setInterval(()=>{mi=(mi+1)%msgs.length;subEl.textContent=msgs[mi];},900);
-
-  // ── 4. POST to /predict ───────────────────────────────────────────────
   try{
-    const res=await fetch(getBase()+'/predict',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload),
-      signal:AbortSignal.timeout(10000)
-    });
+    const res=await fetch(getBase()+'/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(10000)});
     const data=await res.json();
-
     if(!res.ok||data.status==='error') throw new Error(data.message||'HTTP '+res.status);
-
-    // ── 5. Save and render ────────────────────────────────────────────
     lastResult={...data,payload};
-    clearInterval(msgInt);
-    ov.classList.remove('active');
-    document.getElementById('predict-btn').disabled=false;
+    clearInterval(msgInt);ov.classList.remove('active');document.getElementById('predict-btn').disabled=false;
     showResults(data,payload);
-
   }catch(err){
-    clearInterval(msgInt);
-    ov.classList.remove('active');
-    document.getElementById('predict-btn').disabled=false;
+    clearInterval(msgInt);ov.classList.remove('active');document.getElementById('predict-btn').disabled=false;
     errBox.textContent='Error: '+err.message+'. Make sure Flask is running on '+getBase();
     errBox.classList.add('show');
   }
 }
 
-// ═══════════════════════════════════════════════════════
-//  RESULTS PAGE
-// ═══════════════════════════════════════════════════════
 function showResults(data,payload){
   const prob=parseFloat(data.habitability_probability||0);
   const pct=Math.round(prob*100);
   const isHab=data.prediction===1;
   const isBorder=prob>=0.35&&prob<0.5;
-
   goPage('results');
-
   setTimeout(()=>{
     const circumference=2*Math.PI*80;
     const fill=document.getElementById('c-fill');
@@ -1594,38 +1564,18 @@ function showResults(data,payload){
     const color=isHab?'#00ff88':isBorder?'#ffb020':'#ff4466';
     fill.style.stroke=color;glow.style.stroke=color;
     fill.style.strokeDashoffset=circumference;glow.style.strokeDashoffset=circumference;
-    setTimeout(()=>{
-      const offset=circumference*(1-prob);
-      fill.style.strokeDashoffset=offset;glow.style.strokeDashoffset=offset;
-    },200);
-
+    setTimeout(()=>{const offset=circumference*(1-prob);fill.style.strokeDashoffset=offset;glow.style.strokeDashoffset=offset;},200);
     const pctEl=document.getElementById('r-pct');
     pctEl.style.color=color;
-    let cp=0;
-    const ct=setInterval(()=>{cp=Math.min(cp+1,pct);pctEl.textContent=cp+'%';if(cp>=pct)clearInterval(ct);},16);
-
+    let cp=0;const ct=setInterval(()=>{cp=Math.min(cp+1,pct);pctEl.textContent=cp+'%';if(cp>=pct)clearInterval(ct);},16);
     const vText=document.getElementById('r-verdict');
     const vDesc=document.getElementById('r-desc');
     const zBadge=document.getElementById('r-zone');
-    // Use the label returned by Flask — it's set correctly by app.py
     vText.textContent=data.label||(isHab?'Potentially Habitable':'Non-Habitable');
     vText.style.color=color;
-
-    if(isHab){
-      vDesc.textContent='This planet meets composition, temperature, and insolation criteria. Recommended for observational follow-up.';
-      zBadge.textContent='🌱 Habitable Zone Candidate';
-      zBadge.className='zone-badge hab';
-    }else if(isBorder){
-      vDesc.textContent='Conditions are borderline. Some parameters fall outside the ideal habitable range.';
-      zBadge.textContent='⚠ Marginal Conditions';
-      zBadge.className='zone-badge warn';
-    }else{
-      vDesc.textContent='Key parameters are outside habitable ranges. Equilibrium temperature or stellar flux may be the limiting factor.';
-      zBadge.textContent='☠ Extreme Conditions';
-      zBadge.className='zone-badge no-hab';
-    }
-
-    // ── Factor bars: use real importances from API response (or fallback) ──
+    if(isHab){vDesc.textContent='This planet meets composition, temperature, and insolation criteria. Recommended for observational follow-up.';zBadge.textContent='🌱 Habitable Zone Candidate';zBadge.className='zone-badge hab';}
+    else if(isBorder){vDesc.textContent='Conditions are borderline. Some parameters fall outside the ideal habitable range.';zBadge.textContent='⚠ Marginal Conditions';zBadge.className='zone-badge warn';}
+    else{vDesc.textContent='Key parameters are outside habitable ranges. Equilibrium temperature or stellar flux may be the limiting factor.';zBadge.textContent='☠ Extreme Conditions';zBadge.className='zone-badge no-hab';}
     const fi=data.feature_importance||STATIC_IMPORTANCE;
     const list=document.getElementById('factor-list');
     list.innerHTML='';
@@ -1634,39 +1584,22 @@ function showResults(data,payload){
       const p2=Math.round(score*100);
       const c=score>0.2?'var(--green-hab)':score>0.1?'var(--cyan)':'var(--violet)';
       const humanLabel=(FIELDS.find(f=>f.id===key)||{label:key.replace(/_/g,' ')}).label;
-      list.innerHTML+=`
-        <div class="factor">
-          <span class="factor-name">${humanLabel}</span>
-          <div class="factor-bar-bg"><div class="factor-bar" data-w="${p2}" style="background:${c};width:0%"></div></div>
-          <span class="factor-pct" style="color:${c}">${p2}%</span>
-        </div>`;
+      list.innerHTML+=`<div class="factor"><span class="factor-name">${humanLabel}</span><div class="factor-bar-bg"><div class="factor-bar" data-w="${p2}" style="background:${c};width:0%"></div></div><span class="factor-pct" style="color:${c}">${p2}%</span></div>`;
     });
     setTimeout(()=>{document.querySelectorAll('.factor-bar').forEach(b=>{b.style.width=b.dataset.w+'%';});},400);
-
-    // ── Conditions row ──────────────────────────────────────────────────
     const condRow=document.getElementById('cond-row');
     const conds=[
-      {icon:'🌡️',label:'Equilibrium Temp', val:payload.Equilibrium_Temp+' K',    ok:payload.Equilibrium_Temp>=180&&payload.Equilibrium_Temp<=320},
-      {icon:'🪐',label:'Planet Radius',    val:payload.Planet_Radius+' R⊕',      ok:payload.Planet_Radius<=1.6},
-      {icon:'⚖️',label:'Planet Mass',      val:payload.Planet_Mass+' M⊕',        ok:payload.Planet_Mass<=10},
-      {icon:'⭐',label:'Stellar Temp',     val:payload.Stellar_Temp+' K',         ok:payload.Stellar_Temp>=3500&&payload.Stellar_Temp<=7000},
-      {icon:'📏',label:'Semi-Major Axis',  val:payload.Semi_Major_Axis+' AU',     ok:payload.Semi_Major_Axis>=0.04&&payload.Semi_Major_Axis<=2},
-      {icon:'✨',label:'Luminosity',       val:payload.Stellar_Luminosity+' L☉', ok:payload.Stellar_Luminosity>=0.05&&payload.Stellar_Luminosity<=10},
+      {icon:'🌡️',label:'Equilibrium Temp',val:payload.Equilibrium_Temp+' K',ok:payload.Equilibrium_Temp>=180&&payload.Equilibrium_Temp<=320},
+      {icon:'🪐',label:'Planet Radius',val:payload.Planet_Radius+' R⊕',ok:payload.Planet_Radius<=1.6},
+      {icon:'⚖️',label:'Planet Mass',val:payload.Planet_Mass+' M⊕',ok:payload.Planet_Mass<=10},
+      {icon:'⭐',label:'Stellar Temp',val:payload.Stellar_Temp+' K',ok:payload.Stellar_Temp>=3500&&payload.Stellar_Temp<=7000},
+      {icon:'📏',label:'Semi-Major Axis',val:payload.Semi_Major_Axis+' AU',ok:payload.Semi_Major_Axis>=0.04&&payload.Semi_Major_Axis<=2},
+      {icon:'✨',label:'Luminosity',val:payload.Stellar_Luminosity+' L☉',ok:payload.Stellar_Luminosity>=0.05&&payload.Stellar_Luminosity<=10},
     ];
-    condRow.innerHTML=conds.map(c=>{
-      const col=c.ok?'var(--green-hab)':'var(--red-dead)';
-      return `<div class="glass cond-card">
-        <div class="cond-icon" style="color:${col}">${c.icon}</div>
-        <div class="cond-label">${c.label}</div>
-        <div class="cond-val" style="color:${col}">${c.val}</div>
-      </div>`;
-    }).join('');
+    condRow.innerHTML=conds.map(c=>{const col=c.ok?'var(--green-hab)':'var(--red-dead)';return `<div class="glass cond-card"><div class="cond-icon" style="color:${col}">${c.icon}</div><div class="cond-label">${c.label}</div><div class="cond-val" style="color:${col}">${c.val}</div></div>`;}).join('');
   },700);
 }
 
-// ═══════════════════════════════════════════════════════
-//  RANKINGS
-// ═══════════════════════════════════════════════════════
 async function fetchRankings(){
   const loading=document.getElementById('rankings-loading');
   const container=document.getElementById('rankings-container');
@@ -1691,16 +1624,7 @@ function renderRankings(planets,container){
     const st=['A','F','G','K','M'].find(t=>p['StarType_'+t]===true||p['StarType_'+t]==1)||'?';
     const card=document.createElement('div');
     card.className='rank-card';
-    card.innerHTML=`
-      <div class="rank-num">#${i+1}</div>
-      <div style="flex:1;min-width:0;">
-        <div class="rank-name">${p.Planet_Name||'Unknown'}</div>
-        <div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type star</div>
-      </div>
-      <div class="rank-prob">
-        <div class="rank-pct">${prob}%</div>
-        <div class="rank-bar-bg"><div class="rank-bar" style="width:${Math.min(100,parseFloat(prob))}%"></div></div>
-      </div>`;
+    card.innerHTML=`<div class="rank-num">#${i+1}</div><div style="flex:1;min-width:0;"><div class="rank-name">${p.Planet_Name||'Unknown'}</div><div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type star</div></div><div class="rank-prob"><div class="rank-pct">${prob}%</div><div class="rank-bar-bg"><div class="rank-bar" style="width:${Math.min(100,parseFloat(prob))}%"></div></div></div>`;
     container.appendChild(card);
   });
 }
@@ -1713,22 +1637,10 @@ function populateResultRanks(planets){
   planets.slice(0,10).forEach((p,i)=>{
     const prob=(p.Habitability_Probability*100).toFixed(3);
     const st=['A','F','G','K','M'].find(t=>p['StarType_'+t]===true||p['StarType_'+t]==1)||'?';
-    list.innerHTML+=`
-      <div class="rank-card">
-        <div class="rank-num">#${i+1}</div>
-        <div style="flex:1;">
-          <div class="rank-name">${p.Planet_Name||'Unknown'}</div>
-          <div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type</div>
-        </div>
-        <div class="rank-prob">
-          <div class="rank-pct">${prob}%</div>
-          <div class="rank-bar-bg"><div class="rank-bar" style="width:${Math.min(100,parseFloat(prob))}%"></div></div>
-        </div>
-      </div>`;
+    list.innerHTML+=`<div class="rank-card"><div class="rank-num">#${i+1}</div><div style="flex:1;"><div class="rank-name">${p.Planet_Name||'Unknown'}</div><div class="rank-meta">R: ${Number(p.Planet_Radius).toFixed(2)} R⊕ · T: ${Math.round(p.Equilibrium_Temp)} K · ${st}-type</div></div><div class="rank-prob"><div class="rank-pct">${prob}%</div><div class="rank-bar-bg"><div class="rank-bar" style="width:${Math.min(100,parseFloat(prob))}%"></div></div></div></div>`;
   });
 }
 
-// Init
 setTimeout(triggerReveal,300);
 </script>
 </body>
