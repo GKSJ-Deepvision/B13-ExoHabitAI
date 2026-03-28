@@ -8,7 +8,5 @@ planetary and stellar parameters.
 - Flask
 - HTML, CSS, JavaScript
 - Data Visualization
-- Data Visualization
-## Project Status
-Phase 0 – Project Initialization Completed
+
 
