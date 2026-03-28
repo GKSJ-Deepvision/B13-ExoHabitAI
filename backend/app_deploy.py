@@ -5,8 +5,9 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from utils import prepare_features, FEATURE_ORDER
-
 import joblib
 import pandas as pd
 import os
