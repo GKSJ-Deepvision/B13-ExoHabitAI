@@ -87,6 +87,13 @@ def serve_frontend():
     return app.send_static_file('index.html')
 
 
+# ── Serve dashboard ───────────────────────────────────────────────────────
+@app.route('/dashboard')
+def serve_dashboard():
+    """Serve the visualization dashboard."""
+    return app.send_static_file('dashboard.html')
+
+
 # ── Health check ──────────────────────────────────────────────────────────
 @app.route('/health', methods=['GET'])
 def health():
