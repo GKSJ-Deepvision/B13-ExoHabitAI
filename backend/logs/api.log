@@ -103,3 +103,10 @@
 2026-03-27 19:15:51,077 | INFO | Prediction request: {'Planet_Radius': 1.5, 'Planet_Mass': 100, 'Orbital_Period': 15, 'Semi_Major_Axis': 0.62, 'Planet_Density': 7.9, 'Equilibrium_Temp': 1401, 'Stellar_Temp': 8280, 'Stellar_Luminosity': 2.861, 'Stellar_Metallicity': -0.91, 'StarType_A': 0, 'StarType_F': 0, 'StarType_G': 0, 'StarType_K': 1, 'StarType_M': 0}
 2026-03-27 19:15:51,121 | INFO | Prediction=1 | Probability=0.830000
 2026-03-27 19:15:51,122 | INFO | 127.0.0.1 - - [27/Mar/2026 19:15:51] "POST /predict HTTP/1.1" 200 -
+2026-03-28 14:24:30,895 | INFO | ExoHabitAI API starting...
+2026-03-28 14:24:40,371 | INFO | Model loaded from D:\Desktop\B13-ExoHabitAI\backend\best_model.pkl
+2026-03-28 14:24:40,411 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.40:5000
+2026-03-28 14:24:40,411 | INFO | [33mPress CTRL+C to quit[0m
