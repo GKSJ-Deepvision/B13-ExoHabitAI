@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ExoHabitAI — Exoplanet Habitability Intelligence</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<!-- ════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════ -->
+<nav class="main-nav" id="mainNav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#home">
+      <span class="nav-logo">🪐</span>
+      <span>ExoHabit<span class="brand-ai">AI</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#home"      class="nav-link active" data-page="home">Home</a>
+      <a href="#predictor" class="nav-link"         data-page="predictor">Predictor</a>
+      <a href="#docs"      class="nav-link"         data-page="docs">Docs</a>
+    </div>
+    <button class="nav-cta" onclick="scrollToPredictor()">
+      <i class="bi bi-stars me-1"></i>Start Scan
+    </button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════
+     PAGE 1: LANDING
+════════════════════════════════════════════════ -->
+<section id="home" class="page-section">
+
+  <!-- Hero -->
+  <div class="hero-wrap">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="container hero-content text-center">
+      <div class="hero-pill mb-4">
+        <span class="pill-dot"></span>
+        NASA Exoplanet Archive · XGBoost · 33,799 planets analysed
+      </div>
+      <h1 class="hero-title">
+        Is There <span class="grad-text">Life</span><br/>Beyond Earth?
+      </h1>
+      <p class="hero-sub">
+        ExoHabitAI uses a trained XGBoost model with 304 features to predict
+        the habitability probability of any exoplanet — in real time.
+      </p>
+      <div class="hero-ctas mt-4">
+        <button class="btn-primary-cta" onclick="scrollToPredictor()">
+          <i class="bi bi-rocket-takeoff me-2"></i>Start Prediction
+        </button>
+        <button class="btn-secondary-cta ms-3" onclick="scrollTo('#docs')">
+          <i class="bi bi-book me-2"></i>How It Works
+        </button>
+      </div>
+      <!-- Stat ribbon -->
+      <div class="stat-ribbon mt-5">
+        <div class="stat-item"><span class="stat-num">33,799</span><span class="stat-lbl">Planets Analysed</span></div>
+        <div class="stat-div"></div>
+        <div class="stat-item"><span class="stat-num">304</span><span class="stat-lbl">Features</span></div>
+        <div class="stat-div"></div>
+        <div class="stat-item"><span class="stat-num">XGBoost</span><span class="stat-lbl">Best Model</span></div>
+        <div class="stat-div"></div>
+        <div class="stat-item"><span class="stat-num">27.6%</span><span class="stat-lbl">Habitable Rate</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Cards Row -->
+  <div class="container cards-section">
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="card-icon">🤖</div>
+          <h3 class="card-title">XGBoost Architecture</h3>
+          <p class="card-text">
+            Gradient-boosted decision trees trained on 33,799 exoplanet records.
+            Hyperparameters tuned via RandomizedSearchCV (3-fold cross-validation, F1 scoring).
+          </p>
+          <div class="card-tag">n_estimators · max_depth · learning_rate</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="card-icon">📊</div>
+          <h3 class="card-title">Model Performance</h3>
+          <p class="card-text">
+            Trained on a binary habitability target (27.6% positive class). Evaluated
+            using F1-score, ROC-AUC, and confusion matrix across Logistic Regression,
+            Random Forest, and XGBoost.
+          </p>
+          <div class="card-tag">F1-Score · ROC-AUC · Cross-Validation</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="card-icon">🔬</div>
+          <h3 class="card-title">Key Features</h3>
+          <p class="card-text">
+            9 planetary + stellar inputs are expanded into 304 features via
+            feature engineering (stellar compatibility, orbital stability) and
+            291-column One-Hot Encoding of spectral type.
+          </p>
+          <div class="card-tag">OHE · Stellar Compatibility · Orbital Stability</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════════
+     PAGE 2: PREDICTOR
+════════════════════════════════════════════════ -->
+<section id="predictor" class="page-section predictor-section">
+  <div class="container">
+
+    <div class="section-header text-center mb-5">
+      <div class="section-pill">Prediction Engine</div>
+      <h2 class="section-title">Analyse Your Exoplanet</h2>
+      <p class="section-sub">Enter planetary parameters or load a sample from the training dataset</p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- ── Input Panel ── -->
+      <div class="col-xl-7">
+        <div class="glass-panel p-4">
+
+          <!-- Header row -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="panel-title mb-0"><i class="bi bi-sliders2 me-2"></i>Input Parameters</h3>
+            <div class="d-flex gap-2">
+              <button class="btn-ghost" id="btnRandom" title="Load random sample">
+                <i class="bi bi-shuffle me-1"></i>Random
+              </button>
+              <button class="btn-ghost accent" id="btnSampleToggle">
+                <i class="bi bi-grid me-1"></i>Samples
+              </button>
+            </div>
+          </div>
+
+          <!-- Sample picker (hidden by default) -->
+          <div id="samplePicker" class="sample-picker d-none mb-4">
+            <div class="sample-picker-header">
+              <span><i class="bi bi-database me-1"></i>Training Dataset Samples</span>
+              <button class="sample-close" id="btnSampleClose"><i class="bi bi-x"></i></button>
+            </div>
+            <div class="sample-grid" id="sampleGrid">
+              <div class="text-center text-muted py-3">
+                <div class="spinner-border spinner-border-sm me-2"></div>Loading samples…
+              </div>
+            </div>
+          </div>
+
+          <!-- Planetary Inputs -->
+          <div class="param-group">
+            <div class="param-group-label">
+              <i class="bi bi-globe2 me-1"></i>Planetary Properties
+            </div>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="field-label">Planet Name <span class="field-unit">(optional — any name you choose)</span></label>
+                <input type="text" class="space-input" id="planet_name" placeholder="e.g. Kepler-442b, My Planet, EXO-7"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Radius <span class="field-unit">(Earth radii, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="pl_rade" placeholder="-0.673"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Mass <span class="field-unit">(Earth masses, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="pl_bmasse" placeholder="-0.187"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Orbital Period <span class="field-unit">(days, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="pl_orbper" placeholder="0.660"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Semi-major Axis <span class="field-unit">(AU, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="pl_orbsmax" placeholder="0.875"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Eq. Temperature <span class="field-unit">(K, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="pl_eqt" placeholder="-2.198"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Density <span class="field-unit">(g/cm³, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="pl_dens" placeholder="-0.120"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stellar Inputs -->
+          <div class="param-group mt-4">
+            <div class="param-group-label">
+              <i class="bi bi-sun me-1"></i>Stellar Properties
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="field-label">Star Temperature <span class="field-unit">(K, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="st_teff" placeholder="0.201"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Luminosity <span class="field-unit">(solar, scaled)</span></label>
+                <input type="number" step="any" class="space-input" id="st_lum" placeholder="0.058"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Metallicity <span class="field-unit">[Fe/H], scaled</span></label>
+                <input type="number" step="any" class="space-input" id="st_met" placeholder="-1.519"/>
+              </div>
+              <div class="col-sm-6">
+                <label class="field-label">Spectral Type</label>
+                <input type="text" class="space-input" id="st_spectype" placeholder="G0 V" autocomplete="off"/>
+                <div class="field-hint">e.g. G2 V, K5, M3 V, F8, G0 V</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Batch Upload -->
+          <div class="param-group mt-4">
+            <div class="param-group-label"><i class="bi bi-upload me-1"></i>Batch Upload</div>
+            <div class="drop-zone" id="dropZone">
+              <i class="bi bi-cloud-upload drop-icon"></i>
+              <p class="drop-text">Drop a <strong>.csv</strong> or <strong>.json</strong> file here</p>
+              <p class="drop-hint">Max 500 rows · Same fields as above</p>
+              <input type="file" id="batchFile" accept=".csv,.json" class="d-none"/>
+              <button class="btn-ghost mt-2" onclick="document.getElementById('batchFile').click()">
+                <i class="bi bi-folder2-open me-1"></i>Browse File
+              </button>
+            </div>
+            <div id="batchStatus" class="d-none"></div>
+          </div>
+
+          <!-- Predict button -->
+          <button class="btn-predict w-100 mt-4" id="btnPredict">
+            <i class="bi bi-cpu me-2"></i>Analyse Habitability
+          </button>
+
+        </div>
+      </div>
+
+      <!-- ── Result Panel ── -->
+      <div class="col-xl-5">
+
+        <!-- Idle -->
+        <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center"
+             id="stateIdle">
+          <div class="idle-planet">🔭</div>
+          <h3 class="idle-title">Awaiting Scan</h3>
+          <p class="idle-sub">Input planetary parameters or load a sample, then click <strong>Analyse Habitability</strong>.</p>
+          <div class="idle-features mt-3">
+            <span class="feat-chip"><i class="bi bi-check2-circle me-1"></i>304 Features</span>
+            <span class="feat-chip"><i class="bi bi-check2-circle me-1"></i>Real-time AI</span>
+            <span class="feat-chip"><i class="bi bi-check2-circle me-1"></i>33K+ Planets</span>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center d-none"
+             id="stateLoading">
+          <div class="orbital-ring mb-3">
+            <div class="orbital-planet"></div>
+          </div>
+          <p class="loading-text">Scanning exoplanet signatures…</p>
+          <p class="loading-sub">Running XGBoost inference</p>
+        </div>
+
+        <!-- Result -->
+        <div class="glass-panel p-4 d-none" id="stateResult">
+
+          <div class="result-planet text-center mb-3" id="resEmoji">🌍</div>
+
+          <div class="result-planet-name text-center mb-1" id="resPlanetName"></div>
+          <div class="result-verdict text-center mb-1" id="resLabel">—</div>
+          <div class="text-center mb-3">
+            <span class="res-badge" id="resBadge">—</span>
+          </div>
+
+          <!-- Progress arc -->
+          <div class="prob-wrap mb-4">
+            <div class="prob-arc-wrap">
+              <svg class="prob-arc" viewBox="0 0 120 120">
+                <circle class="arc-track" cx="60" cy="60" r="50"/>
+                <circle class="arc-fill" id="arcFill" cx="60" cy="60" r="50"
+                        stroke-dasharray="0 314" stroke-dashoffset="78.5"/>
+              </svg>
+              <div class="prob-center">
+                <div class="prob-pct" id="resPct">0%</div>
+                <div class="prob-lbl">Habitability</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metric grid -->
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <div class="metric-tile">
+                <div class="metric-lbl">Verdict</div>
+                <div class="metric-val" id="mVerdict">—</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="metric-tile">
+                <div class="metric-lbl">Confidence</div>
+                <div class="metric-val" id="mConf">—</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="metric-tile">
+                <div class="metric-lbl">Eq. Temp</div>
+                <div class="metric-val" id="mTemp">—</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="metric-tile">
+                <div class="metric-lbl">Star Type</div>
+                <div class="metric-val" id="mStar">—</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-ghost w-100" id="btnReset">
+            <i class="bi bi-arrow-counterclockwise me-1"></i>New Scan
+          </button>
+
+        </div>
+
+      </div>
+    </div><!-- /row -->
+
+    <!-- ── Rankings Table ── -->
+    <div class="mt-5" id="rankSection">
+      <div class="section-header d-flex justify-content-between align-items-center mb-3">
+        <h3 class="panel-title mb-0"><i class="bi bi-trophy me-2"></i>Top Habitable Exoplanets</h3>
+        <button class="btn-ghost accent" id="btnLoadRank">
+          <i class="bi bi-arrow-repeat me-1"></i>Load Rankings
+        </button>
+      </div>
+      <div class="glass-panel p-0 overflow-hidden">
+        <div class="table-responsive">
+          <table class="rank-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>ID</th>
+                <th>Prob %</th>
+                <th>Radius</th>
+                <th>Mass</th>
+                <th>Orb.Period</th>
+                <th>Eq.Temp</th>
+                <th>Star Temp</th>
+                <th>Spectype</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="rankBody">
+              <tr><td colspan="10" class="rank-empty">Click "Load Rankings" to fetch the top habitable planets</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     PAGE 3: DOCS
+════════════════════════════════════════════════ -->
+<section id="docs" class="page-section docs-section">
+  <div class="container">
+
+    <div class="section-header text-center mb-5">
+      <div class="section-pill">Project Documentation</div>
+      <h2 class="section-title">Built With Science</h2>
+      <p class="section-sub">End-to-end pipeline from raw NASA data to live AI predictions</p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline mb-5">
+
+      <div class="timeline-item">
+        <div class="tl-icon">📡</div>
+        <div class="tl-content glass-panel p-4">
+          <h4 class="tl-title">Data Engineering</h4>
+          <p class="tl-text">NASA Exoplanet Archive data loaded, 10 key features selected
+            (planetary + stellar), duplicates and outliers removed, missing values imputed
+            via median/mode, clipped at 1st–99th percentile.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">pandas</span>
+            <span class="tl-tag">numpy</span>
+            <span class="tl-tag">NASA Archive</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-icon">⚗️</div>
+        <div class="tl-content glass-panel p-4">
+          <h4 class="tl-title">Feature Engineering</h4>
+          <p class="tl-text">Derived habitability index (temperature, radius, distance scores),
+            stellar compatibility index, and orbital stability factor. Applied StandardScaler
+            normalisation. One-Hot Encoded 291 spectral types → 304 total features.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">OHE</span>
+            <span class="tl-tag">StandardScaler</span>
+            <span class="tl-tag">Feature Engineering</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-icon">🤖</div>
+        <div class="tl-content glass-panel p-4">
+          <h4 class="tl-title">Model Training</h4>
+          <p class="tl-text">Three models compared: Logistic Regression, Random Forest, XGBoost.
+            XGBoost selected as best model. Hyperparameter search via RandomizedSearchCV
+            (10 iterations, 3-fold CV). Leakage features removed before final training.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">XGBoost</span>
+            <span class="tl-tag">RandomizedSearchCV</span>
+            <span class="tl-tag">scikit-learn</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-icon">🔌</div>
+        <div class="tl-content glass-panel p-4">
+          <h4 class="tl-title">Backend API</h4>
+          <p class="tl-text">Flask REST API exposing /api/predict (single + batch),
+            /api/rank (top planets), /api/sample (auto-fill), and /api/health.
+            utils.py reconstructs the exact 304-feature vector automatically from
+            9 user inputs.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">Flask</span>
+            <span class="tl-tag">REST API</span>
+            <span class="tl-tag">joblib</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-icon">🎨</div>
+        <div class="tl-content glass-panel p-4">
+          <h4 class="tl-title">Frontend Engineering</h4>
+          <p class="tl-text">Space-themed glassmorphism UI built with Bootstrap 5.
+            Animated starfield, orbital loading rings, SVG habitability arc, batch
+            CSV/JSON upload, live rankings table, and curated sample picker.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">Bootstrap 5</span>
+            <span class="tl-tag">Glassmorphism</span>
+            <span class="tl-tag">Vanilla JS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tech Stack Grid -->
+    <div class="section-header text-center mb-4">
+      <h3 class="section-title">Tech Stack</h3>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card"><span class="tech-icon">🐍</span><span>Python 3</span></div>
+      <div class="tech-card"><span class="tech-icon">⚡</span><span>XGBoost</span></div>
+      <div class="tech-card"><span class="tech-icon">📐</span><span>scikit-learn</span></div>
+      <div class="tech-card"><span class="tech-icon">🧮</span><span>pandas</span></div>
+      <div class="tech-card"><span class="tech-icon">🔢</span><span>NumPy</span></div>
+      <div class="tech-card"><span class="tech-icon">🌐</span><span>Flask</span></div>
+      <div class="tech-card"><span class="tech-icon">📦</span><span>joblib</span></div>
+      <div class="tech-card"><span class="tech-icon">🅱️</span><span>Bootstrap 5</span></div>
+      <div class="tech-card"><span class="tech-icon">📡</span><span>NASA Archive</span></div>
+    </div>
+
+    <!-- API Reference -->
+    <div class="section-header text-center mt-5 mb-4">
+      <h3 class="section-title">API Reference</h3>
+    </div>
+    <div class="glass-panel p-4">
+      <div class="api-endpoint">
+        <span class="method post">POST</span>
+        <code class="ep-path">/api/predict</code>
+        <span class="ep-desc">Single planet habitability prediction</span>
+      </div>
+      <div class="api-endpoint">
+        <span class="method post">POST</span>
+        <code class="ep-path">/api/predict/batch</code>
+        <span class="ep-desc">Batch prediction (up to 500 planets)</span>
+      </div>
+      <div class="api-endpoint">
+        <span class="method get">GET</span>
+        <code class="ep-path">/api/rank?n=10</code>
+        <span class="ep-desc">Top N most habitable planets from dataset</span>
+      </div>
+      <div class="api-endpoint">
+        <span class="method get">GET</span>
+        <code class="ep-path">/api/sample</code>
+        <span class="ep-desc">Curated sample planets for auto-fill</span>
+      </div>
+      <div class="api-endpoint">
+        <span class="method get">GET</span>
+        <code class="ep-path">/api/sample/random</code>
+        <span class="ep-desc">One random planet from the dataset</span>
+      </div>
+      <div class="api-endpoint">
+        <span class="method get">GET</span>
+        <code class="ep-path">/api/health</code>
+        <span class="ep-desc">Health check &amp; model status</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────── -->
+<footer class="site-footer text-center">
+  <p class="mb-1">
+    <span class="nav-logo">🪐</span>
+    <strong>ExoHabit<span class="brand-ai">AI</span></strong>
+    — Habitability Intelligence for the Cosmos
+  </p>
+  <p class="footer-sub">
+    Trained on NASA Exoplanet Archive · XGBoost · 33,799 exoplanets ·
+    For research &amp; educational use
+  </p>
+</footer>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
