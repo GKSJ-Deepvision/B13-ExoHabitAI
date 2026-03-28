@@ -1,5 +1,5 @@
 # ==========================================================
-# ExoHabitAI Backend API  —  app.py  (DEPLOYMENT READY)
+# ExoHabitAI Backend API  —  app_deploy.py  (DEPLOYMENT READY)
 # Flask Application for Exoplanet Habitability Prediction
 # ==========================================================
 
