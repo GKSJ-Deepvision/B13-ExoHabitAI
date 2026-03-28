@@ -16,7 +16,7 @@ import logging
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 BASE_DIR     = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIR = os.path.join(BASE_DIR, '..', 'frontend')   # serves index.html
+FRONTEND_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 
 
 # ── Flask init — serves frontend as static files ───────────────────────────
