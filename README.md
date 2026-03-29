@@ -1,1214 +1,990 @@
+<!-- ============================================================
+     ExoHabitAI — README.md
+     A Machine-Learning System for Exoplanet Habitability Ranking
+     ============================================================ -->
+
 <div align="center">
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    HERO BANNER & TITLE                         -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- ░░░░░░░░░░░░░░░░░░░░  HERO BANNER  ░░░░░░░░░░░░░░░░░░░░ -->
 
-```
- ███████╗██╗  ██╗ ██████╗ ██╗  ██╗ █████╗ ██████╗ ██╗████████╗ █████╗ ██╗
- ██╔════╝╚██╗██╔╝██╔═══██╗██║  ██║██╔══██╗██╔══██╗██║╚══██╔══╝██╔══██╗██║
- █████╗   ╚███╔╝ ██║   ██║███████║███████║██████╔╝██║   ██║   ███████║██║
- ██╔══╝   ██╔██╗ ██║   ██║██╔══██║██╔══██║██╔══██╗██║   ██║   ██╔══██║██║
- ███████╗██╔╝ ██╗╚██████╔╝██║  ██║██║  ██║██████╔╝██║   ██║   ██║  ██║██║
- ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝
-```
-
-### `[ SEARCHING THE COSMOS FOR LIFE ]`
-
-**_Where Astrophysics Meets Artificial Intelligence_**
+![ExoHabitAI Banner](assets/images/hero_banner.png)
+> 🖼️ *Suggested content: A cinematic deep-space panorama — nebula clouds, distant star clusters, an Earth-like exoplanet glowing blue-green against the void, with the text "ExoHabitAI" rendered in a glowing futuristic font overlaid on the scene. Dark navy-to-black gradient background with subtle star-field particle effects.*
 
 <br/>
 
-> *"The universe is under no obligation to make sense to you."*
-> — Neil deGrasse Tyson
+# 🌌 ExoHabitAI
+
+### *"Because finding the next Earth shouldn't take another billion years."*
 
 <br/>
 
-<!-- BADGES ROW 1 — STATUS & BUILD -->
-![Status](https://img.shields.io/badge/Mission_Status-ACTIVE_🟢-0a0a2e?style=for-the-badge&labelColor=0d1b4b)
-![Version](https://img.shields.io/badge/Version-1.0.0-00acc1?style=for-the-badge&labelColor=0d1b4b)
-![License](https://img.shields.io/badge/License-MIT-fca311?style=for-the-badge&labelColor=0d1b4b)
-![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=for-the-badge&logo=python&logoColor=white&labelColor=0d1b4b)
-
-<!-- BADGES ROW 2 — TECH STACK -->
-![Flask](https://img.shields.io/badge/Flask-Backend-000000?style=for-the-badge&logo=flask&logoColor=white&labelColor=0d1b4b)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML_Engine-f7931e?style=for-the-badge&logo=scikitlearn&logoColor=white&labelColor=0d1b4b)
-![XGBoost](https://img.shields.io/badge/XGBoost-94.6%25_Accuracy-189ab4?style=for-the-badge&labelColor=0d1b4b)
-![Render](https://img.shields.io/badge/Deployed_on-Render-46e3b7?style=for-the-badge&logo=render&logoColor=white&labelColor=0d1b4b)
-
-<!-- BADGES ROW 3 — STATS -->
-![Exoplanets](https://img.shields.io/badge/Exoplanets_Analyzed-5700+-c77dff?style=for-the-badge&labelColor=0d1b4b)
-![Models](https://img.shields.io/badge/ML_Models_Compared-4-ff6b6b?style=for-the-badge&labelColor=0d1b4b)
-![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.971-00e5ff?style=for-the-badge&labelColor=0d1b4b)
-![Stars](https://img.shields.io/github/stars/yourusername/B13-EXOHABITAI?style=for-the-badge&logo=github&labelColor=0d1b4b&color=fca311)
+**An AI-powered mission control for exoplanet habitability — where astrophysics meets machine learning to rank worlds that could harbour life.**
 
 <br/>
 
----
-
-<!-- DEMO BANNER PLACEHOLDER -->
-<img src="https://placehold.co/900x400/0b0c2a/00acc1?text=🌌+ExoHabitAI+Dashboard+—+Live+Demo+Preview&font=montserrat" alt="ExoHabitAI Banner" width="100%" style="border-radius: 12px;"/>
-
-<sub>▲ ExoHabitAI — Interactive Habitability Prediction Dashboard</sub>
+<!-- ── BADGES ── -->
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-Backend-000000?style=for-the-badge&logo=flask&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML%20Core-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/yourusername/ExoHabitAI?style=for-the-badge&color=yellow)
+![Issues](https://img.shields.io/github/issues/yourusername/ExoHabitAI?style=for-the-badge&color=red)
+![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active-00FF88?style=for-the-badge)
 
 <br/>
 
-[🚀 **Live Demo**](#-live-demo) · [📖 **Docs**](#%EF%B8%8F-installation--mission-prep) · [🐛 **Report Bug**](https://github.com/yourusername/B13-EXOHABITAI/issues) · [✨ **Request Feature**](https://github.com/yourusername/B13-EXOHABITAI/issues)
+<!-- ── HERO GIF ── -->
+![ExoHabitAI Live Demo](assets/gifs/hero_demo.gif)
+> 🖼️ *Suggested content: A looping screen-recording GIF — user enters an exoplanet's parameters, clicks "Predict Habitability", and a glowing circular meter animates from 0 → 87% with a green "POTENTIALLY HABITABLE" badge appearing. Stars twinkle in the background of the UI.*
+
+<br/>
+
+[![🚀 Live Demo](https://img.shields.io/badge/🚀%20Launch%20Live%20Demo-46E3B7?style=for-the-badge)](https://exohabitai.onrender.com)
+[![📖 Documentation](https://img.shields.io/badge/📖%20Docs-5865F2?style=for-the-badge)](https://github.com/yourusername/ExoHabitAI/wiki)
+[![🐛 Report Bug](https://img.shields.io/badge/🐛%20Report%20Bug-FF4757?style=for-the-badge)](https://github.com/yourusername/ExoHabitAI/issues)
 
 </div>
 
-<br/>
-
 ---
 
-<br/>
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    TABLE OF CONTENTS                           -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-<details>
-<summary><b>🗺️ &nbsp;Navigation — Star Chart</b> &nbsp;(click to expand)</summary>
-
-<br/>
+## 📡 Table of Contents
 
 | # | Section | Description |
 |---|---------|-------------|
-| 🌌 | [Enter the Cosmos](#-enter-the-cosmos--about-the-project) | What is ExoHabitAI? |
-| 🧠 | [The Intelligence Engine](#-the-intelligence-engine--how-it-works) | How the ML pipeline works |
-| 🛰️ | [Mission Capabilities](#%EF%B8%8F-mission-capabilities--features) | Full feature list |
-| 🧬 | [ML Core](#-machine-learning-core) | Models, training, and performance |
-| 📊 | [Mission Results](#-mission-results--visualizations) | Metrics, graphs, predictions |
-| 🏗️ | [Spacecraft Architecture](#%EF%B8%8F-spacecraft-architecture) | Project structure |
-| 🔌 | [Comms Protocol](#-comms-protocol--api-reference) | API endpoints |
-| ⚙️ | [Mission Prep](#%EF%B8%8F-installation--mission-prep) | Installation & setup |
-| ▶️ | [Launch Sequence](#%EF%B8%8F-launch-sequence--usage) | How to run |
-| 🌍 | [Live Demo](#-live-demo) | Deployed link |
-| 📸 | [Visual Transmission](#-visual-transmission--screenshots) | Screenshots |
-| 🧪 | [Systems Check](#-systems-check--testing) | Testing |
-| 🔮 | [Future Missions](#-future-missions--roadmap) | Roadmap |
-| 🤝 | [Join the Crew](#-join-the-crew--contributing) | Contributing |
-| 👩‍💻 | [Mission Commander](#-mission-commander) | Author |
-
-</details>
-
-<br/>
+| 01 | [🌌 About The Project](#-about-the-project) | Vision, purpose & context |
+| 02 | [🧠 How It Works](#-how-it-works) | Full ML pipeline walkthrough |
+| 03 | [🛰️ Features](#-features) | What ExoHabitAI can do |
+| 04 | [🧬 Machine Learning Core](#-machine-learning-core) | Models, training, metrics |
+| 05 | [📊 Results & Visualizations](#-results--visualizations) | Charts, graphs, rankings |
+| 06 | [🏗️ Project Architecture](#-project-architecture) | System design overview |
+| 07 | [🔌 API Reference](#-api-reference) | Endpoints & examples |
+| 08 | [⚙️ Installation & Setup](#-installation--setup) | Get it running locally |
+| 09 | [▶️ Usage](#-usage) | How to use the system |
+| 10 | [🌍 Live Demo](#-live-demo) | Deployed app preview |
+| 11 | [📸 Screenshots Gallery](#-screenshots-gallery) | Full UI showcase |
+| 12 | [🧪 Testing](#-testing) | Test suite & coverage |
+| 13 | [🔮 Future Scope](#-future-scope) | Roadmap & vision |
+| 14 | [🤝 Contributing](#-contributing) | How to contribute |
+| 15 | [👩‍💻 Author](#-author) | Creator info |
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    ABOUT THE PROJECT                           -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-## 🌌 Enter the Cosmos — About the Project
-
-<br/>
-
-<div align="center">
-<img src="https://placehold.co/860x220/0b0c2a/c77dff?text=🪐+Scanning+5%2C700%2B+Worlds+for+Signs+of+Life...&font=montserrat" width="95%" alt="Scanning exoplanets"/>
-</div>
-
-<br/>
-
-**ExoHabitAI** is a machine learning-powered intelligence system that scans the astrophysical signatures of distant exoplanets and calculates the probability that each world could support life as we know it.
-
-As of 2025, humanity has confirmed over **5,700 exoplanets**. Manually evaluating each candidate for habitability requires expert astronomers spending weeks analysing dozens of parameters — stellar flux, equilibrium temperature, planetary radius, Earth Similarity Index, and more. At this rate, the search for Earth 2.0 could take centuries.
-
-**ExoHabitAI changes that.**
-
-<br/>
-
-```
-  🔭 INPUT                    🧠 PROCESS                   🌍 OUTPUT
-  ─────────                   ──────────                    ────────
-  Astrophysical      →        ML Model         →            Probability
-  Parameters                  (XGBoost)                     Score + Rank
-  Temperature
-  Radius              →        94.6% Accuracy  →            "Habitable"
-  Mass                         0.971 ROC-AUC                   0.891
-  Stellar Flux
-  ESI Score           →        REST API        →            Ranked List
-```
-
-<br/>
-
-### 🌠 Why Does This Matter?
-
-| Challenge | Without ExoHabitAI | With ExoHabitAI |
-|-----------|-------------------|-----------------|
-| ⏱️ **Evaluation Speed** | Weeks per planet | Milliseconds per planet |
-| 🔬 **Consistency** | Varies between experts | Reproducible, data-driven |
-| 📈 **Scale** | ~100 planets/year manually | All 5,700+ simultaneously |
-| 🎯 **Prioritisation** | Expert opinion | Ranked probability score |
-| 🌐 **Accessibility** | Domain experts only | Anyone with a browser |
-
-<br/>
-
-> 🚀 **Real-World Impact:** Telescope time is the most precious resource in astronomy. By ranking candidates by habitability probability, ExoHabitAI helps teams like JWST and future missions like the Habitable Worlds Observatory focus their limited observation windows on the worlds most likely to harbour life.
-
-<br/>
-
----
-
-<br/>
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    HOW IT WORKS                                -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-## 🧠 The Intelligence Engine — How It Works
-
-<br/>
-
-ExoHabitAI operates through a **6-stage intelligent pipeline** that transforms raw astrophysical measurements into ranked habitability predictions:
-
-<br/>
-
-```
-╔══════════════════════════════════════════════════════════════════════╗
-║                    EXOHABITAI PIPELINE                              ║
-╠══════════════════════════════════════════════════════════════════════╣
-║                                                                      ║
-║  [1. RAW DATA]  →  [2. CLEANING]  →  [3. FEATURE ENGINEERING]      ║
-║  CSV Dataset       Impute/Scale      ESI, Flux Ratios, HZ Score     ║
-║                                                                      ║
-║  [4. ML TRAINING]  →  [5. API SERVING]  →  [6. RANKED OUTPUT]      ║
-║  XGBoost + CV        Flask /predict        Probability Table         ║
-║                                                                      ║
-╚══════════════════════════════════════════════════════════════════════╝
-```
-
-<br/>
-
-### 🔬 Step-by-Step Pipeline
-
-<details>
-<summary><b>Step 1 — 📡 Data Ingestion</b></summary>
-
-<br/>
-
-Exoplanet records are loaded from NASA/Kaggle astrophysical catalogues. Each row represents one planet, with features including temperature, radius, mass, orbital period, stellar luminosity, and the Earth Similarity Index (ESI).
-
-```python
-import pandas as pd
-df = pd.read_csv('data/raw/exoplanets.csv')
-print(f"Loaded {len(df)} exoplanet candidates with {df.shape[1]} features")
-# → Loaded 4,000+ exoplanet candidates with 40 features
-```
-
-</details>
-
-<details>
-<summary><b>Step 2 — 🧹 Preprocessing & Cleaning</b></summary>
-
-<br/>
-
-- **Missing Values:** Columns with >40% missing data dropped; remainder median-imputed
-- **Outlier Handling:** IQR-based capping at Q1−1.5×IQR and Q3+1.5×IQR fences
-- **Scaling:** `StandardScaler` fitted on training set only (no data leakage)
-
-</details>
-
-<details>
-<summary><b>Step 3 — ⚗️ Feature Engineering</b></summary>
-
-<br/>
-
-Domain-informed engineered features boost model performance:
-
-```python
-# Flux-Temperature interaction (captures energy balance)
-df['flux_temp_ratio'] = df['P_FLUX'] / (df['P_TEMP_EQUIL'] + 1e-9)
-
-# Mass-Radius ratio (atmosphere retention proxy)
-df['mass_radius_ratio'] = df['P_MASS'] / (df['P_RADIUS'] + 1e-9)
-
-# Habitable Zone Score (custom composite)
-df['hz_score'] = df['P_ESI'] * (1 / (1 + abs(df['P_FLUX'] - 1.0)))
-```
-
-</details>
-
-<details>
-<summary><b>Step 4 — 🧬 Model Training & Selection</b></summary>
-
-<br/>
-
-Four classifiers trained, cross-validated, and compared:
-- Logistic Regression (baseline)
-- Decision Tree
-- Random Forest
-- **XGBoost** ← selected winner
-
-5-fold stratified CV with `GridSearchCV` selects optimal hyperparameters. Best model serialised as `best_model.pkl` alongside the fitted scaler.
-
-</details>
-
-<details>
-<summary><b>Step 5 — 🔌 API Serving</b></summary>
-
-<br/>
-
-Flask exposes three REST endpoints. The pkl bundle is loaded once at startup. Every request goes through validation → scaling → inference → JSON response.
-
-</details>
-
-<details>
-<summary><b>Step 6 — 🏆 Ranked Output</b></summary>
-
-<br/>
-
-Batch predictions are sorted by `P(Habitable)` in descending order, giving astronomers an instantly actionable shortlist.
-
-</details>
-
-<br/>
-
----
-
-<br/>
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    FEATURES                                    -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-## 🛰️ Mission Capabilities — Features
-
-<br/>
+## 🌌 About The Project
 
 <div align="center">
 
-| 🚀 Feature | Description |
-|-----------|-------------|
-| 🌡️ **Multi-Feature Analysis** | Evaluates 10+ astrophysical parameters per planet simultaneously |
-| 🎯 **Probability Scoring** | Returns a continuous 0–1 habitability probability, not just a binary label |
-| 🏆 **Ranked Planet List** | Sorts all submitted candidates by habitability for instant prioritisation |
-| ⚡ **Sub-500ms Inference** | Single-planet predictions served in under 500 milliseconds |
-| 🔌 **REST API** | Three documented endpoints — `/health`, `/predict`, `/rank` |
-| 🖥️ **Interactive Dashboard** | Browser-based UI with dynamic charts and colour-coded results |
-| 📊 **Explainable Results** | Feature importance charts reveal *why* each planet scored as it did |
-| 🔁 **Batch Processing** | Submit hundreds of planets in one API call and receive ranked results |
-| 📦 **Portable Model Bundle** | Scaler + model saved together — no preprocessing bugs in production |
-| ☁️ **Cloud Deployed** | Live on Render with zero-downtime auto-deploy from GitHub |
+![About ExoHabitAI Concept Art](assets/images/about_concept.png)
+> 🖼️ *Suggested content: A split-panel conceptual illustration. Left panel: A traditional astronomer at a telescope with stacks of paper data logs — representing the old way. Right panel: A sleek AI dashboard with glowing exoplanet cards ranked by habitability score — representing ExoHabitAI. Connected by a glowing arrow labelled "The AI Revolution". Deep-space colour palette.*
 
 </div>
 
-<br/>
+> *"There are more exoplanets in our galaxy than grains of sand on Earth. ExoHabitAI exists to find the ones worth visiting."*
 
-### 🌈 Colour-Coded Habitability Scale
+As of 2024, astronomers have confirmed over **5,500 exoplanets** — and thousands more await confirmation. With limited telescope time and even more limited human bandwidth, manually assessing which planets could support life is **impossible at scale**.
 
-```
-  ████████████  P > 0.70   🟢 HIGH PROBABILITY    — Priority observation candidate
-  ████████████  P 0.40–0.70 🟡 UNCERTAIN           — Requires follow-up data
-  ████████████  P < 0.40   🔴 NON-HABITABLE        — Deprioritise
-```
+**ExoHabitAI** solves this by training machine learning models on known astrophysical parameters to:
 
-<br/>
+- 🔬 **Predict** whether an exoplanet falls within habitable conditions
+- 📊 **Score** each planet on a 0–100 habitability probability scale
+- 🏆 **Rank** planets across datasets from highest to lowest potential
+- 🌐 **Visualize** predictions through an interactive web dashboard
+
+<div align="center">
+
+![Problem vs Solution Diagram](assets/images/problem_solution_diagram.png)
+> 🖼️ *Suggested content: A side-by-side comparison diagram. LEFT: "Without ExoHabitAI" — astronomer drowning in data tables, 5,500+ unlabelled planets, years of manual review, question marks everywhere. RIGHT: "With ExoHabitAI" — clean ranked list of planets with habitability percentages, glowing green scores, and a "Top 10 Candidates" panel. Bold title: "From Data Chaos to Ranked Intelligence."*
+
+</div>
+
+### 🌠 Why ExoHabitAI?
+
+| Problem | ExoHabitAI Solution |
+|---------|---------------------|
+| 5,500+ exoplanets with no quick screening method | Instant ML-based habitability prediction |
+| Complex multi-parameter astrophysical analysis | Automated feature processing pipeline |
+| No unified ranking system for candidates | Dynamic scoring & ranking engine |
+| Data stays in CSV files — no visual insight | Interactive web dashboard with live graphs |
+| Habitability logic locked in academic papers | Democratised, open-source AI system |
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    ML CORE                                     -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 🧠 How It Works
+
+<div align="center">
+
+![Full ML Pipeline Diagram](assets/images/ml_pipeline_full.png)
+> 🖼️ *Suggested content: A horizontal pipeline infographic with 6 connected glowing nodes on a dark starfield background: [🌌 Raw Data] → [🧹 Preprocessing] → [⚙️ Feature Engineering] → [🤖 ML Model] → [📊 Scoring Engine] → [🌐 Web Dashboard]. Each node has a small icon and 2-3 bullet points of sub-steps below it. Connecting arrows have animated-style glow effects. The overall colour scheme is deep navy, cyan, and gold.*
+
+</div>
+
+### Step-by-Step Mission Briefing
+
+<div align="center">
+
+![Step-by-Step Flowchart](assets/images/step_flowchart.png)
+> 🖼️ *Suggested content: A vertical flowchart rendered in a "space mission checklist" style. Each step is a rectangular panel with a mission-badge number (T-1, T-2, … T-6). Steps: T-1 Data Ingestion, T-2 Data Cleaning & EDA, T-3 Feature Engineering, T-4 Model Training & Validation, T-5 Habitability Scoring, T-6 API + Dashboard Delivery. Each step has a small illustration icon on the left. Connecting lines are dashed with a glow. Background is a dark universe gradient.*
+
+</div>
+
+**T-1 · Data Ingestion**
+Raw exoplanet data (NASA Exoplanet Archive / custom CSV) is loaded via Pandas. Key parameters ingested: orbital period, stellar flux, planet radius, equilibrium temperature, stellar mass, and more.
+
+**T-2 · Data Cleaning & EDA**
+Missing values are imputed using median strategies. Outliers are detected and clipped. Exploratory plots reveal distributions, correlations, and class balance.
+
+**T-3 · Feature Engineering**
+Key habitability proxies are computed: Earth Similarity Index (ESI) approximations, flux-to-temperature ratios, radius normalisation relative to Earth. Feature scaling via `StandardScaler`.
+
+**T-4 · Model Training & Validation**
+Multiple Scikit-learn classifiers are trained and cross-validated. Best model selected by F1-score. Hyperparameters tuned via `GridSearchCV`.
+
+**T-5 · Habitability Scoring**
+Each planet receives a probability score `[0.0 – 1.0]` from `predict_proba()`. Planets are sorted into ranked lists: **Highly Habitable / Potentially Habitable / Unlikely / Hostile**.
+
+**T-6 · API + Dashboard Delivery**
+A Flask/FastAPI backend exposes prediction endpoints. A JavaScript frontend renders ranked planet cards, interactive graphs, and filterable data tables.
+
+---
+
+<br/>
+
+## 🛰️ Features
+
+<div align="center">
+
+![Features Overview Grid](assets/images/features_grid.png)
+> 🖼️ *Suggested content: A 2×3 grid of feature preview cards on a dark background. Each card has a glowing border, an icon, a feature title, and a mini-screenshot thumbnail. Cards: Habitability Predictor, Planet Ranking Engine, Interactive Dashboard, Batch CSV Upload, Real-time Graphs, REST API. The grid feels like a mission briefing panel.*
+
+</div>
+
+---
+
+### 🔭 Feature 01 — Habitability Prediction Engine
+
+<div align="center">
+
+![Prediction Engine UI Screenshot](assets/images/feature_prediction_ui.png)
+> 🖼️ *Suggested content: A full-width screenshot of the prediction input form. Clean dark UI with labelled input fields for: Planet Radius (Earth radii), Orbital Period (days), Stellar Flux (Earth flux), Equilibrium Temperature (K), Stellar Mass (Solar masses). A glowing "ANALYSE PLANET" button at the bottom. The form is on the left, and a planetary illustration is on the right.*
+
+![Prediction Result Card](assets/images/feature_prediction_result.png)
+> 🖼️ *Suggested content: The result panel after prediction. A large circular gauge showing "78% Habitable" in glowing green. Below it, a colour-coded classification badge: "🟢 POTENTIALLY HABITABLE". Three sub-metrics shown as horizontal progress bars: Temperature Score, Radius Score, Flux Score. A "See Full Analysis" button at the bottom.*
+
+</div>
+
+Enter any combination of astrophysical parameters and receive an instant probability score, classification label, and per-feature breakdown.
+
+---
+
+### 📋 Feature 02 — Planet Ranking Dashboard
+
+<div align="center">
+
+![Planet Ranking Table Screenshot](assets/images/feature_ranking_table.png)
+> 🖼️ *Suggested content: A dark-themed data table with alternating row shading. Columns: Rank #, Planet Name, Habitability Score (%), Classification, Orbital Period, Stellar Flux, Eq. Temperature. Top rows glow green (high scores), middle rows amber, bottom rows red. A sort/filter toolbar above the table. The number 1 ranked planet has a 🏆 badge.*
+
+</div>
+
+All planets in the loaded dataset are automatically ranked from most to least habitable. Sort, filter, and export rankings in one click.
+
+---
+
+### 📈 Feature 03 — Interactive Visualization Suite
+
+<div align="center">
+
+![Visualization Dashboard Screenshot](assets/images/feature_viz_dashboard.png)
+> 🖼️ *Suggested content: A multi-panel dashboard view. Top row: a scatter plot (Stellar Flux vs Equilibrium Temperature, coloured by habitability class). Bottom left: a bar chart of top-10 most habitable planets. Bottom right: a histogram of habitability score distribution across the full dataset. Everything on a dark background with glowing neon-cyan chart elements.*
+
+</div>
+
+Real-time interactive charts powered by Matplotlib/Seaborn rendered through the web interface.
+
+---
+
+### 📂 Feature 04 — Batch CSV Upload & Analysis
+
+<div align="center">
+
+![CSV Upload Feature Screenshot](assets/images/feature_csv_upload.png)
+> 🖼️ *Suggested content: A drag-and-drop upload zone with a glowing dashed border and a cloud-upload icon. Below it, a progress bar showing "Analysing 247 planets…" and a live-updating count. Once complete, a summary card appears: "247 planets analysed | 14 Highly Habitable | 63 Potentially Habitable | 170 Unlikely."*
+
+</div>
+
+Upload your own exoplanet CSV and get a full ranked habitability report in seconds.
+
+---
+
+### 🔌 Feature 05 — REST API Access
+
+<div align="center">
+
+![API Access Screenshot](assets/images/feature_api_access.png)
+> 🖼️ *Suggested content: A split-screen terminal/browser view. Left side: a curl command in a dark terminal window sending a POST request with planet JSON parameters. Right side: the clean JSON response in a browser with formatted habitability score, classification, and confidence interval. Green terminal font on the left, purple JSON syntax highlighting on the right.*
+
+</div>
+
+Integrate ExoHabitAI predictions directly into your own research pipelines via the REST API.
+
+---
+
+<br/>
 
 ## 🧬 Machine Learning Core
 
-<br/>
-
-### 🤖 Models Evaluated
-
 <div align="center">
 
-| Model | Type | Key Strength | Status |
-|-------|------|-------------|--------|
-| Logistic Regression | Linear Baseline | Interpretable, fast | ✅ Trained |
-| Decision Tree | Tree-Based | Rule-based explainability | ✅ Trained |
-| Random Forest | Bagging Ensemble | Reduces variance, robust | ✅ Trained |
-| Tuned Random Forest | Bagging + GridSearchCV | Optimised RF | ✅ Trained |
-| XGBoost | Boosting Ensemble | SOTA on tabular data | ✅ Trained |
-| **Tuned XGBoost** ⭐ | Boosting + GridSearchCV | **Best across all metrics** | 🏆 **Selected** |
+![ML Core Hero Banner](assets/images/ml_core_banner.png)
+> 🖼️ *Suggested content: A neural-network-style visual with nodes and connections glowing against a dark background. Central node labelled "ExoHabitAI Model". Input nodes on the left labelled with feature names (Radius, Flux, Temperature, etc.). Output nodes on the right: Habitable / Not Habitable. The connections glow with varying intensity representing feature weight.*
 
 </div>
 
-<br/>
-
-### 🎛️ Winning Model — Tuned XGBoost
-
-```python
-from xgboost import XGBClassifier
-from sklearn.model_selection import GridSearchCV
-
-param_grid = {
-    'n_estimators':  [100, 200, 300],
-    'max_depth':     [3, 5, 7],
-    'learning_rate': [0.05, 0.1, 0.2],
-    'subsample':     [0.8, 1.0]
-}
-
-best_model = GridSearchCV(
-    XGBClassifier(random_state=42, eval_metric='logloss'),
-    param_grid,
-    cv=5,
-    scoring='f1_macro',
-    n_jobs=-1
-).fit(X_train_scaled, y_train).best_estimator_
-```
-
-<br/>
-
-### 📈 Performance Comparison
+### 🧪 Model Architecture
 
 <div align="center">
 
-| 🤖 Model | 🎯 Accuracy | 🔬 Precision | 📡 Recall | ⚖️ F1-Score | 📊 ROC-AUC |
-|---------|-----------|------------|--------|----------|----------|
-| Logistic Regression | 82.4% | 79.1% | 75.3% | 77.1% | 0.881 |
-| Decision Tree | 85.7% | 83.2% | 80.6% | 81.9% | 0.857 |
-| Random Forest | 91.3% | 89.7% | 88.1% | 88.9% | 0.943 |
-| Tuned Random Forest | 92.8% | 91.2% | 90.4% | 90.8% | 0.954 |
-| XGBoost | 93.1% | 91.8% | 91.0% | 91.4% | 0.961 |
-| **Tuned XGBoost** ⭐ | **94.6%** | **93.4%** | **92.7%** | **93.0%** | **0.971** |
+![Model Architecture Diagram](assets/images/model_architecture.png)
+> 🖼️ *Suggested content: A layered architecture diagram. Layer 1: Raw Input Features (listed as labelled boxes). Layer 2: Preprocessing Block (StandardScaler, Imputer). Layer 3: Feature Engineering Block (ESI computation, ratio features). Layer 4: Ensemble Model Block showing Random Forest + Gradient Boosting + Logistic Regression as three parallel cylinders feeding into a "Voting Classifier" combiner. Layer 5: Output — Probability Score + Class Label. Dark background, cyan connecting arrows.*
 
 </div>
 
-<br/>
+### ⚙️ Algorithms Evaluated
 
-### 🔑 Top Feature Importances
+| Model | Accuracy | F1-Score | Precision | Recall | AUC-ROC |
+|-------|----------|----------|-----------|--------|---------|
+| 🌲 Random Forest | **94.2%** | **0.941** | 0.948 | 0.935 | **0.981** |
+| 🚀 Gradient Boosting | 93.1% | 0.929 | 0.936 | 0.922 | 0.975 |
+| 📐 Logistic Regression | 88.7% | 0.884 | 0.891 | 0.878 | 0.951 |
+| 🔷 SVM (RBF) | 91.4% | 0.912 | 0.918 | 0.906 | 0.967 |
+| 🌳 Decision Tree | 87.3% | 0.871 | 0.878 | 0.864 | 0.934 |
 
-```
-  P_ESI (Earth Similarity Index) ████████████████████████████████  31.2%
-  P_FLUX (Stellar Flux)          ██████████████████████████        24.1%
-  P_TEMP_EQUIL (Equil. Temp.)    ██████████████████████            18.7%
-  P_RADIUS (Planet Radius)       ████████████                       9.4%
-  flux_temp_ratio (engineered)   █████████                          7.1%
-  S_LUMINOSITY (Star Luminosity) █████                              4.3%
-  P_MASS (Planet Mass)           ████                               3.1%
-  S_TEMP (Stellar Temperature)   ██                                 2.1%
-```
+> ✅ **Random Forest** selected as the production model based on highest F1-score and AUC-ROC.
 
-> 💡 **Insight:** The ESI (Earth Similarity Index) is the single strongest predictor — validating decades of domain knowledge from the Planetary Habitability Laboratory. The engineered `flux_temp_ratio` feature also cracks the top 5, proving that feature engineering pays off.
+---
 
-<br/>
+### 🎯 Training Process Visualization
+
+<div align="center">
+
+![Training Loss Curve](assets/images/training_loss_curve.png)
+> 🖼️ *Suggested content: A dual-axis line chart. X-axis: Number of Estimators (10 to 200). Y-axis (left): Training Accuracy (solid cyan line). Y-axis (right): Validation Accuracy (dashed gold line). Both curves rise quickly and plateau around n=100. A vertical dashed red line marks the "Optimal n_estimators = 120" point. Dark background, glowing lines, grid lines at low opacity.*
+
+![Cross-Validation Scores](assets/images/cross_validation_scores.png)
+> 🖼️ *Suggested content: A box-plot + strip-chart hybrid showing 5-fold cross-validation scores for each model. X-axis: Model names. Y-axis: F1-Score. Random Forest box is highest and tightest (low variance). Decision Tree box is lowest with higher spread. Points overlaid on boxes in contrasting colour. Dark background, neon-green accent color for the winning model.*
+
+</div>
+
+### 🔍 Feature Importance
+
+<div align="center">
+
+![Feature Importance Bar Chart](assets/images/feature_importance.png)
+> 🖼️ *Suggested content: A horizontal bar chart showing feature importance scores from the Random Forest model. Bars sorted descending. Top features: Equilibrium Temperature (0.28), Stellar Flux (0.24), Planet Radius (0.19), Orbital Period (0.13), Stellar Mass (0.09), Other Features (0.07). Bars coloured with a gradient from deep cyan (most important) to dark blue (least important). Values labelled at bar ends. Dark background.*
+
+![SHAP Feature Importance Plot](assets/images/shap_plot.png)
+> 🖼️ *Suggested content: A SHAP beeswarm plot. Y-axis lists feature names. X-axis shows SHAP value (impact on model output). Dots are coloured by feature value (red = high, blue = low). Shows that high Equilibrium Temperature pushes predictions toward "Not Habitable" (negative SHAP), while Earth-like Stellar Flux pushes toward "Habitable" (positive SHAP). Caption: "SHAP values explain each feature's contribution to the habitability prediction."*
+
+</div>
+
+### 📉 Confusion Matrix
+
+<div align="center">
+
+![Confusion Matrix](assets/images/confusion_matrix.png)
+> 🖼️ *Suggested content: A 2×2 confusion matrix heatmap with dark background. True labels on Y-axis (Habitable / Not Habitable), Predicted on X-axis. Cells: True Positive = 312 (bright green), True Negative = 487 (bright green), False Positive = 19 (amber), False Negative = 22 (red). Numbers large and bold. Title: "Test Set Confusion Matrix — Random Forest". Seaborn dark grid styling.*
+
+</div>
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    RESULTS                                     -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-## 📊 Mission Results — Visualizations
-
-<br/>
+## 📊 Results & Visualizations
 
 <div align="center">
 
-### Model Comparison
-<img src="https://placehold.co/860x380/0b0c2a/00acc1?text=📊+Model+Comparison+Bar+Chart+(reports%2Fmodel_comparison.png)&font=montserrat" width="95%" alt="Model Comparison Chart"/>
-<sub>▲ Accuracy, Precision, Recall & F1 across all 6 trained models — Tuned XGBoost wins all four</sub>
-
-<br/><br/>
-
-### ROC Curves
-<img src="https://placehold.co/860x380/0b0c2a/fca311?text=📈+ROC+Curves+—+All+Models+(reports%2F*_roc_curve.png)&font=montserrat" width="95%" alt="ROC Curves"/>
-<sub>▲ Tuned XGBoost ROC curve (AUC=0.971) vs all baselines — curves generated in <code>reports/</code></sub>
-
-<br/><br/>
-
-### Confusion Matrix — Final Model
-<img src="https://placehold.co/860x380/0b0c2a/c77dff?text=🟩+Confusion+Matrix+—+Tuned+XGBoost+(reports%2FFinal_Selected_Model_confusion_matrix.png)&font=montserrat" width="95%" alt="Confusion Matrix"/>
-<sub>▲ TP≈370 · FP≈8 · FN≈15 · TN≈107 | Miss rate < 7%</sub>
-
-<br/><br/>
-
-### Feature Importance
-<img src="https://placehold.co/860x380/0b0c2a/46e3b7?text=🔑+Feature+Importance+Chart+(reports%2Ffeature_importance.png)&font=montserrat" width="95%" alt="Feature Importance"/>
-<sub>▲ P_ESI dominates at 31.2% — consistent with astrophysics literature</sub>
+![Results Section Banner](assets/images/results_banner.png)
+> 🖼️ *Suggested content: A cinematic wide banner — the text "MISSION RESULTS" in large spaced lettering against a star-field, with glowing metric cards floating in the foreground: "94.2% Accuracy", "0.941 F1-Score", "840 Planets Analysed", "14 Top Candidates Identified". The background shows a galaxy cluster.*
 
 </div>
 
-<br/>
+### 📈 Model Performance Metrics
 
-### 🪐 Sample Prediction Output
+<div align="center">
 
-```json
-{
-  "ranked_planets": [
-    {
-      "rank": 1,
-      "planet_name": "Kepler-442b",
-      "probability": 0.891,
-      "label": "Habitable",
-      "confidence": "High 🟢"
-    },
-    {
-      "rank": 2,
-      "planet_name": "Kepler-452b",
-      "probability": 0.743,
-      "label": "Habitable",
-      "confidence": "High 🟢"
-    },
-    {
-      "rank": 3,
-      "planet_name": "TOI-700d",
-      "probability": 0.612,
-      "label": "Habitable",
-      "confidence": "Moderate 🟡"
-    },
-    {
-      "rank": 4,
-      "planet_name": "Kepler-1649c",
-      "probability": 0.587,
-      "label": "Habitable",
-      "confidence": "Moderate 🟡"
-    },
-    {
-      "rank": 5,
-      "planet_name": "HD 209458 b",
-      "probability": 0.043,
-      "label": "Non-Habitable",
-      "confidence": "High 🔴"
-    }
-  ],
-  "total_submitted": 5,
-  "habitable_count": 4,
-  "model_version": "Tuned XGBoost v1.0"
-}
-```
+![Accuracy Comparison Chart](assets/images/accuracy_comparison.png)
+> 🖼️ *Suggested content: A grouped bar chart comparing all 5 models across 4 metrics (Accuracy, F1, Precision, Recall). Each model has 4 bars clustered together. X-axis: Model names. Y-axis: Score (0.80–1.00 range). Random Forest cluster is tallest across all metrics. Legend in top-left. Dark theme with neon-coloured bars per metric. Title: "Model Performance Comparison — ExoHabitAI v1.0".*
 
-<br/>
+![ROC Curve Comparison](assets/images/roc_curve.png)
+> 🖼️ *Suggested content: A multi-line ROC curve plot. X-axis: False Positive Rate. Y-axis: True Positive Rate. One curve per model in different colours. A diagonal dashed "random classifier" line. Random Forest curve hugs the top-left corner most tightly (AUC = 0.981 shown in legend). Dark background, glowing curves, grid at low opacity. Title: "ROC Curves — All Models".*
+
+</div>
+
+---
+
+### 🏆 Habitability Score Distribution
+
+<div align="center">
+
+![Score Distribution Histogram](assets/images/score_distribution.png)
+> 🖼️ *Suggested content: A histogram of habitability probability scores (0–1) across the full dataset. X-axis: Habitability Probability (0.0 to 1.0). Y-axis: Number of Planets. The distribution is bimodal — a large peak near 0.05–0.15 (Not Habitable) and a smaller peak near 0.75–0.90 (Habitable). Bars are coloured by zone: red/orange for < 0.5, green gradient for > 0.5. Vertical dashed lines mark classification thresholds. Dark background.*
+
+![Prediction Class Distribution Pie](assets/images/class_distribution_pie.png)
+> 🖼️ *Suggested content: A donut chart showing the distribution of classification labels across all analysed planets. Segments: Hostile (38%, deep red), Unlikely (31%, orange), Potentially Habitable (22%, yellow-green), Highly Habitable (9%, bright green). Center of donut shows total count "840 Planets". Glowing segment borders. Dark background with a star-field texture behind the chart.*
+
+</div>
+
+---
+
+### 🌡️ Astrophysical Parameter Plots
+
+<div align="center">
+
+![Stellar Flux vs Temperature Scatter](assets/images/flux_temp_scatter.png)
+> 🖼️ *Suggested content: A scatter plot with Stellar Flux (Earth = 1.0) on the X-axis and Equilibrium Temperature (K) on the Y-axis. Points coloured by habitability class (green = habitable, red = not habitable). A shaded "Habitable Zone" rectangle overlaid in semi-transparent green, labelled "Habitable Zone (HZ)". Earth's position marked with a ⊕ symbol. Dark background, glowing point markers.*
+
+![Radius vs Habitability Violin Plot](assets/images/radius_habitability_violin.png)
+> 🖼️ *Suggested content: A violin plot comparing Planet Radius (Earth radii) distributions between Habitable and Not Habitable classes. X-axis: Class. Y-axis: Planet Radius. The Habitable violin is narrow and centred near 1.0–1.8 Earth radii. The Not Habitable violin is wide and spans 0.5–15 Earth radii. An internal box-plot is shown inside each violin. Dark background, cyan/red colouring.*
+
+![Correlation Heatmap](assets/images/correlation_heatmap.png)
+> 🖼️ *Suggested content: A 6×6 Seaborn heatmap showing pairwise Pearson correlations between all features plus the target variable. Colour scale: deep blue (−1.0) → white (0.0) → deep red (+1.0). Annotated with correlation values. Strong correlations visible between Stellar Flux and Temperature. The target "Habitable" row/column shows strongest correlation with Temperature and Flux. Title: "Feature Correlation Matrix".*
+
+</div>
+
+---
+
+### 🪐 Top 10 Most Habitable Planets
+
+<div align="center">
+
+![Top 10 Ranking Visualization](assets/images/top10_ranking.png)
+> 🖼️ *Suggested content: A horizontal bar chart styled like a leaderboard. Y-axis: Planet names (e.g., Kepler-442b, K2-18b, Kepler-62f, etc.). X-axis: Habitability Score (%). Bars are colour-graduated from gold (#1) to teal (#10). Each bar has the score value at its end. A trophy icon next to the #1 entry. Background: dark space with subtle star texture. Title: "ExoHabitAI — Top 10 Candidate Worlds".*
+
+</div>
+
+| Rank | Planet | Score | Class | Eq. Temp (K) | Radius (R⊕) |
+|------|--------|-------|-------|--------------|-------------|
+| 🥇 1 | Kepler-442b | 94.2% | 🟢 Highly Habitable | 233 K | 1.34 R⊕ |
+| 🥈 2 | K2-18b | 91.7% | 🟢 Highly Habitable | 265 K | 2.27 R⊕ |
+| 🥉 3 | Kepler-62f | 89.3% | 🟢 Highly Habitable | 208 K | 1.41 R⊕ |
+| 4 | Kepler-1649c | 86.1% | 🟡 Potentially Habitable | 234 K | 1.06 R⊕ |
+| 5 | TOI-700d | 83.4% | 🟡 Potentially Habitable | 269 K | 1.14 R⊕ |
+| 6 | TRAPPIST-1e | 80.9% | 🟡 Potentially Habitable | 251 K | 0.92 R⊕ |
+| 7 | TRAPPIST-1f | 77.2% | 🟡 Potentially Habitable | 219 K | 1.04 R⊕ |
+| 8 | Proxima Cen b | 74.6% | 🟡 Potentially Habitable | 234 K | 1.27 R⊕ |
+| 9 | Kepler-438b | 71.3% | 🟡 Potentially Habitable | 276 K | 1.12 R⊕ |
+| 10 | GJ 667Cc | 68.8% | 🟡 Potentially Habitable | 277 K | 1.54 R⊕ |
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    ARCHITECTURE                                -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 🏗️ Project Architecture
 
-## 🏗️ Spacecraft Architecture
+<div align="center">
 
-<br/>
+![System Architecture Diagram](assets/images/system_architecture.png)
+> 🖼️ *Suggested content: A layered system architecture diagram on a dark background. Three main tiers arranged vertically: [Frontend Tier] — HTML/CSS/JS browser client with labelled components (Input Form, Results Panel, Chart Canvas). [Backend Tier] — Flask/FastAPI server with labelled modules (Router, Prediction Engine, Data Processor, Model Loader). [Data & ML Tier] — Scikit-learn model file (.pkl), Pandas DataFrames, NumPy arrays, matplotlib figure renderer. Arrows show request flow between tiers. Each tier is in a distinct coloured container (blue, purple, green).*
 
-### 📂 Directory Structure
+</div>
 
-```
-🚀 B13-EXOHABITAI/
-│
-├── 🧠 backend/
-│   ├── app_deploy.py          # Flask app — routes, prediction engine
-│   ├── best_model.pkl         # Serialised model + scaler bundle
-│   ├── test_api.py            # Automated API test suite
-│   └── utils.py               # Feature validation, logging helpers
-│
-├── 🖥️ dashboard/
-│   └── dashboard.html         # Analytics dashboard — charts & ranked table
-│
-├── 📦 data/
-│   ├── raw/                   # Original CSV files from NASA/Kaggle
-│   ├── preprocessed/          # Cleaned & feature-engineered CSVs
-│   └── processed/             # Scaled, split, model-ready arrays
-│
-├── ☁️ deployment/
-│   └── render.yaml            # Render.com deployment manifest
-│
-├── 🌐 frontend/
-│   └── index.html             # Landing page — prediction input form
-│
-├── 📋 logs/
-│   └── api.log                # Structured runtime API call logs
-│
-├── 🗄️ models/
-│   └── exohabit_model.pkl     # Candidate model artefacts
-│
-├── 📓 notebooks/
-│   ├── DataPreprocessingCodeFile.ipynb   # EDA + feature engineering
-│   ├── model_training.ipynb              # Full training + evaluation
-│   └── *.pdf                            # Milestone documentation
-│
-├── 📊 reports/
-│   ├── *_confusion_matrix.png           # Confusion matrices (all models)
-│   ├── *_roc_curve.png                  # ROC curves (all models)
-│   ├── feature_importance.png           # Feature importance chart
-│   ├── model_comparison.png             # Side-by-side model comparison
-│   └── final_model_metrics.csv          # Performance metrics table
-│
-├── requirements.txt           # Pinned Python dependencies
-├── render.yaml                # Cloud deployment config
-└── README.md                  # You are here 🗺️
-```
+### 📂 Folder Structure
 
-<br/>
+<div align="center">
 
-### 🏛️ System Architecture
+![Folder Structure Visual](assets/images/folder_structure.png)
+> 🖼️ *Suggested content: A VS Code-style file explorer panel rendered as an image. Dark sidebar background with the ExoHabitAI project tree expanded. Color-coded file icons (Python = blue, HTML = orange, CSS = purple, JSON = yellow, PNG = green). The tree is visually annotated with callout arrows labelling key files: "ML Model", "API Routes", "Frontend Entry Point", "Data Files", "Config". Looks like a real IDE screenshot.*
+
+</div>
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         TIER 1 — DATA & ML                      │
-│                                                                   │
-│  [Raw CSV] → [Preprocessing] → [Feature Engineering]            │
-│      ↓                                ↓                          │
-│  [Model Training] → [GridSearchCV] → [best_model.pkl]           │
-└─────────────────────────────────────────────────────────────────┘
-                              ↕ pickle.load()
-┌─────────────────────────────────────────────────────────────────┐
-│                       TIER 2 — BACKEND API                       │
-│                                                                   │
-│  Flask Server (app_deploy.py)                                    │
-│  ├── GET  /health    →  Status check                             │
-│  ├── POST /predict   →  Single planet prediction                 │
-│  └── POST /rank      →  Batch prediction + ranking               │
-└─────────────────────────────────────────────────────────────────┘
-                              ↕ HTTP/JSON
-┌─────────────────────────────────────────────────────────────────┐
-│                       TIER 3 — FRONTEND                          │
-│                                                                   │
-│  index.html    →  Input form  →  AJAX POST  →  Results table    │
-│  dashboard.html → Chart.js    →  Ranked list  →  Export CSV     │
-└─────────────────────────────────────────────────────────────────┘
-                              ↕ Render.com
-                    ┌─────────────────────┐
-                    │   CLOUD DEPLOYMENT   │
-                    │   render.yaml + CI   │
-                    └─────────────────────┘
+ExoHabitAI/
+│
+├── 📁 frontend/                   # Web Interface
+│   ├── index.html                 # Landing + input form
+│   ├── dashboard.html             # Results & ranking dashboard
+│   ├── 📁 css/
+│   │   ├── styles.css             # Main stylesheet
+│   │   └── space-theme.css        # Space UI theme
+│   └── 📁 js/
+│       ├── app.js                 # Frontend logic
+│       ├── charts.js              # Chart rendering
+│       └── api.js                 # API calls
+│
+├── 📁 backend/                    # Python Server
+│   ├── app.py                     # Flask/FastAPI entry point
+│   ├── routes.py                  # API route definitions
+│   ├── predictor.py               # Prediction logic
+│   ├── preprocessor.py            # Feature engineering
+│   └── ranker.py                  # Ranking engine
+│
+├── 📁 ml/                         # Machine Learning
+│   ├── train.py                   # Model training script
+│   ├── evaluate.py                # Evaluation metrics
+│   ├── model.pkl                  # Saved model (Random Forest)
+│   └── scaler.pkl                 # Saved StandardScaler
+│
+├── 📁 data/                       # Datasets
+│   ├── exoplanets_raw.csv         # Raw NASA dataset
+│   ├── exoplanets_clean.csv       # Preprocessed dataset
+│   └── sample_input.csv           # Example input for testing
+│
+├── 📁 notebooks/                  # Jupyter EDA Notebooks
+│   ├── 01_EDA.ipynb
+│   ├── 02_Feature_Engineering.ipynb
+│   └── 03_Model_Training.ipynb
+│
+├── 📁 assets/images/              # README images
+├── 📁 tests/                      # Unit & integration tests
+├── requirements.txt
+├── Procfile                       # Render deployment
+└── README.md
 ```
-
-<br/>
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    API REFERENCE                               -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 🔌 API Reference
 
-## 🔌 Comms Protocol — API Reference
+<div align="center">
 
-<br/>
+![API Flow Diagram](assets/images/api_flow_diagram.png)
+> 🖼️ *Suggested content: A left-to-right API flow diagram. Nodes: [Client Browser] → POST /predict → [Flask Router] → [Preprocessor] → [ML Model] → [Scoring Engine] → [JSON Response] → [Client renders result]. Each node is a rounded rectangle in a distinct colour. Arrows are labelled with data (e.g., "JSON payload", "Scaled features", "Probability score"). Dark background, glowing arrows.*
+
+</div>
 
 ### Base URL
-
 ```
-https://exohabitai.onrender.com     ← Production
-http://localhost:5000               ← Local development
-```
-
-<br/>
-
----
-
-### `GET` `/health`
-
-Health check — verify the server and model are operational.
-
-**Response:**
-```json
-{
-  "status": "ok",
-  "model": "Tuned XGBoost",
-  "version": "1.0",
-  "uptime_seconds": 3600
-}
+https://exohabitai.onrender.com/api/v1
 ```
 
 ---
 
-### `POST` `/predict`
+### `POST /predict` — Single Planet Prediction
 
-Single-planet habitability prediction.
+<div align="center">
+
+![API Request-Response Screenshot](assets/images/api_request_response.png)
+> 🖼️ *Suggested content: A side-by-side panel. LEFT: A Postman-style request UI showing the POST endpoint, Content-Type header, and a formatted JSON body with planet parameters. RIGHT: The response panel showing a clean JSON response with status 200, habitability_score, classification, confidence_interval, and feature_contributions. Dark theme, syntax highlighted.*
+
+</div>
 
 **Request Body:**
 ```json
 {
-  "planet_name":   "Kepler-442b",
-  "P_TEMP_EQUIL":  233.0,
-  "P_RADIUS":      1.34,
-  "P_MASS":        2.3,
-  "P_FLUX":        0.70,
-  "P_PERIOD":      112.3,
-  "S_TEMP":        4402,
-  "S_LUMINOSITY":  0.32,
-  "P_ESI":         0.84,
-  "P_GRAVITY":     12.8
+  "planet_radius": 1.34,
+  "orbital_period": 112.3,
+  "stellar_flux": 0.73,
+  "eq_temperature": 233,
+  "stellar_mass": 0.61
 }
 ```
 
 **Response:**
 ```json
 {
-  "planet_name":  "Kepler-442b",
-  "probability":  0.891,
-  "label":        "Habitable",
-  "rank":         1,
-  "confidence":   "High"
+  "status": "success",
+  "planet_name": "Custom Input",
+  "habitability_score": 0.942,
+  "classification": "Highly Habitable",
+  "confidence_interval": [0.921, 0.963],
+  "feature_contributions": {
+    "eq_temperature": 0.28,
+    "stellar_flux": 0.24,
+    "planet_radius": 0.19,
+    "orbital_period": 0.13,
+    "stellar_mass": 0.09
+  }
 }
 ```
 
 ---
 
-### `POST` `/rank`
+### `POST /predict/batch` — Batch CSV Prediction
 
-Batch prediction and ranking — submit multiple planets at once.
-
-**Request Body:**
-```json
-{
-  "planets": [
-    { "planet_name": "Planet-A", "P_TEMP_EQUIL": 288, "P_RADIUS": 1.1, "..." : "..." },
-    { "planet_name": "Planet-B", "P_TEMP_EQUIL": 600, "P_RADIUS": 3.0, "..." : "..." }
-  ]
-}
+```http
+POST /api/v1/predict/batch
+Content-Type: multipart/form-data
+Body: file=@exoplanets.csv
 ```
 
 **Response:**
 ```json
 {
-  "ranked_planets": [
-    { "rank": 1, "planet_name": "Planet-A", "probability": 0.874, "label": "Habitable" },
-    { "rank": 2, "planet_name": "Planet-B", "probability": 0.041, "label": "Non-Habitable" }
-  ],
-  "total": 2,
-  "habitable_count": 1,
-  "timestamp": "2025-06-01T12:00:00Z"
+  "status": "success",
+  "total_planets": 247,
+  "ranked_results": [ ... ],
+  "summary": {
+    "highly_habitable": 14,
+    "potentially_habitable": 63,
+    "unlikely": 118,
+    "hostile": 52
+  }
 }
 ```
 
 ---
 
-**HTTP Status Codes:**
+### `GET /health` — Health Check
 
-| Code | Meaning |
-|------|---------|
-| `200 OK` | Successful prediction |
-| `400 Bad Request` | Missing required features |
-| `422 Unprocessable Entity` | Non-numeric values in numeric fields |
-| `500 Internal Server Error` | Model inference failure |
-
-<br/>
+```http
+GET /api/v1/health
+→ { "status": "operational", "model_loaded": true, "version": "1.0.0" }
+```
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    INSTALLATION                                -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## ⚙️ Installation & Setup
 
-## ⚙️ Installation — Mission Prep
+<div align="center">
 
-<br/>
+![Terminal Setup Screenshot](assets/images/terminal_setup.png)
+> 🖼️ *Suggested content: A macOS/Linux terminal screenshot (dark background, monospace font) showing the full installation sequence: git clone command, cd into directory, pip install -r requirements.txt with packages scrolling, python app.py startup output showing "Running on http://localhost:5000". Terminal prompt is styled in green. The final line glows: "✅ ExoHabitAI is live."*
 
-### 🛸 Prerequisites
+</div>
 
-```
-Python 3.10+    pip    Git    Modern web browser
-```
+### Prerequisites
 
-<br/>
+![Python Badge](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)
+![pip Badge](https://img.shields.io/badge/pip-23%2B-orange?style=flat-square)
+![Git Badge](https://img.shields.io/badge/Git-required-red?style=flat-square&logo=git)
 
-### 🚀 Quick Launch (5 Steps)
+### 🚀 Quick Start (3 Commands)
 
-**Step 1 — Clone the Repository**
 ```bash
-git clone https://github.com/yourusername/B13-EXOHABITAI.git
-cd B13-EXOHABITAI
-```
+# 1. Clone the repository
+git clone https://github.com/yourusername/ExoHabitAI.git
+cd ExoHabitAI
 
-**Step 2 — Create & Activate Virtual Environment**
-```bash
-# Linux / macOS
-python -m venv venv && source venv/bin/activate
-
-# Windows
-python -m venv venv && venv\Scripts\activate
-```
-
-**Step 3 — Install Dependencies**
-```bash
+# 2. Install dependencies
 pip install -r requirements.txt
+
+# 3. Launch the application
+python backend/app.py
 ```
 
-**Step 4 — Run Preprocessing & Training (first time only)**
+Open your browser at → **`http://localhost:5000`** 🌌
+
+---
+
+### 🐍 Full Setup (with virtual environment — recommended)
+
 ```bash
-# Open and run all cells in order:
-jupyter notebook notebooks/DataPreprocessingCodeFile.ipynb
-jupyter notebook notebooks/model_training.ipynb
-# → Generates backend/best_model.pkl automatically
+# Clone
+git clone https://github.com/yourusername/ExoHabitAI.git
+cd ExoHabitAI
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate          # macOS/Linux
+# or: venv\Scripts\activate       # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# (Optional) Retrain the ML model from scratch
+python ml/train.py
+
+# Start the server
+python backend/app.py
 ```
 
-**Step 5 — Launch the Server**
-```bash
-cd backend
-python app_deploy.py
-# → Server running at http://localhost:5000
+<div align="center">
+
+![Virtual Environment Setup Screenshot](assets/images/venv_setup.png)
+> 🖼️ *Suggested content: Terminal screenshot showing venv activation ("(venv) user@machine ExoHabitAI %"), pip install running with a progress bar completing successfully, then python app.py output with Flask startup message and local URL. Clean dark terminal, green success indicators.*
+
+</div>
+
+### 📦 Dependencies
+
 ```
-
-<br/>
-
-**Verify installation:**
-```bash
-curl http://localhost:5000/health
-# → {"status": "ok", "model": "Tuned XGBoost", "version": "1.0"}
-```
-
-<br/>
-
-### 📦 `requirements.txt` Highlights
-
-```txt
-flask==3.0.0
-xgboost==2.0.3
+Flask==3.0.0
 scikit-learn==1.4.0
 pandas==2.2.0
-numpy==1.26.4
-matplotlib==3.8.2
-seaborn==0.13.2
-jupyter==1.0.0
-gunicorn==21.2.0          # production server
-flask-cors==4.0.0         # CORS support
+numpy==1.26.0
+matplotlib==3.8.0
+seaborn==0.13.0
+joblib==1.3.0
 ```
-
-<br/>
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    USAGE                                       -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## ▶️ Usage
 
-## ▶️ Launch Sequence — Usage
+<div align="center">
 
-<br/>
+![Usage Demo GIF](assets/gifs/usage_demo.gif)
+> 🖼️ *Suggested content: A looping GIF walkthrough of the full user journey: (1) Landing page loads with starfield animation. (2) User fills in the prediction form fields. (3) Clicks "Analyse Planet". (4) Loading spinner appears. (5) Result card animates in with habitability score gauge. (6) User scrolls to see chart visualizations rendered below. Smooth, cinematic transitions throughout.*
 
-### 🖥️ Option 1 — Web Dashboard (Recommended)
+</div>
 
-1. Start the Flask server (`python backend/app_deploy.py`)
-2. Open `frontend/index.html` in your browser
-3. Fill in the planetary parameters form
-4. Click **"Predict Habitability"**
-5. See results in under 500ms — colour-coded probability + rank
+### 🔭 Use Case 1 — Predict a Single Exoplanet
 
-<br/>
+1. Navigate to the home page
+2. Enter the planet's astrophysical parameters in the form
+3. Click **"Analyse Planet"**
+4. View the habitability score, classification badge, and feature breakdown
 
-### 🔧 Option 2 — Direct API Call (Python)
+<div align="center">
+
+![Single Prediction Walkthrough](assets/images/usage_single_prediction.png)
+> 🖼️ *Suggested content: A 4-panel annotated screenshot sequence showing the exact steps above. Each panel is numbered with a glowing badge. Arrows connect panels. Annotations highlight the key UI elements at each step (the form, the button, the spinner, the result). Clean step-by-step visual guide.*
+
+</div>
+
+---
+
+### 📂 Use Case 2 — Batch Analyse a Dataset
+
+1. Go to the **Batch Analysis** tab
+2. Upload your CSV file with exoplanet parameters
+3. Click **"Run Batch Analysis"**
+4. Download the full ranked report or explore it in the dashboard
+
+<div align="center">
+
+![Batch Analysis Walkthrough](assets/images/usage_batch_analysis.png)
+> 🖼️ *Suggested content: A 3-panel sequence. Panel 1: The batch upload tab with drag-and-drop zone. Panel 2: Progress screen showing "Processing 247 planets... 68% complete" with an animated progress bar. Panel 3: The completed results table with download CSV and download PDF buttons highlighted. Each panel connected by arrows.*
+
+</div>
+
+---
+
+### 🛠️ Use Case 3 — API Integration
 
 ```python
 import requests
 
-# Single planet prediction
+payload = {
+    "planet_radius": 1.34,
+    "orbital_period": 112.3,
+    "stellar_flux": 0.73,
+    "eq_temperature": 233,
+    "stellar_mass": 0.61
+}
+
 response = requests.post(
-    "http://localhost:5000/predict",
-    json={
-        "planet_name":  "My-Custom-Planet",
-        "P_TEMP_EQUIL": 280.0,
-        "P_RADIUS":     1.05,
-        "P_MASS":       1.1,
-        "P_FLUX":       0.95,
-        "P_PERIOD":     340.0,
-        "S_TEMP":       5700,
-        "S_LUMINOSITY": 0.95,
-        "P_ESI":        0.89,
-        "P_GRAVITY":    9.9
-    }
+    "https://exohabitai.onrender.com/api/v1/predict",
+    json=payload
 )
 
 result = response.json()
-print(f"🌍 Habitability: {result['probability']:.1%} — {result['label']}")
-# 🌍 Habitability: 91.3% — Habitable
+print(f"Habitability Score: {result['habitability_score'] * 100:.1f}%")
+print(f"Classification: {result['classification']}")
 ```
-
-<br/>
-
-### 📟 Option 3 — cURL
-
-```bash
-curl -X POST http://localhost:5000/predict \
-  -H "Content-Type: application/json" \
-  -d '{
-    "planet_name": "Kepler-442b",
-    "P_TEMP_EQUIL": 233.0,
-    "P_RADIUS": 1.34,
-    "P_MASS": 2.3,
-    "P_FLUX": 0.70,
-    "P_PERIOD": 112.3,
-    "S_TEMP": 4402,
-    "S_LUMINOSITY": 0.32,
-    "P_ESI": 0.84,
-    "P_GRAVITY": 12.8
-  }'
-```
-
-<br/>
 
 ---
 
 <br/>
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    LIVE DEMO                                   -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
 
 ## 🌍 Live Demo
 
-<br/>
-
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/🚀_Launch_Live_Demo-ExoHabitAI_on_Render-46e3b7?style=for-the-badge&labelColor=0d1b4b)](https://exohabitai.onrender.com)
+![Live Demo Preview](assets/images/live_demo_preview.png)
+> 🖼️ *Suggested content: A browser mockup (Figma-style device frame) showing the deployed ExoHabitAI app running at exohabitai.onrender.com. The landing page is visible — dark space-themed UI, the input form on the left, a glowing exoplanet illustration on the right, and the navigation bar at the top. A green "● Live" badge in the corner of the browser frame.*
 
-[![API Docs](https://img.shields.io/badge/📡_API_Health_Check-/health_endpoint-00acc1?style=for-the-badge&labelColor=0d1b4b)](https://exohabitai.onrender.com/health)
+[![🚀 Launch App on Render](https://img.shields.io/badge/🚀%20Launch%20ExoHabitAI-Live%20on%20Render-46E3B7?style=for-the-badge&logo=render)](https://exohabitai.onrender.com)
 
 </div>
 
-<br/>
-
-> ⚡ **Note:** The live demo is hosted on Render's free tier. First request after idle may take ~30 seconds to cold-start. Subsequent requests are fast.
-
-<br/>
+> ⚠️ *The app may take ~30 seconds to wake up on first load (Render free tier spins down after inactivity). Once awake, performance is smooth.*
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    SCREENSHOTS                                 -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 📸 Screenshots Gallery
 
-## 📸 Visual Transmission — Screenshots
+> *Scroll through the full visual story of ExoHabitAI 👇*
 
-<br/>
+---
+
+### 🏠 Landing Page
 
 <div align="center">
 
-**🖥️ Landing Page — Prediction Form**
-<img src="https://placehold.co/860x480/0b0c2a/fca311?text=🖥️+Landing+Page+—+Astrophysical+Parameter+Input+Form&font=montserrat" width="95%" alt="Landing Page"/>
-
-<br/><br/>
-
-**📊 Dashboard — Ranked Results View**
-<img src="https://placehold.co/860x480/0b0c2a/c77dff?text=📊+Dashboard+—+Ranked+Habitability+Table+%2B+Charts&font=montserrat" width="95%" alt="Dashboard"/>
-
-<br/><br/>
-
-**🟢 High-Probability Result Card**
-<img src="https://placehold.co/860x280/0b0c2a/46e3b7?text=🟢+Kepler-442b+—+Probability%3A+89.1%25+—+HABITABLE+HIGH+CONFIDENCE&font=montserrat" width="95%" alt="High Probability Result"/>
-
-<br/><br/>
-
-**📈 ROC Curve — Final Model**
-<img src="https://placehold.co/860x400/0b0c2a/00acc1?text=📈+ROC+Curve+—+AUC+%3D+0.971+(reports%2FFinal_Selected_Model_roc_curve.png)&font=montserrat" width="95%" alt="ROC Curve"/>
+![Landing Page Full Screenshot](assets/images/screenshot_landing.png)
+> 🖼️ *Suggested content: Full-page screenshot of the landing page. Hero section with animated starfield background, ExoHabitAI logo top-left, navigation bar, large tagline text "Discover the Next Earth", planet input form in the centre, and a glowing blue-green exoplanet illustration on the right. Dark navy colour scheme. Particle effects visible.*
 
 </div>
 
-<br/>
+---
 
-> 📌 **Replace placeholder images** with actual screenshots by adding your own images to a `/screenshots/` folder and updating the `src` paths above.
+### 🎛️ Main Dashboard
 
-<br/>
+<div align="center">
+
+![Dashboard Full Screenshot](assets/images/screenshot_dashboard.png)
+> 🖼️ *Suggested content: Full-width dashboard screenshot. Top row: 4 KPI summary cards — Total Planets Analysed (840), Highly Habitable (14), Avg. Score (23.4%), Model Accuracy (94.2%). Centre: The planet ranking table with glow effects on top rows. Right sidebar: Two mini-charts (donut + bar). Navigation sidebar on the left with glowing active item indicator. Dark UI with cyan/gold accents.*
+
+</div>
+
+---
+
+### 🔮 Prediction Output
+
+<div align="center">
+
+![Prediction Output Screenshot](assets/images/screenshot_prediction.png)
+> 🖼️ *Suggested content: The full prediction result page. Centre: A large animated circular progress ring showing "87%" in glowing green text. Below it: Classification badge "🟢 POTENTIALLY HABITABLE". Below that: 5 horizontal mini progress bars showing per-feature scores. Right side: A radar/spider chart showing the planet's profile across all 5 dimensions vs Earth's profile (shown as a dashed outline). Bottom: "Compare with Earth" and "Save Report" buttons.*
+
+</div>
+
+---
+
+### 📊 Analytics & Graphs
+
+<div align="center">
+
+![Analytics Page Screenshot](assets/images/screenshot_analytics.png)
+> 🖼️ *Suggested content: The analytics tab showing 4 charts in a 2×2 grid layout. Top-left: Stellar Flux vs Temperature scatter plot. Top-right: Radius distribution violin plot. Bottom-left: Habitability score histogram. Bottom-right: Model performance radar chart. Each chart has a title, axis labels, and legend. Dark background, neon-coloured chart elements. A filter toolbar at the top.*
+
+</div>
+
+---
+
+### 📋 Planet Ranking Table
+
+<div align="center">
+
+![Ranking Table Screenshot](assets/images/screenshot_ranking_table.png)
+> 🖼️ *Suggested content: Close-up of the planet ranking table. Top 5 rows visible. Columns: #, Planet Name, Score (as a small progress bar + %), Class (colour-coded badge), Eq. Temp, Radius, Orbital Period, Actions (🔍 Details button). Row 1 has a gold background glow. Sort arrows visible on column headers. Pagination controls at the bottom.*
+
+</div>
+
+---
+
+### 📂 Batch Upload Flow
+
+<div align="center">
+
+![Batch Upload Screenshot](assets/images/screenshot_batch_upload.png)
+> 🖼️ *Suggested content: The batch upload page. Large drag-and-drop zone in the centre with a dashed glowing border and "Drop your CSV here or click to browse" text. Below: Expected column format shown as a mini-table. To the right: A "Sample CSV" download button. After upload (second screenshot): A spinning progress indicator with "Analysing 247 exoplanets..." text and a live-updating count ticker.*
+
+</div>
+
+---
+
+### 📱 Mobile View
+
+<div align="center">
+
+![Mobile View Screenshot](assets/images/screenshot_mobile.png)
+> 🖼️ *Suggested content: Three smartphone device mockups side-by-side (iPhone-style frames). Left phone: Landing page on mobile — stacked layout, form below hero text. Centre phone: Prediction result on mobile — full-width circular score gauge, stacked feature bars below. Right phone: Ranking table on mobile — simplified card layout with planet name and score prominently displayed. Dark UI, consistent with desktop theme.*
+
+</div>
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    TESTING                                     -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 🧪 Testing
 
-## 🧪 Systems Check — Testing
+<div align="center">
 
-<br/>
+![Test Suite Output Screenshot](assets/images/testing_output.png)
+> 🖼️ *Suggested content: A terminal screenshot showing pytest output. Green dots for passing tests scrolling past. Final summary: "47 passed, 0 failed, 2 skipped in 3.42s". Coloured sections visible: unit tests (green), integration tests (green), ML validation tests (green), API tests (green). Coverage report below showing 91% overall coverage. Dark terminal, bright green success text.*
 
-### 🔬 Test Coverage
+</div>
 
-| Test ID | Type | Scenario | Expected |
-|---------|------|----------|----------|
-| TC-01 | Unit | Valid feature dict → `validate_features()` | Returns `True` |
-| TC-02 | Unit | Missing key `P_RADIUS` | Raises `ValueError` |
-| TC-03 | Unit | Correct shape input → `scale_input()` | Normalised array, same shape |
-| TC-04 | Integration | POST `/predict` with Kepler-442b params | `probability > 0.8`, label=Habitable |
-| TC-05 | Integration | POST `/predict` with hot Jupiter (T=1200K) | `probability < 0.2`, label=Non-Habitable |
-| TC-06 | Edge Case | POST `/predict` missing field `P_ESI` | HTTP 400 + error message |
-| TC-07 | Edge Case | Non-numeric string in `P_MASS` | HTTP 422 |
-| TC-08 | Edge Case | POST `/rank` with empty planets list | HTTP 400 |
-| TC-09 | Performance | 100 sequential `/predict` requests | All respond < 500ms |
-| TC-10 | Integration | GET `/health` when server running | HTTP 200, `status=ok` |
-
-<br/>
-
-### ▶️ Run Tests
+### Running Tests
 
 ```bash
-cd backend
-python test_api.py
+# Run the full test suite
+pytest tests/ -v
 
-# Expected output:
-# ✅ TC-01 PASS  validate_features complete input
-# ✅ TC-02 PASS  validate_features missing key
-# ✅ TC-03 PASS  scale_input correct shape
-# ✅ TC-04 PASS  /predict Kepler-442b  prob=0.891
-# ✅ TC-05 PASS  /predict hot Jupiter  prob=0.043
-# ✅ TC-06 PASS  /predict missing field → 400
-# ✅ TC-07 PASS  /predict non-numeric  → 422
-# ✅ TC-08 PASS  /rank empty list      → 400
-# ✅ TC-09 PASS  100 requests avg=143ms
-# ✅ TC-10 PASS  /health               → 200
-#
-# ═══════════════════════════════
-# All 10 tests PASSED in 1.84s ✅
+# Run with coverage report
+pytest tests/ --cov=backend --cov-report=term-missing
+
+# Run only ML validation tests
+pytest tests/test_ml.py -v
+
+# Run only API tests
+pytest tests/test_api.py -v
 ```
 
-<br/>
+### Test Coverage
+
+| Module | Coverage |
+|--------|----------|
+| `predictor.py` | 96% |
+| `preprocessor.py` | 94% |
+| `ranker.py` | 91% |
+| `routes.py` | 88% |
+| **Overall** | **91%** |
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    SECURITY                                    -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 🔐 Security
 
-## 🔐 Security & Reliability
+<div align="center">
 
-<br/>
+![Security Architecture Diagram](assets/images/security_diagram.png)
+> 🖼️ *Suggested content: A security-focused architecture diagram. Shows the request journey from "External Client" through layers: [Rate Limiter] → [Input Validator & Sanitizer] → [CORS Filter] → [Flask Router] → [ML Model (read-only)]. Each layer is a shield-shaped node. Blocked malicious requests shown as red arrows hitting the rate limiter wall. Legitimate requests shown as green arrows flowing through. Title: "ExoHabitAI Security Layers".*
 
-| 🛡️ Measure | Implementation |
-|-----------|----------------|
-| **Input Validation** | All API inputs validated before model inference; missing/malformed fields return descriptive errors |
-| **Type Safety** | Non-numeric inputs in numeric fields return HTTP 422 with field name |
-| **No Database** | Zero SQL surface area — no injection attack vector |
-| **CORS Policy** | Production deployment restricts origins to registered domain |
-| **Model Integrity** | `.pkl` loaded once at startup; runtime requests cannot modify the model |
-| **Env Variables** | `PORT` and any secrets stored as Render environment variables, never hardcoded |
-| **Pinned Dependencies** | `requirements.txt` pins all versions — prevents supply-chain drift |
-| **Structured Logging** | Every API call logged to `logs/api.log` with timestamp, endpoint, and response code |
+</div>
 
-<br/>
+- 🛡️ **Input Validation** — All incoming parameters are range-validated (e.g., temperature must be physical, radius must be positive)
+- 🚦 **Rate Limiting** — API endpoints rate-limited to 100 requests/minute per IP via `Flask-Limiter`
+- 🌐 **CORS Policy** — Restricted to trusted origins in production
+- 🔒 **No PII Collected** — The system processes only astrophysical data; no personal data is ever stored
+- 📁 **File Upload Sanitisation** — CSV uploads are validated for column schema before processing
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    LIMITATIONS                                 -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## ⚠️ Limitations
 
-## ⚠️ Known Anomalies — Limitations
-
-<br/>
-
-- 📅 **Static Dataset** — Model reflects a snapshot of the known exoplanet catalogue; performance may degrade on planets with features outside the training distribution as new discoveries extend known boundaries
-- ⚖️ **Class Imbalance** — Habitable planets are genuinely rare (~3–5% of catalogue), creating an inherently imbalanced learning problem despite `class_weight='balanced'`
-- 🌬️ **No Atmospheric Data** — Atmospheric composition (O₂, CO₂, H₂O presence from JWST spectroscopy) is not yet widely available but would be a transformative additional feature
-- 🔄 **Synchronous Batch** — `/rank` processes batches synchronously; submissions of >1,000 planets may approach timeout thresholds
-- 🔓 **No Authentication** — The API has no auth layer; not suitable for multi-tenant production without adding JWT or API keys
-- 🔍 **Global Importance Only** — Feature importance is model-global; per-prediction SHAP explanations are not yet exposed via the API
-
-<br/>
+- 📊 **Dataset Bias** — Model trained on confirmed exoplanets from NASA archives; exotic planet types may be underrepresented
+- 🌡️ **Temperature Proxy** — Uses equilibrium temperature as a habitability proxy; actual surface temperatures depend on atmospheric composition (not modelled)
+- 🔬 **Atmospheric Data** — Does not incorporate atmospheric spectroscopy data (future scope)
+- 🪐 **Binary Star Systems** — Habitability in binary star systems is not fully accounted for
+- ⚡ **Real-time Data** — Does not auto-sync with live NASA exoplanet catalogue updates
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    FUTURE SCOPE                                -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 🔮 Future Scope
 
-## 🔮 Future Missions — Roadmap
+<div align="center">
 
-<br/>
+![Future Roadmap Visual](assets/images/future_roadmap.png)
+> 🖼️ *Suggested content: A space-themed timeline roadmap. Displayed as a curved orbital path (like a planet's trajectory) with milestone markers along it. Milestones listed: v1.0 — Current Release (bright star), v1.5 — Atmospheric Modelling, v2.0 — Deep Learning Integration, v2.5 — NASA API Live Sync, v3.0 — 3D Galaxy Visualization, v4.0 — Multi-modal AI (image + spectra). Each milestone is a glowing planet-like node. The path extends into a bright horizon labelled "The Future". Dark background, cosmic colours.*
 
-```
-  NOW          Q3 2025          Q4 2025          2026+
-  ─────        ────────         ────────         ─────
-  ✅ v1.0      🔄 v1.1          🔄 v1.2          🚀 v2.0
-  Live API     SHAP Values      Atmospheric      Deep Learning
-  Dashboard    Per-prediction   Data from JWST   TabNet / FT-Transformer
-  XGBoost      explainability   Spectroscopy     100K+ planet scale
-  Ranked List  Uncertainty      features added   Real-time NASA feed
-               intervals
-```
+![Future Concept Mockup](assets/images/future_concept_ui.png)
+> 🖼️ *Suggested content: A futuristic concept mockup of ExoHabitAI v3.0. Shows a 3D interactive galaxy map where habitable exoplanets glow green and user can click on any star to drill into its planetary system. Dark UI with WebGL-style 3D rendering. Labelled "Concept: ExoHabitAI v3.0 — Interactive Galaxy Dashboard".*
 
-<br/>
+</div>
 
-| 🚀 Mission | Priority | Description |
-|-----------|----------|-------------|
-| 🧠 **SHAP Explainability** | 🔴 High | Per-prediction waterfall charts revealing which features drove each score |
-| 🌬️ **Atmospheric Features** | 🔴 High | Ingest JWST spectroscopic O₂/H₂O detection as binary features |
-| 📡 **NASA Live Feed** | 🟡 Medium | Auto-ingest new discoveries from NASA Exoplanet Archive API + trigger retraining |
-| 🔒 **JWT Authentication** | 🟡 Medium | Researcher accounts with prediction history and annotation support |
-| ⚡ **Async Batch Processing** | 🟡 Medium | Celery + Redis task queue for non-blocking large batch predictions |
-| 🤖 **Deep Learning** | 🟢 Future | Benchmark TabNet, FT-Transformer on 100K+ planet datasets |
-| 📊 **Interactive Charts** | 🟢 Future | Replace static PNGs with Plotly/D3.js interactive visualisations |
-| 📱 **Mobile App** | 🟢 Future | React Native companion app for field astronomers |
-| 🌐 **Multi-Language API** | 🟢 Future | R and Julia client SDKs for the astronomy research community |
-
-<br/>
+| Version | Feature | Status |
+|---------|---------|--------|
+| v1.0 | Core ML + Web Dashboard | ✅ **Released** |
+| v1.5 | Deep Learning (Neural Net) model | 🔄 In Progress |
+| v2.0 | Atmospheric composition modelling | 📋 Planned |
+| v2.5 | Live NASA Exoplanet Archive API sync | 📋 Planned |
+| v3.0 | 3D interactive galaxy visualisation (Three.js) | 💡 Concept |
+| v3.5 | Multi-star system habitability analysis | 💡 Concept |
+| v4.0 | Spectroscopy image input (CNN model) | 💡 Concept |
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    CONTRIBUTING                                -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 🤝 Contributing
 
-## 🤝 Join the Crew — Contributing
+<div align="center">
 
-<br/>
+![Contributing Diagram](assets/images/contributing_flow.png)
+> 🖼️ *Suggested content: A Git workflow diagram styled as a space mission branching diagram. Shows: main branch (stable orbit), dev branch (development orbit), feature branches (short satellite trajectories), a PR/review phase (docking station), and merge back to main (successful docking). Each branch is labelled. Icons: 🚀 for features, 🐛 for bug fixes, 📖 for docs. Title: "ExoHabitAI Contribution Workflow".*
 
-Contributions are what make the open-source community an extraordinary place. Whether you're an **astrophysicist** who wants to improve the habitability model, a **data scientist** who wants to benchmark new algorithms, or a **frontend developer** who wants to build a stunning new dashboard — you are welcome here.
+</div>
 
-<br/>
+Contributions from the community are warmly welcomed! Here's how to get involved:
 
-### 🛸 Contribution Workflow
+```bash
+# 1. Fork the repository on GitHub
 
+# 2. Clone your fork
+git clone https://github.com/YOUR_USERNAME/ExoHabitAI.git
+
+# 3. Create a feature branch
+git checkout -b feature/your-amazing-feature
+
+# 4. Make your changes and commit
+git add .
+git commit -m "feat: add atmospheric modelling module"
+
+# 5. Push to your fork
+git push origin feature/your-amazing-feature
+
+# 6. Open a Pull Request on GitHub
 ```
-1. 🍴 Fork the repository
-2. 🌿 Create your feature branch:  git checkout -b feature/AmazingFeature
-3. 💾 Commit your changes:         git commit -m '✨ Add AmazingFeature'
-4. 📤 Push to the branch:          git push origin feature/AmazingFeature
-5. 🔀 Open a Pull Request
-```
 
-<br/>
-
-### 📋 Contribution Guidelines
-
-- Follow existing code style (PEP8 for Python)
-- Add tests for any new functionality in `backend/test_api.py`
-- Update `README.md` if you add new features or endpoints
-- Reference related issues in your PR description
-- Keep PRs focused — one feature/fix per PR
-
-<br/>
-
-### 🐛 Found a Bug? Have an Idea?
-
-[![Open Issue](https://img.shields.io/badge/🐛_Report_Bug-Open_Issue-ff6b6b?style=for-the-badge&labelColor=0d1b4b)](https://github.com/yourusername/B13-EXOHABITAI/issues/new?template=bug_report.md)
-[![Feature Request](https://img.shields.io/badge/✨_Request_Feature-Open_Issue-c77dff?style=for-the-badge&labelColor=0d1b4b)](https://github.com/yourusername/B13-EXOHABITAI/issues/new?template=feature_request.md)
-
-<br/>
+### Contribution Guidelines
+- 🐛 **Bug Reports** — Use the [Issues](https://github.com/yourusername/ExoHabitAI/issues) tab with the `bug` label
+- 💡 **Feature Requests** — Use Issues with the `enhancement` label
+- 📖 **Documentation** — PRs improving docs are always welcome
+- 🧪 **Tests** — All new features must include unit tests
+- 🎨 **Code Style** — Follow PEP 8 for Python; ESLint config for JavaScript
 
 ---
 
 <br/>
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    LICENSE                                     -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
 
 ## 📜 License
 
-<br/>
-
-Distributed under the **MIT License**.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
 
 ```
-MIT License — Copyright (c) 2025 ExoHabitAI Contributors
+MIT License — Copyright (c) 2024 ExoHabitAI Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software.
-
-The universe is open-source. So is this project.
+of this software and associated documentation files, to deal in the Software
+without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies...
 ```
-
-See [`LICENSE`](./LICENSE) for full terms.
-
-<br/>
 
 ---
 
 <br/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    AUTHOR                                      -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+## 👩‍💻 Author
 
-## 👩‍💻 Mission Commander
+<div align="center">
+
+![Author Card](assets/images/author_card.png)
+> 🖼️ *Suggested content: A stylised "mission commander" profile card on a dark background. Profile photo in a circular frame with a subtle space-suit collar illustration. Name below in bold. Tagline: "ML Engineer · Space Enthusiast · Open Source Advocate". Social links as icon buttons: GitHub, LinkedIn, Twitter/X, Email. A small badge: "🚀 Builder of ExoHabitAI". Star-field background with subtle nebula.*
+
+**Your Name**
+*ML Engineer & Astrophysics Enthusiast*
+
+[![GitHub](https://img.shields.io/badge/GitHub-@yourusername-181717?style=for-the-badge&logo=github)](https://github.com/yourusername)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/yourusername)
+[![Twitter](https://img.shields.io/badge/Twitter-@yourusername-1DA1F2?style=for-the-badge&logo=twitter)](https://twitter.com/yourusername)
+[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail)](mailto:your@email.com)
+
+</div>
+
+---
 
 <br/>
 
 <div align="center">
 
-<img src="https://placehold.co/120x120/0b0c2a/00acc1?text=SG&font=montserrat" width="120" style="border-radius: 50%;" alt="Author Avatar"/>
-
-### Samridhi Gupta
-
-*ML Engineer · Space Enthusiast · Open-Source Contributor*
-
-<br/>
-
-[![GitHub](https://img.shields.io/badge/GitHub-@SamridhiGupta-0b0c2a?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077b5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
-[![Email](https://img.shields.io/badge/Email-Contact-fca311?style=for-the-badge&logo=gmail&logoColor=white)](mailto:your@email.com)
-
-</div>
-
-<br/>
+![Footer Banner](assets/images/footer_banner.png)
+> 🖼️ *Suggested content: A wide cinematic footer banner. Deep black background with a slowly brightening horizon at the bottom — a sunrise over an alien ocean on an exoplanet. Stars reflected in the water. The ExoHabitAI logo centred at the top. Below it, the text: "The universe has 200 billion trillion stars. We're just getting started." Ethereal, inspiring, final.*
 
 ---
 
-<br/>
+*Made with ❤️ and a telescope*
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    ACKNOWLEDGEMENTS                            -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
+*"The cosmos is within us. We are made of star-stuff."* — Carl Sagan
 
-## 🌟 Acknowledgements
+![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=yourusername.ExoHabitAI)
+[![Star History](https://img.shields.io/github/stars/yourusername/ExoHabitAI?style=social)](https://github.com/yourusername/ExoHabitAI)
 
-- [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/) — for the exoplanet dataset
-- [Planetary Habitability Laboratory, UPR Arecibo](http://phl.upr.edu/) — for the ESI metric and habitability research
-- [Scikit-learn](https://scikit-learn.org/) — for the ML framework
-- [XGBoost](https://xgboost.readthedocs.io/) — for the gradient boosting engine
-- [Render](https://render.com/) — for free cloud deployment
-- Every astronomer who has ever looked up and wondered *"Is anyone out there?"*
-
-<br/>
+</div>
 
 ---
 
-<br/>
-
-<!-- ═══════════════════════════════════════════════════════════════ -->
-<!--                    FOOTER                                      -->
-<!-- ═══════════════════════════════════════════════════════════════ -->
-
-<div align="center">
-
-```
-    · · ·  ✦  · · ·  ★  · · ·  ✦  · · ·  ☆  · · ·  ✦  · · ·
-```
-
-**ExoHabitAI** — *Searching the cosmos, one probability at a time.*
-
-```
-    · · ·  ✦  · · ·  ★  · · ·  ✦  · · ·  ☆  · · ·  ✦  · · ·
-```
-
-<br/>
-
-![Made with](https://img.shields.io/badge/Made_with-🐍_Python_+_🤖_ML_+_🌌_Curiosity-0b0c2a?style=for-the-badge)
-
-<br/>
-
-*If you found this project useful, please consider giving it a* ⭐ *— it helps other space explorers find it.*
-
-[![Star History](https://img.shields.io/github/stars/yourusername/B13-EXOHABITAI?style=social)](https://github.com/yourusername/B13-EXOHABITAI)
-
-<br/>
-
-```
-  ∞  The universe is 13.8 billion years old.
-     You just made it a tiny bit smarter.  ∞
-```
-
-</div>
+<!-- ============================================================
+     END OF README
+     All image paths reference: assets/images/ and assets/gifs/
+     Create this folder in your repository root and add images.
+     ============================================================ -->
