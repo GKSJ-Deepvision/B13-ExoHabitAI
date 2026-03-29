@@ -1,7 +1,7 @@
 # 🚀 ExoHabitAI Deployment
 
 ### 🌐 Live Website URL
-**[https://exohabit-ai-by-amanchouhan.vercel.app](https://exohabit-ai-by-amanchouhan.vercel.app)**
+**[https://exohabit-ai-by-amanchouhan.vercel.app](https://exo-habit-ai-amanchouhan.vercel.app/)**
 
 ---
 
