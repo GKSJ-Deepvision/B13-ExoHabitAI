@@ -9,4 +9,4 @@ planetary and stellar parameters.
 - Flask
 - HTML, CSS, JavaScript
 - Data Visualization
-- Data Visualization
+
