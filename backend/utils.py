@@ -21,21 +21,20 @@ FEATURES = [
 
 def load_model():
     try:
-        # Load model file from models folder (relative to this file)
-        base_dir = Path(__file__).resolve().parent.parent
+        # Path(__file__) matlab 'utils.py'
+        base_dir = Path(__file__).resolve().parent
+       
         model_path = base_dir / "models" / "random_forest.pkl"
+        
+        logging.info(f"Trying to load model from: {model_path}")
+        
         model = joblib.load(model_path)
-
-        # Log success message
-        logging.info("Model loaded")
-
+        logging.info("Model loaded successfully")
         return model
 
     except Exception as e:
-        # Log error if model not found
         logging.error(f"Model error: {e}")
         return None
-
 # Step 3: Validate Input Data
 
 def validate_input(data):
