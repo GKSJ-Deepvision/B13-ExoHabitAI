@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ExoHabitAI — NASA Exoplanet Habitability Predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- ═══ NAVBAR — smooth scroll ═══ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#home">
+      <span class="brand-icon"><i class="fas fa-rocket"></i></span>ExoHabitAI
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#home">Intro</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#batch">Batch</a>
+      <a class="nav-link" href="#ranking">Ranking</a>
+      <a class="nav-link" href="#predict">Predict</a>
+      <button class="btn-dashboard" onclick="document.getElementById('analytics').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-chart-pie"></i> Dashboard
+      </button>
+    </div>
+    <button class="nav-toggle" id="navToggle" onclick="this.parentElement.parentElement.querySelector('.nav-links').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════
+     SECTION 1 — HERO
+═══════════════════════════════════════ -->
+<section id="home" class="sp-section">
+  <div class="hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="float-orbs">
+      <div class="orb orb1"></div><div class="orb orb2"></div>
+      <div class="orb orb3"></div><div class="orb orb4"></div>
+      <div class="orb orb5"></div>
+    </div>
+    <div class="hero-content">
+      <div class="badge-pill"><i class="fas fa-satellite-dish"></i>&nbsp; 98.89% ACCURACY &nbsp;·&nbsp; 97.5% RECALL <span class="badge-dot"></span></div>
+      <h1 class="hero-title">
+        Discover the<br>
+        <span class="ln2">Next Habitable World</span>
+      </h1>
+      <p class="hero-sub">
+        Leveraging <span class="ht">97.5% recall</span> and <span class="ha">Tuned Random Forest ML</span> to identify potentially <span class="hb">habitable exoplanets</span> across the cosmos
+      </p>
+      <div class="hero-btns">
+        <a class="btn-p" href="#predict"><i class="fas fa-rocket"></i> Open Prediction Engine &nbsp;→</a>
+        <a class="btn-o" href="#ranking"><i class="fas fa-globe"></i> Explore Rankings</a>
+      </div>
+    </div>
+    <div class="scroll-hint">SCROLL TO EXPLORE<i class="fas fa-chevron-down"></i></div>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker">
+    <span><i class="fas fa-bolt"></i>Real-time Analysis</span><span class="sep">◆</span>
+    <span><i class="fas fa-circle-check"></i>98.89% Accuracy</span><span class="sep">◆</span>
+    <span><i class="fas fa-bullseye"></i>97.5% Recall</span><span class="sep">◆</span>
+    <span><i class="fas fa-star"></i>98.73% F1-Score</span><span class="sep">◆</span>
+    <span><i class="fas fa-database"></i>Features 22</span><span class="sep">◆</span>
+    <span><i class="fas fa-sliders"></i>Threshold 0.9</span>
+  </div>
+
+  <!-- Mission cards -->
+  <div class="section">
+    <div class="wrap">
+      <p class="sec-lbl">Mission Objectives</p>
+      <h2 class="sec-ttl">Why ExoHabitAI?</h2>
+      <p class="sec-sub">An advanced ML system predicting exoplanet habitability from real NASA astronomical parameters in real-time.</p>
+      <div class="g3 anim-cards">
+        <div class="card card-3d-flip" style="animation-delay:0s">
+          <div class="ci ci-t"><i class="fas fa-brain"></i></div>
+          <h4>AI-Powered Prediction</h4>
+          <p>Tuned Random Forest — trained on real NASA exoplanet data achieving 98.89% accuracy using 22 key features.</p>
+        </div>
+        <div class="card card-3d-flip" style="animation-delay:.15s">
+          <div class="ci ci-a"><i class="fas fa-globe"></i></div>
+          <h4>Key Astronomical Features</h4>
+          <p>Planet radius, mass, orbital period, equilibrium temperature, stellar parameters and computed habitability scores for complete analysis.</p>
+        </div>
+        <div class="card card-3d-flip" style="animation-delay:.3s">
+          <div class="ci ci-b"><i class="fas fa-server"></i></div>
+          <h4>Flask REST API</h4>
+          <p>Backend delivers real-time predictions instantly — input planet data, get habitability results with confidence scores in milliseconds.</p>
+        </div>
+      </div>
+      <div class="stats-band mt4">
+        <div class="sc stat-count-card"><span class="sv count-up" data-target="98.89" data-suffix="%" style="color:var(--teal)">0%</span><span class="sl">Accuracy</span></div>
+        <div class="sc stat-count-card"><span class="sv count-up" data-target="97.5"  data-suffix="%" style="color:var(--magenta)">0%</span><span class="sl">Recall</span></div>
+        <div class="sc stat-count-card"><span class="sv count-up" data-target="98.73" data-suffix="%" style="color:var(--blue)">0%</span><span class="sl">F1-Score</span></div>
+        <div class="sc stat-count-card"><span class="sv count-up" data-target="22"    data-suffix="" style="color:var(--ice)">0</span><span class="sl">Features</span></div>
+        <div class="sc stat-count-card"><span class="sv count-up" data-target="0.9994" data-suffix="" style="color:var(--amber)">0</span><span class="sl">ROC-AUC</span></div>
+        <div class="sc stat-count-card"><span class="sv count-up" data-target="0.9"   data-suffix="" style="color:var(--green)">0</span><span class="sl">Threshold</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION 2 — ABOUT
+═══════════════════════════════════════ -->
+<section id="about" class="sp-section">
+  <div class="page-banner">
+    <canvas class="pb-canvas" id="aboutCanvas"></canvas>
+    <div class="pb-inner">
+      <div class="badge-pill"><i class="fas fa-info-circle"></i>&nbsp; PROJECT OVERVIEW</div>
+      <h1 class="page-title">About <span class="acc">ExoHabitAI</span></h1>
+      <p class="page-sub">Advanced machine learning for predicting exoplanet habitability using NASA astronomical data</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="wrap">
+      <p class="sec-lbl">Our Vision</p>
+      <h2 class="sec-ttl">What is ExoHabitAI?</h2>
+      <p class="sec-sub" style="max-width:100%">ExoHabitAI is an advanced machine learning system designed to predict the habitability of exoplanets using astronomical data. It leverages modern AI algorithms and data-driven techniques to analyze planetary and stellar features — helping identify potentially habitable worlds beyond our solar system.</p>
+      <p class="sec-lbl mt4">Project Goals</p>
+      <h2 class="sec-ttl">🎯 Objectives</h2>
+      <div class="g2 anim-cards">
+        <div class="card card-3d-flip" style="animation-delay:0s"><div class="ci ci-t"><i class="fas fa-satellite"></i></div><h4>Predict Habitability</h4><p>Determine whether an exoplanet is habitable or not using supervised learning on real NASA exoplanet archive data.</p></div>
+        <div class="card card-3d-flip" style="animation-delay:.12s"><div class="ci ci-a"><i class="fas fa-chart-line"></i></div><h4>Analyze Space Data</h4><p>Process planetary radius, mass, orbital period, equilibrium temperature, stellar parameters for comprehensive scientific analysis.</p></div>
+        <div class="card card-3d-flip" style="animation-delay:.24s"><div class="ci ci-b"><i class="fas fa-bolt"></i></div><h4>Real-Time Predictions</h4><p>Flask API delivers instant results — no delay, no friction. Input planet data via form or batch CSV and receive results immediately.</p></div>
+        <div class="card card-3d-flip" style="animation-delay:.36s"><div class="ci ci-m"><i class="fas fa-microscope"></i></div><h4>Scientific Exploration</h4><p>Assist scientists, researchers and students in understanding the intersection of space science and artificial intelligence.</p></div>
+      </div>
+      <p class="sec-lbl mt5">Machine Learning</p>
+      <h2 class="sec-ttl">🧠 The Model</h2>
+      <div class="g2 anim-cards">
+        <div class="card card-3d-flip" style="animation-delay:0s">
+          <div class="ci ci-t"><i class="fas fa-microchip"></i></div>
+          <h4>Model Architecture</h4>
+          <ul class="il mt2">
+            <li><strong>Model Type:</strong> <span class="hl">Tuned Random Forest</span></li>
+            <li><strong>Training:</strong> Supervised Learning</li>
+            <li><strong>Preprocessing:</strong> Feature Engineering + Hyperparameter Tuning</li>
+            <li><strong>Threshold:</strong> <span class="hl">0.9</span></li>
+            <li><strong>Key Features:</strong> Planet radius, mass, orbital period, temperature, stellar parameters + derived habitability scores</li>
+          </ul>
+        </div>
+        <div class="card card-3d-flip" style="animation-delay:.15s">
+          <div class="ci ci-a"><i class="fas fa-chart-bar"></i></div>
+          <h4>📊 Model Performance</h4>
+          <div class="perf-g">
+            <div class="pb"><span class="pv count-up" data-target="98.89" data-suffix="%" style="color:var(--teal)">0%</span><span class="pl">Accuracy</span></div>
+            <div class="pb"><span class="pv count-up" data-target="97.5"  data-suffix="%" style="color:var(--magenta)">0%</span><span class="pl">Recall</span></div>
+            <div class="pb"><span class="pv count-up" data-target="98.73" data-suffix="%" style="color:var(--blue)">0%</span><span class="pl">F1-Score</span></div>
+            <div class="pb"><span class="pv count-up" data-target="22"    data-suffix="" style="color:var(--ice)">0</span><span class="pl">Features</span></div>
+            <div class="pb"><span class="pv count-up" data-target="0.9994" data-suffix="" style="color:var(--amber)">0</span><span class="pl">ROC-AUC</span></div>
+            <div class="pb"><span class="pv count-up" data-target="0.9"   data-suffix="" style="color:var(--green)">0</span><span class="pl">Threshold</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="sec-lbl mt5">Technologies</p>
+      <h2 class="sec-ttl">🛠 Built With</h2>
+      <div class="tech-row mt3">
+        <div class="tc"><i class="fab fa-python" style="color:#3b82f6"></i> Python</div>
+        <div class="tc"><i class="fas fa-microscope" style="color:#a78bfa"></i> Scikit-learn</div>
+        <div class="tc"><i class="fas fa-flask-vial" style="color:#00d2ff"></i> Flask</div>
+        <div class="tc"><i class="fab fa-html5" style="color:#f97316"></i> HTML / CSS / JS</div>
+        <div class="tc"><i class="fas fa-database" style="color:#10b981"></i> NASA Exoplanet Archive</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 — BATCH
+═══════════════════════════════════════ -->
+<section id="batch" class="sp-section">
+  <div class="page-banner">
+    <canvas class="pb-canvas" id="batchCanvas"></canvas>
+    <div class="pb-inner">
+      <div class="badge-pill"><i class="fas fa-layer-group"></i>&nbsp; BATCH PROCESSING</div>
+      <h1 class="page-title">Batch <span class="acc">Analysis</span></h1>
+      <p class="page-sub">Upload CSV or paste JSON to analyze multiple exoplanets at once</p>
+    </div>
+  </div>
+  <div class="batch-wrap">
+    <div class="batch-main">
+      <div class="tab-row mb3">
+        <button class="tb on" onclick="switchTab('csv',this)"><i class="fas fa-file-csv"></i> CSV Upload</button>
+        <button class="tb" onclick="switchTab('json',this)"><i class="fas fa-file-code"></i> JSON Input</button>
+      </div>
+      <div id="tab-csv" class="tc-wrap on">
+        <div class="drop-z" onclick="document.getElementById('batchFile').click()">
+          <i class="fas fa-cloud-arrow-up"></i>
+          <p id="dropLabel">Drop CSV file here or click to browse</p>
+          <small>Required columns: pl_rade, pl_bmasse, pl_eqt, st_teff, temp_score, dist_score, lum_score, stellar_temp_score, stellar_mass_score, stellar_compatibility_index, orbital_stability</small>
+        </div>
+        <input type="file" id="batchFile" accept=".csv" style="display:none" onchange="handleFileSelect(this)">
+        <div style="display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap">
+          <button class="btn-p" onclick="handleBatchFromUI()"><i class="fas fa-rocket"></i> Run Batch Analysis</button>
+          <button class="btn-s" onclick="downloadSampleCSV('habitable')"><i class="fas fa-download"></i> Habitable Sample</button>
+          <button class="btn-s" onclick="downloadSampleCSV('nonHabitable')"><i class="fas fa-download"></i> Non-Hab Sample</button>
+        </div>
+      </div>
+      <div id="tab-json" class="tc-wrap">
+        <textarea class="code-a" id="jsonInput" placeholder='Paste JSON: {"planets":[{"pl_rade":1.2,"pl_bmasse":1.0,"pl_eqt":288,"st_teff":5772,"temp_score":0.95,"dist_score":0.98,"lum_score":0.92,"stellar_temp_score":0.90,"stellar_mass_score":0.88,"stellar_compatibility_index":0.92,"orbital_stability":0.95}]}'></textarea>
+        <div style="display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap">
+          <button id="jsonBatchBtn" class="btn-p" onclick="runJSONBatch()"><i class="fas fa-rocket"></i> Run JSON Batch</button>
+          <button class="btn-s" onclick="loadSampleJSON('habitable')"><i class="fas fa-earth-americas"></i> Habitable Sample</button>
+          <button class="btn-s" onclick="loadSampleJSON('nonHabitable')"><i class="fas fa-skull-crossbones"></i> Non-Hab Sample</button>
+        </div>
+      </div>
+      <div id="batchResults" style="display:none;margin-top:2rem">
+        <div class="sum-row" id="batchSummary"></div>
+        <div class="batch-table-label">
+          <span><i class="fas fa-list-ol"></i> Top Results</span>
+          <span class="batch-total-badge" id="batchTotalBadge"></span>
+        </div>
+        <div class="tbl-w">
+          <table class="dtbl">
+            <thead><tr>
+              <th>#</th><th>Planet Name</th><th>Habitability</th><th>Confidence</th>
+            </tr></thead>
+            <tbody id="batchBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="batchError" class="res-banner res-err d-none mt3"></div>
+    </div>
+    <div class="sidebar">
+      <h4>How It Works</h4>
+      <div class="ms-row"><div class="ms-ic ci-t"><i class="fas fa-upload"></i></div><div><strong>Upload Data</strong><span>Provide planet parameters via CSV or JSON format</span></div></div>
+      <div class="ms-row"><div class="ms-ic ci-a"><i class="fas fa-brain"></i></div><div><strong>ML Analysis</strong><span>Each planet is analyzed by our Tuned Random Forest model</span></div></div>
+      <div class="ms-row"><div class="ms-ic ci-b"><i class="fas fa-chart-bar"></i></div><div><strong>Results</strong><span>Get habitability predictions with confidence scores</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION 4 — RANKING
+═══════════════════════════════════════ -->
+<section id="ranking" class="sp-section">
+  <div class="page-banner">
+    <canvas class="pb-canvas" id="rankCanvas"></canvas>
+    <div class="pb-inner">
+      <div class="badge-pill"><i class="fas fa-trophy"></i>&nbsp; EXOPLANET LEADERBOARD</div>
+      <h1 class="page-title" style="color:var(--amber-l)">Habitability <span class="acc-a">Rankings</span></h1>
+      <p class="page-sub">Exoplanet candidates ranked by habitability score</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="wrap">
+      <div class="filter-p mb3">
+        <div class="fg">
+          <label>Number of Results</label>
+          <input type="number" id="rankLimit" class="fi" value="22" min="1" max="100" placeholder="e.g. 22" style="width:110px">
+        </div>
+        <div class="fg">
+          <label>Filter by Status</label>
+          <select id="rankStatus" class="fi">
+            <option value="all">All (Habitable + Non-Hab)</option>
+            <option value="habitable">✓ Habitable Only</option>
+            <option value="nonhabitable">✗ Non-Habitable Only</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Min Score (0 = all)</label>
+          <input type="number" id="minScore" class="fi" value="0" step="0.05" min="0" max="1" placeholder="0.0–1.0">
+        </div>
+        <button class="btn-a" onclick="loadRankingData()"><i class="fas fa-filter"></i> Apply</button>
+      </div>
+      <div class="card" style="padding:2rem">
+        <div class="loading-s" id="rankingLoading"><div class="spin-r"></div><p>Loading rankings...</p></div>
+        <div class="tbl-w" id="rankingTableWrap" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem">
+            <span id="rankResultCount" style="font-size:.82rem;color:#8ec4dc;font-family:var(--fh)"></span>
+            <span style="font-size:.75rem;color:#4a7a99"><i class="fas fa-circle-info"></i> Sorted by Habitability Score</span>
+          </div>
+          <table class="dtbl" style="font-size:.82rem">
+            <thead><tr>
+              <th style="width:60px">Rank</th>
+              <th style="width:150px">Planet Name</th>
+              <th style="width:90px">Radius (R⊕)</th>
+              <th style="width:80px">Mass (M⊕)</th>
+              <th style="width:100px">Period (d)</th>
+              <th style="width:90px">Temp (K)</th>
+              <th style="width:90px">Star (K)</th>
+              <th style="width:90px">Score</th>
+              <th style="width:110px">Status</th>
+            </tr></thead>
+            <tbody id="rankingBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION 5 — PREDICT
+═══════════════════════════════════════ -->
+<section id="predict" class="sp-section">
+  <div class="page-banner">
+    <canvas class="pb-canvas" id="predictCanvas"></canvas>
+    <div class="pb-inner">
+      <div class="badge-pill"><i class="fas fa-brain"></i>&nbsp; SINGLE PLANET ANALYSIS</div>
+      <h1 class="page-title">Habitability <span class="acc">Planet Prediction</span></h1>
+      <p class="page-sub">Enter planetary and stellar parameters to predict habitability using our 98.89% accurate model</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="wrap">
+      <div class="card" style="padding:2.5rem">
+        <form id="predictionForm">
+          <div class="fsec-hd"><i class="fas fa-globe"></i> Planetary Parameters</div>
+          <div class="fgrid mb3">
+            <div class="fld"><label>Planet Radius (Earth radii)</label><input type="number" step="0.01" class="fin" id="pl_rade" placeholder="e.g. 1.2" required></div>
+            <div class="fld"><label>Planet Mass (Earth masses)</label><input type="number" step="0.01" class="fin" id="pl_bmasse" placeholder="e.g. 1.0" required></div>
+            <div class="fld"><label>Orbital Period (days)</label><input type="number" step="0.01" class="fin" id="pl_orbper" placeholder="e.g. 365.25" required></div>
+            <div class="fld"><label>Semi-major Axis (AU)</label><input type="number" step="0.01" class="fin" id="pl_orbsmax" placeholder="e.g. 1.0" required></div>
+            <div class="fld"><label>Equilibrium Temperature (K)</label><input type="number" step="0.01" class="fin" id="pl_eqt" placeholder="e.g. 288" required></div>
+          </div>
+          <div class="fsec-hd"><i class="fas fa-sun"></i> Stellar Parameters</div>
+          <div class="fgrid mb3">
+            <div class="fld"><label>Stellar Temperature (K)</label><input type="number" step="0.01" class="fin" id="st_teff" placeholder="e.g. 5772" required></div>
+            <div class="fld"><label>Stellar Radius (Solar radii)</label><input type="number" step="0.01" class="fin" id="st_rad" placeholder="e.g. 1.0" required></div>
+            <div class="fld"><label>Stellar Mass (Solar masses)</label><input type="number" step="0.01" class="fin" id="st_mass" placeholder="e.g. 1.0" required></div>
+            <div class="fld"><label>Stellar Metallicity</label><input type="number" step="0.01" class="fin" id="st_met" placeholder="e.g. 0.0" required></div>
+            <div class="fld"><label>Stellar Luminosity (Solar)</label><input type="number" step="0.01" class="fin" id="st_lum" placeholder="e.g. 1.0" required></div>
+          </div>
+          <div class="fsec-hd"><i class="fas fa-star"></i> Spectral Types</div>
+          <div class="ck-row mb3">
+            <label class="ck"><input type="checkbox" id="spec_F"> F-type</label>
+            <label class="ck"><input type="checkbox" id="spec_G"> G-type</label>
+            <label class="ck"><input type="checkbox" id="spec_K"> K-type</label>
+            <label class="ck"><input type="checkbox" id="spec_M"> M-type</label>
+            <label class="ck"><input type="checkbox" id="spec_m"> M-dwarf</label>
+          </div>
+          <div class="fsec-hd"><i class="fas fa-chart-line"></i> Habitability Scores (0–1)</div>
+          <div class="fgrid mb3">
+            <div class="fld"><label>Temperature Score</label><input type="number" step="0.01" min="0" max="1" class="fin" id="temp_score" placeholder="0.0–1.0" required></div>
+            <div class="fld"><label>Distance Score</label><input type="number" step="0.01" min="0" max="1" class="fin" id="dist_score" placeholder="0.0–1.0" required></div>
+            <div class="fld"><label>Luminosity Score</label><input type="number" step="0.01" min="0" max="1" class="fin" id="lum_score" placeholder="0.0–1.0" required></div>
+            <div class="fld"><label>Stellar Temp Score</label><input type="number" step="0.01" min="0" max="1" class="fin" id="stellar_temp_score" placeholder="0.0–1.0" required></div>
+            <div class="fld"><label>Stellar Mass Score</label><input type="number" step="0.01" min="0" max="1" class="fin" id="stellar_mass_score" placeholder="0.0–1.0" required></div>
+            <div class="fld"><label>Stellar Compatibility Index</label><input type="number" step="0.01" min="0" max="1" class="fin" id="stellar_compatibility_index" placeholder="0.0–1.0" required></div>
+            <div class="fld"><label>Orbital Stability</label><input type="number" step="0.01" min="0" max="1" class="fin" id="orbital_stability" placeholder="0.0–1.0" required></div>
+          </div>
+          <div class="vi-strip" id="viStrip">
+            <div class="vi-badge" id="vi_radius"><i class="fas fa-circle"></i><span>Radius</span><strong id="vi_radius_val">—</strong></div>
+            <div class="vi-badge" id="vi_temp"><i class="fas fa-thermometer-half"></i><span>Eq. Temp</span><strong id="vi_temp_val">—</strong></div>
+            <div class="vi-badge" id="vi_period"><i class="fas fa-rotate"></i><span>Orb. Period</span><strong id="vi_period_val">—</strong></div>
+            <div class="vi-badge" id="vi_star"><i class="fas fa-sun"></i><span>Star Temp</span><strong id="vi_star_val">—</strong></div>
+            <div class="vi-badge" id="vi_mass"><i class="fas fa-weight-hanging"></i><span>Mass</span><strong id="vi_mass_val">—</strong></div>
+          </div>
+          <div class="factions">
+            <div class="sample-btn-group">
+              <span class="sample-lbl"><i class="fas fa-flask"></i> Sample Data:</span>
+              <button type="button" class="btn-sample btn-sample-h" onclick="loadSampleData('habitable')"><i class="fas fa-earth-americas"></i> 🌱 Habitable</button>
+              <button type="button" class="btn-sample btn-sample-n" onclick="loadSampleData('nonHabitable')"><i class="fas fa-skull-crossbones"></i> Non-Habitable</button>
+              <button type="button" class="btn-sample btn-sample-frozen" onclick="loadZoneSample('frozen')">❄️ Frozen</button>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:center">
+              <button type="button" class="btn-s" onclick="autoFillHabitableData()"><i class="fas fa-magic"></i> Auto Fill</button>
+              <button type="submit" class="btn-p" id="predictBtn"><i class="fas fa-rocket"></i> Predict Habitability</button>
+            </div>
+          </div>
+        </form>
+        <div id="results" class="d-none mt4">
+          <div class="res-banner" id="resultAlert"></div>
+          <div class="result-main-row">
+            <div class="planet-vis-wrap">
+              <div class="planet-vis-label"><i class="fas fa-globe"></i> Live Planet Preview</div>
+              <canvas id="planetVis3D" width="300" height="300"></canvas>
+              <div class="planet-type-label" id="planetTypeLabel">—</div>
+            </div>
+            <div class="result-right-panel">
+              <div class="res-cards">
+                <div class="res-box"><i class="fas fa-check-circle" style="color:var(--green)"></i><h5>Habitable Score</h5><p class="rv" id="habitableScore" style="color:var(--green)">—</p></div>
+                <div class="res-box"><i class="fas fa-times-circle" style="color:var(--red)"></i><h5>Non-Habitable Score</h5><p class="rv" id="nonHabitableScore" style="color:var(--red)">—</p></div>
+              </div>
+              <div class="temp-zone-wrap">
+                <div class="tz-label"><i class="fas fa-fire-flame-curved"></i> Temperature Zone</div>
+                <div class="tz-bar-outer">
+                  <div class="tz-segment tz-frozen">❄️ Frozen<br><span>&lt;150K</span></div>
+                  <div class="tz-segment tz-cold">🌨 Cold<br><span>150–220K</span></div>
+                  <div class="tz-segment tz-hab"> Habitable<br><span>220–340K</span></div>
+                  <div class="tz-segment tz-warm">🌡 Warm<br><span>340–500K</span></div>
+                  <div class="tz-segment tz-hot">🔥 Hot<br><span>&gt;500K</span></div>
+                  <div class="tz-needle" id="tzNeedle"></div>
+                </div>
+                <div class="tz-current" id="tzCurrent">— K</div>
+              </div>
+              <div class="conf-wrap">
+                <div class="conf-header"><span><i class="fas fa-gauge-high"></i> Confidence Level</span><strong id="confPct">—</strong></div>
+                <div class="conf-bar-outer"><div class="conf-bar-fill" id="confBarFill"></div></div>
+                <div class="conf-desc" id="confDesc">—</div>
+              </div>
+              <div class="score-bars-wrap">
+                <div class="sb-title"><i class="fas fa-chart-bar"></i> Habitability Score Breakdown</div>
+                <div id="scoreBarsList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION 6 — ANALYTICS DASHBOARD (merged)
+═══════════════════════════════════════ -->
+<section id="analytics" class="sp-section" style="position:relative">
+
+  <canvas id="anlBgPlanet" style="position:absolute;top:0;left:0;width:100%;height:420px;pointer-events:none;z-index:0;opacity:.15"></canvas>
+
+  <div class="anl-hero">
+    <canvas class="pb-canvas" id="analyticsCanvas"></canvas>
+    <div class="anl-hero-inner wrap">
+      <div class="anl-hero-left">
+        <div class="badge-pill anl-live-pill">
+          <span class="anl-live-dot"></span>&nbsp; LIVE ANALYTICS &nbsp;·&nbsp; AUTO-SYNC
+        </div>
+        <h1 class="anl-hero-title">Analytics <span class="anl-title-grad">Dashboard</span></h1>
+        <p class="anl-hero-sub" id="anlSubtitle">Comprehensive insights into exoplanet habitability predictions</p>
+        <div class="anl-last-sync"><i class="fas fa-rotate-right"></i> <span id="anlSyncTime">Synced just now</span></div>
+      </div>
+      <div class="anl-hero-right">
+        <div class="anl-export-group">
+          <div class="anl-export-label"><i class="fas fa-download"></i> Export</div>
+          <button class="anl-exp-btn anl-exp-pdf" onclick="anlExportPDF()" data-tip="Download styled HTML report with all stats"><i class="fas fa-file-pdf"></i><span>PDF Report</span></button>
+          <button class="anl-exp-btn anl-exp-csv" onclick="anlExportCSV()" data-tip="Download CSV with all prediction data"><i class="fas fa-file-csv"></i><span>CSV Data</span></button>
+          <button class="anl-exp-btn anl-exp-json" onclick="anlExportJSON()" data-tip="Export full JSON with metadata"><i class="fas fa-file-code"></i><span>JSON</span></button>
+          <button class="anl-exp-btn anl-exp-ref" onclick="anlRefresh()" data-tip="Force refresh all charts"><i class="fas fa-rotate-right"></i><span>Refresh</span></button>
+          <button class="anl-exp-btn anl-exp-reset" onclick="anlResetDashboard()" data-tip="Clear all prediction history and reset dashboard"><i class="fas fa-trash-can"></i><span>Reset</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="anl-body" style="position:relative;z-index:1">
+    <div class="wrap">
+
+      <!-- Row 1: 4 Top Stat Cards -->
+      <div class="anl-r4">
+        <div class="anl-stat-gl anl-hover" data-tip="Total exoplanets analyzed in this session using our ML model">
+          <div class="anl-stat-gl-glow" style="background:radial-gradient(circle,rgba(224,64,251,.35),transparent 70%)"></div>
+          <div class="anl-stat-gl-icon" style="background:rgba(224,64,251,.16);border-color:rgba(224,64,251,.3)"><i class="fas fa-satellite-dish" style="color:#e040fb"></i></div>
+          <div class="anl-stat-gl-body">
+            <div class="anl-stat-gl-lbl">Total Analyzed</div>
+            <div class="anl-stat-gl-val" id="anlTotal" style="color:#e040fb">0</div>
+            <div class="anl-stat-gl-trend" id="anlTotalTrend" style="color:#e040fb88">Session data</div>
+          </div>
+        </div>
+        <div class="anl-stat-gl anl-hover" data-tip="Planets predicted as potentially habitable by our model">
+          <div class="anl-stat-gl-glow" style="background:radial-gradient(circle,rgba(16,185,129,.35),transparent 70%)"></div>
+          <div class="anl-stat-gl-icon" style="background:rgba(16,185,129,.16);border-color:rgba(16,185,129,.3)"><i class="fas fa-earth-americas" style="color:#10b981"></i></div>
+          <div class="anl-stat-gl-body">
+            <div class="anl-stat-gl-lbl">Habitable Candidates</div>
+            <div class="anl-stat-gl-val" id="anlHab" style="color:#10b981">0</div>
+            <div class="anl-stat-gl-trend" id="anlHabTrend" style="color:#10b98188">—% habitable rate</div>
+          </div>
+        </div>
+        <div class="anl-stat-gl anl-hover" data-tip="Model accuracy — 98.89% correct predictions on test dataset">
+          <div class="anl-stat-gl-glow" style="background:radial-gradient(circle,rgba(0,212,170,.35),transparent 70%)"></div>
+          <div class="anl-stat-gl-icon" style="background:rgba(0,212,170,.16);border-color:rgba(0,212,170,.3)"><i class="fas fa-brain" style="color:var(--teal)"></i></div>
+          <div class="anl-stat-gl-body">
+            <div class="anl-stat-gl-lbl">Model Accuracy</div>
+            <div class="anl-stat-gl-val" style="color:var(--teal)">98.89%</div>
+            <div class="anl-stat-gl-trend" style="color:#00d4aa88">Tuned Random Forest</div>
+          </div>
+        </div>
+        <div class="anl-stat-gl anl-hover" data-tip="Recall 97.5% — finds almost all truly habitable planets">
+          <div class="anl-stat-gl-glow" style="background:radial-gradient(circle,rgba(245,158,11,.35),transparent 70%)"></div>
+          <div class="anl-stat-gl-icon" style="background:rgba(245,158,11,.16);border-color:rgba(245,158,11,.3)"><i class="fas fa-bolt" style="color:var(--amber)"></i></div>
+          <div class="anl-stat-gl-body">
+            <div class="anl-stat-gl-lbl">Recall Rate</div>
+            <div class="anl-stat-gl-val" style="color:var(--amber)">97.5%</div>
+            <div class="anl-stat-gl-trend" style="color:#f59e0b88">High sensitivity</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Model Insight Cards -->
+      <div class="anl-r4" style="margin-top:1.1rem">
+        <div class="anl-insight-card anl-hover" data-tip="22 key astronomical features used — planet radius, mass, orbital period, temperature, stellar parameters + derived scores">
+          <div class="anl-insight-icon" style="color:#b8e8ff;background:rgba(184,232,255,.1)"><i class="fas fa-database"></i></div>
+          <div class="anl-insight-lbl">Features</div>
+          <div class="anl-insight-val" style="color:#b8e8ff">22</div>
+          <div class="anl-insight-bar"><div style="width:100%;background:linear-gradient(90deg,#b8e8ff44,#b8e8ff)"></div></div>
+        </div>
+        <div class="anl-insight-card anl-hover" data-tip="F1 Score 98.73% — excellent balance of Precision and Recall">
+          <div class="anl-insight-icon" style="color:#10b981;background:rgba(16,185,129,.1)"><i class="fas fa-star"></i></div>
+          <div class="anl-insight-lbl">F1 Score</div>
+          <div class="anl-insight-val" style="color:#10b981">98.73%</div>
+          <div class="anl-insight-bar"><div style="width:98.73%;background:linear-gradient(90deg,#10b98144,#10b981)"></div></div>
+        </div>
+        <div class="anl-insight-card anl-hover" data-tip="ROC-AUC 0.9994 — near-perfect ability to separate habitable from non-habitable">
+          <div class="anl-insight-icon" style="color:#1e90ff;background:rgba(30,144,255,.1)"><i class="fas fa-chart-area"></i></div>
+          <div class="anl-insight-lbl">ROC-AUC</div>
+          <div class="anl-insight-val" style="color:#1e90ff">0.9994</div>
+          <div class="anl-insight-bar"><div style="width:99.94%;background:linear-gradient(90deg,#1e90ff44,#1e90ff)"></div></div>
+        </div>
+        <div class="anl-insight-card anl-hover" data-tip="Decision threshold 0.9 — probability above which planet is classified habitable">
+          <div class="anl-insight-icon" style="color:var(--amber);background:rgba(245,158,11,.1)"><i class="fas fa-sliders"></i></div>
+          <div class="anl-insight-lbl">Threshold</div>
+          <div class="anl-insight-val" style="color:var(--amber)">0.5</div>
+          <div class="anl-insight-bar"><div style="width:50%;background:linear-gradient(90deg,#f59e0b44,#f59e0b)"></div></div>
+        </div>
+      </div>
+
+      <!-- Row 3: Feature Importance + Score Distribution -->
+      <div class="anl-grid-2 mt4">
+        <div class="anl-glass-card">
+          <div class="anl-card-topbar">
+            <div class="anl-card-title"><i class="fas fa-chart-bar" style="color:#c060fb"></i> Feature Importance</div>
+            <div class="anl-card-sub">Key features driving habitability predictions</div>
+          </div>
+          <div class="anl-feat-list" id="anlFeatList"></div>
+        </div>
+        <div class="anl-glass-card">
+          <div class="anl-card-topbar">
+            <div class="anl-card-title"><i class="fas fa-chart-area" style="color:#00d4aa"></i> Habitability Score Distribution</div>
+            <div class="anl-card-sub">Probability distribution of predictions across all planets</div>
+          </div>
+          <canvas id="anlDistChart" style="width:100%;margin-top:.5rem" height="220"></canvas>
+        </div>
+      </div>
+
+      <!-- Row 4 NEW: Bar Chart + Line Chart -->
+      <div class="anl-grid-2" style="margin-top:1.4rem">
+        <div class="anl-glass-card">
+          <div class="anl-card-topbar">
+            <div class="anl-card-title"><i class="fas fa-chart-bar" style="color:#1e90ff"></i> Stellar Type Distribution</div>
+            <div class="anl-card-sub">Planet count by host star spectral class</div>
+          </div>
+          <div style="position:relative;height:260px;margin-top:.8rem">
+            <canvas id="anlBarChart"></canvas>
+          </div>
+        </div>
+        <div class="anl-glass-card">
+          <div class="anl-card-topbar">
+            <div class="anl-card-title"><i class="fas fa-chart-line" style="color:#f59e0b"></i> Prediction History Trend</div>
+            <div class="anl-card-sub">Habitability score over last 20 predictions</div>
+          </div>
+          <div style="position:relative;height:260px;margin-top:.8rem">
+            <canvas id="anlLineChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 5: Donut + Scatter -->
+      <div class="anl-grid-2" style="margin-top:1.4rem">
+        <div class="anl-glass-card">
+          <div class="anl-card-topbar">
+            <div class="anl-card-title"><i class="fas fa-braille" style="color:#e040fb"></i> Mass vs Orbital Distance</div>
+            <div class="anl-card-sub">Scatter plot: Planet Mass (M⊕) vs Semi-major Axis (AU)</div>
+          </div>
+          <div style="position:relative;height:280px;margin-top:.8rem">
+            <canvas id="anlScatterChart"></canvas>
+          </div>
+        </div>
+        <div class="anl-glass-card">
+          <div class="anl-card-topbar">
+            <div class="anl-card-title"><i class="fas fa-circle-half-stroke" style="color:#e040fb"></i> Classification Results</div>
+            <div class="anl-card-sub">Discovery method performance breakdown</div>
+          </div>
+          <div class="anl-donut-section">
+            <div class="anl-donut-canvas-wrap">
+              <canvas id="anlDonutChart" width="220" height="220"></canvas>
+              <div class="anl-donut-center">
+                <div class="anl-donut-total" id="anlDonutTotal">0</div>
+                <div class="anl-donut-total-lbl">TOTAL</div>
+              </div>
+            </div>
+            <div class="anl-donut-legend-block">
+              <div class="anl-donut-leg-item">
+                <div class="anl-dl-icon" style="background:#10b981;box-shadow:0 0 10px #10b981"></div>
+                <div><div class="anl-dl-lbl">Habitable</div><div class="anl-dl-val" id="anlLegH" style="color:#10b981">0</div></div>
+              </div>
+              <div class="anl-donut-leg-item">
+                <div class="anl-dl-icon" style="background:#f43f5e;box-shadow:0 0 10px #f43f5e"></div>
+                <div><div class="anl-dl-lbl">Non-Habitable</div><div class="anl-dl-val" id="anlLegNH" style="color:#f43f5e">0</div></div>
+              </div>
+              <div class="anl-donut-rate-ring" id="anlHabRateRing">
+                <svg width="80" height="80" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="8"/>
+                  <circle cx="40" cy="40" r="32" fill="none" stroke="#10b981" stroke-width="8"
+                    stroke-dasharray="0 201" stroke-linecap="round"
+                    transform="rotate(-90 40 40)" id="anlRateCircle" style="transition:stroke-dasharray 1s ease"/>
+                </svg>
+                <div class="anl-rate-pct" id="anlRatePct">0%</div>
+                <div class="anl-rate-lbl">Hab Rate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="anl-glass-card">
+          <div class="anl-card-topbar">
+            <div class="anl-card-title"><i class="fas fa-gauge-high" style="color:#1e90ff"></i> Model Performance Metrics</div>
+            <div class="anl-card-sub">Detailed classification performance</div>
+          </div>
+          <div class="anl-perf-stack">
+            <div class="anl-perf-item" data-tip="98.89% accurate — correct prediction rate on test dataset"><div class="anl-perf-header"><span class="anl-perf-name">Accuracy</span><span class="anl-perf-pct" style="color:#00d4aa">98.89%</span></div><div class="anl-perf-track"><div class="anl-perf-bar" style="width:98.89%;background:linear-gradient(90deg,#00d4aa44,#00d4aa);box-shadow:0 0 10px #00d4aa55"></div></div></div>
+            <div class="anl-perf-item" data-tip="97.5% recall — finds nearly all truly habitable planets"><div class="anl-perf-header"><span class="anl-perf-name">Recall</span><span class="anl-perf-pct" style="color:#e040fb">97.5%</span></div><div class="anl-perf-track"><div class="anl-perf-bar" style="width:97.5%;background:linear-gradient(90deg,#e040fb44,#e040fb);box-shadow:0 0 10px #e040fb55"></div></div></div>
+            <div class="anl-perf-item" data-tip="22 key features — planet radius, mass, orbital period, temperature, stellar parameters + habitability scores"><div class="anl-perf-header"><span class="anl-perf-name">Features</span><span class="anl-perf-pct" style="color:#b8e8ff">22</span></div><div class="anl-perf-track"><div class="anl-perf-bar" style="width:100%;background:linear-gradient(90deg,#b8e8ff44,#b8e8ff);box-shadow:0 0 10px #b8e8ff55"></div></div></div>
+            <div class="anl-perf-item" data-tip="98.73% F1 — excellent harmonic mean of precision and recall"><div class="anl-perf-header"><span class="anl-perf-name">F1 Score</span><span class="anl-perf-pct" style="color:#10b981">98.73%</span></div><div class="anl-perf-track"><div class="anl-perf-bar" style="width:98.73%;background:linear-gradient(90deg,#10b98144,#10b981);box-shadow:0 0 10px #10b98155"></div></div></div>
+            <div class="anl-perf-item" data-tip="ROC-AUC 0.9994 — near-perfect class discrimination ability"><div class="anl-perf-header"><span class="anl-perf-name">ROC-AUC</span><span class="anl-perf-pct" style="color:#1e90ff">99.94%</span></div><div class="anl-perf-track"><div class="anl-perf-bar" style="width:99.94%;background:linear-gradient(90deg,#1e90ff44,#1e90ff);box-shadow:0 0 10px #1e90ff55"></div></div></div>
+          </div>
+          <div class="anl-thresh-row">
+            <div class="anl-thresh-box"><i class="fas fa-sliders" style="color:var(--amber)"></i><div><div class="anl-thresh-lbl">Optimised Threshold</div><div class="anl-thresh-val">0.9000</div></div></div>
+            <div class="anl-thresh-box"><i class="fas fa-microchip" style="color:var(--teal)"></i><div><div class="anl-thresh-lbl">Model Type</div><div class="anl-thresh-val" style="font-size:.75rem">Random Forest</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Summary -->
+      <div class="anl-summary-section mt4">
+        <div class="anl-section-hd">
+          <i class="fas fa-database" style="color:var(--teal)"></i>
+          <span>Data Summary</span>
+          <div class="anl-live-pill-sm"><span class="anl-live-dot"></span> Live</div>
+        </div>
+        <div class="anl-summary-cards">
+          <div class="anl-sum-gl"><div class="anl-sum-gl-icon" style="background:rgba(224,64,251,.12)"><i class="fas fa-globe" style="color:#e040fb"></i></div><div class="anl-sum-gl-lbl">Total Planets</div><div class="anl-sum-gl-val" id="dsTotalPlanets" style="color:#e040fb">0</div></div>
+          <div class="anl-sum-gl"><div class="anl-sum-gl-icon" style="background:rgba(16,185,129,.12)"><i class="fas fa-earth-americas" style="color:#10b981"></i></div><div class="anl-sum-gl-lbl">Habitable</div><div class="anl-sum-gl-val" id="dsHabPlanets" style="color:#10b981">0</div></div>
+          <div class="anl-sum-gl"><div class="anl-sum-gl-icon" style="background:rgba(244,63,94,.12)"><i class="fas fa-times-circle" style="color:#f43f5e"></i></div><div class="anl-sum-gl-lbl">Non-Habitable</div><div class="anl-sum-gl-val" id="dsNHPlanets" style="color:#f43f5e">0</div></div>
+          <div class="anl-sum-gl"><div class="anl-sum-gl-icon" style="background:rgba(0,212,170,.12)"><i class="fas fa-sliders" style="color:var(--teal)"></i></div><div class="anl-sum-gl-lbl">Threshold</div><div class="anl-sum-gl-val" style="color:var(--teal)">0.9000</div></div>
+          <div class="anl-sum-gl"><div class="anl-sum-gl-icon" style="background:rgba(245,158,11,.12)"><i class="fas fa-gauge-high" style="color:var(--amber)"></i></div><div class="anl-sum-gl-lbl">Avg Confidence</div><div class="anl-sum-gl-val" id="dsAvgConf" style="color:var(--amber)">—</div></div>
+          <div class="anl-sum-gl"><div class="anl-sum-gl-icon" style="background:rgba(30,144,255,.12)"><i class="fas fa-chart-line" style="color:#1e90ff"></i></div><div class="anl-sum-gl-lbl">Avg Hab Score</div><div class="anl-sum-gl-val" id="dsAvgHab" style="color:#1e90ff">—</div></div>
+        </div>
+        <div id="anlTableWrap" style="display:none;margin-top:1.5rem">
+          <div class="anl-section-hd" style="margin-bottom:.8rem;font-size:.68rem">
+            <i class="fas fa-clock-rotate-left" style="color:var(--magenta)"></i>
+            <span>Recent Prediction History</span>
+          </div>
+          <div style="overflow-x:auto;border-radius:6px;border:1px solid rgba(0,212,170,.1)">
+            <table class="dtbl">
+              <thead><tr><th>#</th><th>Planet Type</th><th>Radius (R⊕)</th><th>Eq. Temp (K)</th><th>Star Temp (K)</th><th>Hab. Score</th><th>Confidence</th><th>Status</th></tr></thead>
+              <tbody id="anlTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="anl-empty-gl" id="anlEmpty">
+          <div class="anl-empty-planet"></div>
+          <h4>No Predictions Yet</h4>
+          <p>Head to the <strong>Predict</strong> section above, enter planet parameters and run an analysis. Results appear here automatically.</p>
+          <a class="anl-start-btn" href="#predict"><i class="fas fa-rocket"></i> Launch Prediction Engine</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="anl-tooltip" id="anlTooltip"></div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-g">
+    <div>
+      <div class="fb-name"><i class="fas fa-rocket"></i> ExoHabitAI</div>
+      <p class="fb-desc">Advanced machine learning for predicting exoplanet habitability. Powered by Tuned Random Forest · 98.89% Accuracy · 22 Features.</p>
+    </div>
+    <div class="fc">
+      <h5>Quick Links</h5>
+      <a href="#home">Home</a><a href="#predict">Predict</a>
+      <a href="#ranking">Ranking</a><a href="#analytics">Dashboard</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="fc">
+      <h5>Model Metrics</h5>
+      <a href="#analytics">Accuracy: 98.89%</a>
+      <a href="#analytics">Recall: 97.5%</a>
+      <a href="#analytics">Features: 22</a>
+      <a href="#analytics">F1: 98.73%</a>
+    </div>
+  </div>
+  <div class="ft-btm">© 2025 ExoHabitAI — NASA Exoplanet Habitability Predictor · Tuned Random Forest ML</div>
+</footer>
+
+</main>
+
+<script src="script.js"></script>
+<script>
+/* ════ STARFIELD CANVAS ════ */
+(function(){
+  const c=document.getElementById('bgCanvas'),ctx=c.getContext('2d');
+  let stars=[],neb=[];
+  function resize(){c.width=innerWidth;c.height=innerHeight}
+  function initStars(){
+    stars=[];for(let i=0;i<320;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.3+.2,a:Math.random()*Math.PI*2,spd:.003+Math.random()*.005});
+    neb=[];for(let i=0;i<6;i++)neb.push({x:Math.random()*c.width,y:Math.random()*c.height,r:150+Math.random()*200,col:`hsla(${[170,210,45,280][i%4]},80%,50%,.018)`});
+  }
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    neb.forEach(n=>{const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);g.addColorStop(0,n.col);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fill()});
+    stars.forEach(s=>{s.a+=s.spd;const al=.2+.8*Math.abs(Math.sin(s.a));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(184,232,255,${al})`;ctx.fill()});
+    requestAnimationFrame(draw);
+  }
+  resize();initStars();draw();
+  window.addEventListener('resize',()=>{resize();initStars()});
+})();
+
+/* ════ HERO PLANET CANVAS ════ */
+(function(){
+  const c=document.getElementById('heroCanvas'),ctx=c.getContext('2d');
+  let t=0,moons=[];
+  function resize(){c.width=c.parentElement.offsetWidth||innerWidth;c.height=c.parentElement.offsetHeight||innerHeight}
+  function init(){moons=[{a:0,dist:.38,r:8,spd:.008,col:'#f59e0b'},{a:2.1,dist:.48,r:5,spd:.005,col:'#1e90ff'},{a:4.2,dist:.33,r:6,spd:.012,col:'#e040fb'},{a:1.0,dist:.56,r:4,spd:.003,col:'#00d4aa'}]}
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);t+=.004;
+    const cx=c.width/2,cy=c.height/2,pr=Math.min(c.width,c.height)*.16;
+    moons.forEach(m=>{const dx=m.dist*c.width*.5,dy=dx*.3;ctx.beginPath();ctx.ellipse(cx,cy,dx,dy,-.12,0,Math.PI*2);ctx.strokeStyle='rgba(0,212,170,.1)';ctx.lineWidth=.8;ctx.stroke()});
+    const pg=ctx.createRadialGradient(cx,cy,pr*.5,cx,cy,pr*1.5);pg.addColorStop(0,'rgba(0,212,170,.16)');pg.addColorStop(1,'transparent');ctx.fillStyle=pg;ctx.beginPath();ctx.arc(cx,cy,pr*1.5,0,Math.PI*2);ctx.fill();
+    const bg=ctx.createRadialGradient(cx-pr*.3,cy-pr*.3,pr*.05,cx,cy,pr);bg.addColorStop(0,'#1a4a7a');bg.addColorStop(.5,'#0d2b50');bg.addColorStop(1,'#020a18');
+    ctx.beginPath();ctx.arc(cx,cy,pr,0,Math.PI*2);ctx.fillStyle=bg;ctx.fill();
+    ctx.save();ctx.beginPath();ctx.arc(cx,cy,pr,0,Math.PI*2);ctx.clip();
+    for(let i=0;i<7;i++){const yb=cy-pr+pr*2*(i/6),wb=Math.sqrt(Math.max(0,pr*pr-(yb-cy)**2));if(wb<4)continue;ctx.beginPath();ctx.ellipse(cx+Math.sin(t*.4+i)*pr*.04,yb,wb*.94,pr*.06,0,0,Math.PI*2);ctx.fillStyle=`rgba(0,180,220,${.04+.02*Math.sin(t+i)})`;ctx.fill()}
+    const hl=ctx.createRadialGradient(cx-pr*.3,cy-pr*.3,0,cx-pr*.15,cy-pr*.15,pr*.5);hl.addColorStop(0,'rgba(255,255,255,.13)');hl.addColorStop(1,'transparent');ctx.fillStyle=hl;ctx.beginPath();ctx.arc(cx,cy,pr,0,Math.PI*2);ctx.fill();
+    const sh=ctx.createRadialGradient(cx+pr*.4,cy+pr*.18,pr*.1,cx+pr*.55,cy,pr*1.15);sh.addColorStop(0,'rgba(0,0,0,.78)');sh.addColorStop(1,'transparent');ctx.fillStyle=sh;ctx.beginPath();ctx.arc(cx,cy,pr,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+    ctx.beginPath();ctx.arc(cx,cy,pr,0,Math.PI*2);ctx.strokeStyle='rgba(0,212,170,.45)';ctx.lineWidth=1.5;ctx.stroke();
+    moons.forEach(m=>{m.a+=m.spd;const dx=m.dist*c.width*.5,dy=dx*.3,mx=cx+dx*Math.cos(m.a),my=cy+dy*Math.sin(m.a);const mg=ctx.createRadialGradient(mx,my,0,mx,my,m.r*2.5);mg.addColorStop(0,m.col+'aa');mg.addColorStop(1,'transparent');ctx.fillStyle=mg;ctx.beginPath();ctx.arc(mx,my,m.r*2.5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(mx,my,m.r,0,Math.PI*2);ctx.fillStyle=m.col;ctx.fill()});
+    requestAnimationFrame(draw);
+  }
+  resize();init();draw();
+  window.addEventListener('resize',()=>{resize();init()});
+})();
+
+/* ════ BANNER CANVASES ════ */
+function initBannerCanvas(id,c1,c2){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext('2d');let pts=[],t=0;
+  function resize(){c.width=c.parentElement.offsetWidth||innerWidth;c.height=280}
+  function init(){pts=[];for(let i=0;i<70;i++)pts.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.5,a:Math.random()})}
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);t+=.008;
+    const g=ctx.createLinearGradient(0,0,c.width,c.height);g.addColorStop(0,c1);g.addColorStop(1,c2);ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);
+    for(let i=0;i<c.width;i+=50){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,c.height);ctx.strokeStyle='rgba(0,210,255,.04)';ctx.lineWidth=.5;ctx.stroke()}
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=c.width;if(p.x>c.width)p.x=0;if(p.y<0)p.y=c.height;if(p.y>c.height)p.y=0;p.a=.15+.75*Math.abs(Math.sin(t+p.x*.02));ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(180,230,255,${p.a})`;ctx.fill()});
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<80){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,210,255,${.06*(1-d/80)})`;ctx.lineWidth=.5;ctx.stroke()}}
+    requestAnimationFrame(draw);
+  }
+  resize();init();draw();window.addEventListener('resize',()=>{resize();init()});
+}
+initBannerCanvas('aboutCanvas','rgba(0,20,40,.97)','rgba(0,8,18,.99)');
+initBannerCanvas('batchCanvas','rgba(2,10,25,.97)','rgba(0,15,35,.99)');
+initBannerCanvas('rankCanvas','rgba(15,10,2,.97)','rgba(5,8,18,.99)');
+initBannerCanvas('predictCanvas','rgba(0,15,35,.97)','rgba(2,6,18,.99)');
+initBannerCanvas('analyticsCanvas','rgba(15,0,30,.97)','rgba(5,0,20,.99)');
+
+/* ════ NAVBAR SCROLL + ACTIVE LINKS ════ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',scrollY>50);
+  const sections=['home','about','batch','ranking','predict','analytics'];
+  let current='home';
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<=90)current=id;
+  });
+  document.querySelectorAll('.nav-link').forEach(a=>{
+    const href=a.getAttribute('href');
+    if(href) a.classList.toggle('active-link',href==='#'+current);
+  });
+});
+
+/* ════ MISC ════ */
+function switchTab(tab,btn){document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.tc-wrap').forEach(c=>c.classList.remove('on'));btn.classList.add('on');document.getElementById('tab-'+tab).classList.add('on')}
+function processJSON(){alert('Connect your Flask API at localhost:5000 to process JSON batch.')}
+function handleBatchFromUI(){const file=document.getElementById('batchFile').files[0];if(!file){alert('Please select a CSV file first.');return;}handleBatchProcessing({preventDefault:()=>{}})}
+function handleFileSelect(input){const n=input.files[0]?input.files[0].name:'';document.getElementById('dropLabel').textContent=n||'Drop CSV file here or click to browse'}
+function showPage(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'})}
+
+/* ════════════════════════════════════════════════════════════════
+   3D UNIVERSE ENGINE — Immersive canvas animations across all pages
+════════════════════════════════════════════════════════════════ */
+(function(){
+
+/* ─── UTILITY ─────────────────────────────────────── */
+function mkCanvas(parent, zIndex, opacity, extraStyle){
+  const c = document.createElement('canvas');
+  c.style.cssText = `position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:${zIndex||0};opacity:${opacity||1};${extraStyle||''}`;
+  if(parent){ parent.style.position='relative'; parent.appendChild(c); }
+  return c;
+}
+
+/* ══════════════════════════════════════════════════
+   1. HERO — Deep Space Nebula + Star Field + Wormhole
+══════════════════════════════════════════════════ */
+(function heroUniverse(){
+  const hero = document.querySelector('.hero');
+  if(!hero) return;
+  const c = mkCanvas(hero, 1, 0.85);
+  const ctx = c.getContext('2d');
+  let W, H, stars=[], nebulas=[], wormT=0;
+
+  function resize(){ W=c.width=hero.offsetWidth||innerWidth; H=c.height=hero.offsetHeight||600; }
+
+  function init(){
+    // Star layers (3 depths)
+    stars = [];
+    for(let i=0;i<350;i++){
+      const layer = Math.floor(Math.random()*3);
+      stars.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: [0.5,1.1,1.8][layer], spd: [0.15,0.3,0.5][layer],
+        a: Math.random()*Math.PI*2, pulse: Math.random()*Math.PI*2,
+        pspd: 0.01+Math.random()*0.02,
+        col: Math.random()<0.15 ? '#00d4aa' : Math.random()<0.1 ? '#e040fb' : '#b8e8ff'
+      });
+    }
+    // Nebula clouds
+    nebulas = [];
+    const cols = ['0,212,170','30,144,255','224,64,251','245,158,11','16,185,129'];
+    for(let i=0;i<8;i++){
+      nebulas.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: 100+Math.random()*180,
+        col: cols[i%cols.length],
+        a: 0.008+Math.random()*0.012,
+        vx: (Math.random()-.5)*0.08, vy: (Math.random()-.5)*0.06,
+        hue: Math.random()*360
+      });
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    wormT += 0.006;
+
+    // Nebula blobs
+    nebulas.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<-n.r)n.x=W+n.r; if(n.x>W+n.r)n.x=-n.r;
+      if(n.y<-n.r)n.y=H+n.r; if(n.y>H+n.r)n.y=-n.r;
+      const g = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
+      g.addColorStop(0,`rgba(${n.col},${n.a})`);
+      g.addColorStop(0.5,`rgba(${n.col},${n.a*0.4})`);
+      g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fill();
+    });
+
+    // Stars with parallax shimmer
+    stars.forEach(s=>{
+      s.pulse+=s.pspd; s.y+=s.spd;
+      if(s.y>H){ s.y=-2; s.x=Math.random()*W; }
+      const alpha = 0.2 + 0.8*Math.abs(Math.sin(s.pulse));
+      // Star glow
+      const g2 = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
+      g2.addColorStop(0,s.col.replace('#','rgba(').replace(/\w{2}\w{2}\w{2}/,h=>
+        parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16))+`,${alpha*0.3})`);
+      g2.addColorStop(1,'transparent');
+      ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${alpha})`; ctx.fill();
+    });
+
+    // Wormhole vortex (subtle, top-right)
+    const wx=W*0.82, wy=H*0.22;
+    for(let ring=0;ring<6;ring++){
+      const rr = (ring+1)*25 + Math.sin(wormT*2+ring)*8;
+      const spiralA = wormT*1.5 + ring*0.8;
+      ctx.beginPath();
+      ctx.ellipse(wx,wy, rr, rr*0.35, spiralA, 0, Math.PI*2);
+      const alpha2 = (0.06-ring*0.008)*Math.abs(Math.sin(wormT+ring));
+      ctx.strokeStyle=`rgba(0,212,170,${Math.max(0,alpha2)})`; ctx.lineWidth=1.5; ctx.stroke();
+    }
+    // Wormhole center pulse
+    const wg = ctx.createRadialGradient(wx,wy,0,wx,wy,40);
+    wg.addColorStop(0,`rgba(0,212,170,${0.12*Math.abs(Math.sin(wormT*2))})`);
+    wg.addColorStop(1,'transparent');
+    ctx.fillStyle=wg; ctx.beginPath(); ctx.arc(wx,wy,40,0,Math.PI*2); ctx.fill();
+
+    requestAnimationFrame(draw);
+  }
+  resize(); init(); draw();
+  window.addEventListener('resize',()=>{ resize(); init(); });
+})();
+
+/* ══════════════════════════════════════════════════
+   2. ABOUT — Geometric 3D Network Graph
+══════════════════════════════════════════════════ */
+(function aboutGeometry(){
+  const section = document.getElementById('about');
+  if(!section) return;
+  const c = mkCanvas(section, 0, 0.18);
+  const ctx = c.getContext('2d');
+  let W, H, nodes=[], T=0;
+
+  function resize(){ W=c.width=section.offsetWidth||innerWidth; H=c.height=section.offsetHeight||800; }
+  function init(){
+    nodes=[];
+    for(let i=0;i<40;i++){
+      nodes.push({
+        x: Math.random()*W, y: Math.random()*H,
+        vx: (Math.random()-.5)*0.4, vy: (Math.random()-.5)*0.4,
+        r: 1.5+Math.random()*3,
+        col: Math.random()<0.4 ? '0,212,170' : Math.random()<0.5 ? '30,144,255' : '224,64,251'
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H); T+=0.008;
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    // Connections
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<160){
+          ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.strokeStyle=`rgba(0,212,170,${0.15*(1-d/160)})`; ctx.lineWidth=0.8; ctx.stroke();
+        }
+      }
+    }
+    // Nodes
+    nodes.forEach(n=>{
+      const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*3);
+      g.addColorStop(0,`rgba(${n.col},0.6)`); g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(n.x,n.y,n.r*3,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${n.col},0.9)`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize(); init(); draw();
+  window.addEventListener('resize',()=>{ resize(); init(); });
+})();
+
+/* ══════════════════════════════════════════════════
+   3. BATCH — Data Stream + Grid Pulse
+══════════════════════════════════════════════════ */
+(function batchDataStream(){
+  const section = document.getElementById('batch');
+  if(!section) return;
+  const c = mkCanvas(section, 0, 0.22);
+  const ctx = c.getContext('2d');
+  let W, H=400, T=0, streams=[];
+
+  function resize(){ W=c.width=section.offsetWidth||innerWidth; c.height=H=Math.min(section.offsetHeight||400,600); }
+  function init(){
+    streams=[];
+    const cols = Math.floor(W/40);
+    for(let i=0;i<cols;i++){
+      streams.push({
+        x: i*40+20, y: -Math.random()*H,
+        spd: 0.5+Math.random()*1.5,
+        chars: Array.from({length:12},()=>Math.floor(Math.random()*10)),
+        alpha: 0.3+Math.random()*0.5,
+        col: Math.random()<0.7 ? '0,212,170' : '30,144,255'
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H); T+=0.04;
+    // Pulse grid
+    const gs=55;
+    for(let x=0;x<=W;x+=gs){
+      for(let y=0;y<=H;y+=gs){
+        const d=Math.sqrt((x-W/2)**2+(y-H/2)**2);
+        const p=(Math.sin(d*0.015-T)*0.5+0.5);
+        ctx.beginPath(); ctx.arc(x,y,1.2*p,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,212,170,${p*0.25})`; ctx.fill();
+      }
+    }
+    // Data streams
+    streams.forEach(s=>{
+      s.y+=s.spd;
+      if(s.y>H+40){ s.y=-40; s.chars=s.chars.map(()=>Math.floor(Math.random()*10)); }
+      s.chars.forEach((ch,i)=>{
+        const a = s.alpha*(1-i/s.chars.length)*Math.abs(Math.sin(T+i));
+        ctx.fillStyle=`rgba(${s.col},${a})`;
+        ctx.font=`${10+i%3}px monospace`;
+        ctx.fillText(ch.toString(), s.x, s.y-i*14);
+      });
+    });
+    // Scan line
+    const sy=(Math.sin(T*0.4)+1)/2*H;
+    const sg=ctx.createLinearGradient(0,sy-30,0,sy+30);
+    sg.addColorStop(0,'transparent'); sg.addColorStop(0.5,'rgba(0,212,170,0.08)'); sg.addColorStop(1,'transparent');
+    ctx.fillStyle=sg; ctx.fillRect(0,sy-30,W,60);
+    requestAnimationFrame(draw);
+  }
+  resize(); init(); draw();
+  window.addEventListener('resize',()=>{ resize(); init(); });
+})();
+
+/* ══════════════════════════════════════════════════
+   4. RANKING — Warp Speed Star Field
+══════════════════════════════════════════════════ */
+(function rankingWarp(){
+  const section = document.getElementById('ranking');
+  if(!section) return;
+  const c = mkCanvas(section, 0, 0.3);
+  const ctx = c.getContext('2d');
+  let W, H, stars=[];
+
+  function resize(){ W=c.width=section.offsetWidth||innerWidth; H=c.height=section.offsetHeight||700; }
+  function init(){
+    stars=[];
+    for(let i=0;i<200;i++){
+      stars.push({
+        x: (Math.random()-0.5)*W*3, y: (Math.random()-0.5)*H*3,
+        z: Math.random()*W, pz:0,
+        col: Math.random()<0.2 ? '0,212,170' : Math.random()<0.1 ? '245,158,11' : '184,232,255'
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, cy=H/2;
+    stars.forEach(s=>{
+      s.z-=2.5;
+      if(s.z<=0){ s.z=W; s.x=(Math.random()-0.5)*W*3; s.y=(Math.random()-0.5)*H*3; s.pz=s.z; }
+      const sx=(s.x/s.z)*W+cx, sy=(s.y/s.z)*H+cy;
+      const px=(s.x/s.pz)*W+cx, py=(s.y/s.pz)*H+cy;
+      const sz=Math.max(0.2,1.5*(1-s.z/W));
+      const alpha=Math.max(0,Math.min(1,(1-s.z/W)*2));
+      if(sx>0&&sx<W&&sy>0&&sy<H){
+        ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(sx,sy);
+        ctx.strokeStyle=`rgba(${s.col},${alpha*0.6})`; ctx.lineWidth=sz*0.8; ctx.stroke();
+        ctx.beginPath(); ctx.arc(sx,sy,sz,0,Math.PI*2);
+        ctx.fillStyle=`rgba(${s.col},${alpha})`; ctx.fill();
+      }
+      s.pz=s.z;
+    });
+    requestAnimationFrame(draw);
+  }
+  resize(); init(); draw();
+  window.addEventListener('resize',()=>{ resize(); init(); });
+})();
+
+/* ══════════════════════════════════════════════════
+   5. PREDICT — Solar System Orrery
+══════════════════════════════════════════════════ */
+(function predictOrrery(){
+  const section = document.getElementById('predict');
+  if(!section) return;
+  const c = mkCanvas(section, 0, 0.18, 'right:0;left:auto;width:380px;height:380px');
+  const ctx = c.getContext('2d');
+  c.width = c.height = 380;
+  const cx=190, cy=190, T=0;
+  let t=0;
+
+  const planets = [
+    {r:50,  spd:0.025, size:5,  col:'#f43f5e', name:'α', trail:[]},
+    {r:85,  spd:0.015, size:8,  col:'#00d4aa', name:'β', trail:[]},
+    {r:120, spd:0.009, size:10, col:'#1e90ff', name:'γ', trail:[]},
+    {r:155, spd:0.006, size:7,  col:'#e040fb', name:'δ', trail:[]},
+  ];
+
+  function draw(){
+    ctx.clearRect(0,0,380,380); t+=0.008;
+
+    // Outer rings decorative
+    [40,175,195].forEach(r=>{
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.strokeStyle='rgba(0,212,170,0.04)'; ctx.lineWidth=1; ctx.stroke();
+    });
+
+    // Star center
+    const sg=ctx.createRadialGradient(cx,cy,0,cx,cy,32);
+    sg.addColorStop(0,'rgba(253,186,116,0.9)'); sg.addColorStop(0.4,'rgba(245,158,11,0.5)'); sg.addColorStop(1,'transparent');
+    ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(cx,cy,32,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,9,0,Math.PI*2);
+    ctx.fillStyle='rgba(253,186,116,1)';
+    ctx.shadowColor='rgba(253,186,116,0.8)'; ctx.shadowBlur=16;
+    ctx.fill(); ctx.shadowBlur=0;
+
+    planets.forEach(p=>{
+      // Orbit ring
+      ctx.beginPath(); ctx.arc(cx,cy,p.r,0,Math.PI*2);
+      ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.lineWidth=1; ctx.stroke();
+
+      // Position
+      const angle = t * (p.spd/0.008) * 0.9;
+      const px = cx + p.r*Math.cos(angle);
+      const py = cy + p.r*Math.sin(angle);
+
+      // Trail
+      p.trail.push({x:px,y:py});
+      if(p.trail.length>30) p.trail.shift();
+      p.trail.forEach((pt,i)=>{
+        const a=i/p.trail.length*0.25;
+        ctx.beginPath(); ctx.arc(pt.x,pt.y,p.size*0.25*(i/p.trail.length),0,Math.PI*2);
+        ctx.fillStyle=p.col.replace('#','rgba(').replace(/\w{2}\w{2}\w{2}/,h=>
+          parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16))+`,${a})`||p.col;
+        ctx.fill();
+      });
+
+      // Planet
+      const pg=ctx.createRadialGradient(px-p.size*0.3,py-p.size*0.3,0,px,py,p.size);
+      pg.addColorStop(0,'rgba(255,255,255,0.5)'); pg.addColorStop(1,p.col+'cc');
+      ctx.beginPath(); ctx.arc(px,py,p.size,0,Math.PI*2);
+      ctx.fillStyle=pg;
+      ctx.shadowColor=p.col; ctx.shadowBlur=12;
+      ctx.fill(); ctx.shadowBlur=0;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ══════════════════════════════════════════════════
+   6. ANALYTICS — Rotating Wireframe Sphere + Particles
+══════════════════════════════════════════════════ */
+(function analyticsGlobe(){
+  const section = document.getElementById('analytics');
+  if(!section) return;
+  const c = mkCanvas(section, 0, 0.14, 'right:0;left:auto;width:440px;height:440px');
+  const ctx = c.getContext('2d');
+  c.width = c.height = 440;
+  let t=0;
+  const cx=220, cy=220, R=170;
+  const pts3d=[];
+
+  // Generate sphere points
+  for(let i=0;i<80;i++){
+    const phi=Math.acos(-1+2*i/80);
+    const theta=Math.sqrt(80*Math.PI)*phi;
+    pts3d.push({ ox:R*Math.sin(phi)*Math.cos(theta), oy:R*Math.sin(phi)*Math.sin(theta), oz:R*Math.cos(phi) });
+  }
+
+  function project(x,y,z,rot){
+    const cosR=Math.cos(rot), sinR=Math.sin(rot);
+    const rx=x*cosR-z*sinR, rz=x*sinR+z*cosR;
+    return { x:cx+rx, y:cy+y, z:rz, visible:rz>-R*0.2 };
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,440,440); t+=0.004;
+
+    // Latitude circles
+    for(let lat=-70;lat<=70;lat+=35){
+      const r2=R*Math.cos(lat*Math.PI/180);
+      const y=cy+R*Math.sin(lat*Math.PI/180);
+      ctx.beginPath(); ctx.ellipse(cx,y,r2,r2*0.25,0,0,Math.PI*2);
+      ctx.strokeStyle='rgba(0,212,170,0.35)'; ctx.lineWidth=0.7; ctx.stroke();
+    }
+    // Longitude arcs
+    for(let i=0;i<10;i++){
+      const a = t + i*(Math.PI/5);
+      ctx.beginPath();
+      let first=true;
+      for(let ang=0;ang<=Math.PI*2;ang+=0.08){
+        const p=project(R*Math.sin(ang)*Math.cos(a), R*Math.cos(ang), R*Math.sin(ang)*Math.sin(a), 0);
+        if(p.visible){ first?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); first=false; }
+      }
+      const aa=0.12+0.18*Math.abs(Math.sin(a));
+      ctx.strokeStyle=`rgba(0,212,170,${aa})`; ctx.lineWidth=0.6; ctx.stroke();
+    }
+    // Sphere points
+    pts3d.forEach(p=>{
+      const cosT=Math.cos(t), sinT=Math.sin(t);
+      const rx=p.ox*cosT-p.oz*sinT, rz=p.ox*sinT+p.oz*cosT;
+      if(rz>-R*0.1){
+        const size=1.5+(rz/R)*2;
+        const alpha=0.3+(rz/R)*0.6;
+        const gp=ctx.createRadialGradient(cx+rx,cy+p.oy,0,cx+rx,cy+p.oy,size*3);
+        gp.addColorStop(0,`rgba(0,212,170,${alpha})`); gp.addColorStop(1,'transparent');
+        ctx.fillStyle=gp; ctx.beginPath(); ctx.arc(cx+rx,cy+p.oy,size*3,0,Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx+rx,cy+p.oy,size,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,212,170,${alpha})`; ctx.fill();
+      }
+    });
+    // Glowing equator
+    ctx.beginPath(); ctx.ellipse(cx,cy,R,R*0.25,0,0,Math.PI*2);
+    ctx.strokeStyle='rgba(0,212,170,0.7)'; ctx.lineWidth=1.5;
+    ctx.shadowColor='rgba(0,212,170,0.5)'; ctx.shadowBlur=8;
+    ctx.stroke(); ctx.shadowBlur=0;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+})(); // ── end Universe Engine ──
+
+(function initCounters(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      const el = entry.target;
+      if(el.dataset.done) return;
+      el.dataset.done = '1';
+
+      const target = parseFloat(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      const decimals = (el.dataset.target.includes('.') && target < 10) ? 4 :
+                       (el.dataset.target.includes('.')) ? 2 : 0;
+      const duration = 1800;
+      const startT = performance.now();
+
+      // Add glow class
+      el.classList.add('counted');
+
+      function tick(now){
+        const elapsed = now - startT;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+        el.textContent = current.toFixed(decimals) + suffix;
+        if(progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toFixed(decimals) + suffix;
+      }
+      requestAnimationFrame(tick);
+      io.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.count-up').forEach(el => io.observe(el));
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   3D CARD FLIP-IN — Cards animate in when scrolled into view
+══════════════════════════════════════════════════════════════ */
+(function initCardFlip(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      const card = entry.target;
+      if(card.dataset.flipped) return;
+      card.dataset.flipped = '1';
+
+      // Trigger flip-in animation
+      card.classList.add('flipped');
+
+      // After flip animation completes, switch to float animation
+      setTimeout(() => {
+        card.classList.remove('flipped');
+        card.classList.add('floated');
+      }, 900 + (parseFloat(card.style.animationDelay||'0')*1000));
+
+      io.unobserve(card);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.card-3d-flip').forEach(card => io.observe(card));
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION TITLE UNDERLINE — Animated underline on scroll
+══════════════════════════════════════════════════════════════ */
+(function initTitleLines(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) e.target.classList.add('title-visible');
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.sec-ttl').forEach(el => io.observe(el));
+})();
+
+</script>
+</body>
+</html>

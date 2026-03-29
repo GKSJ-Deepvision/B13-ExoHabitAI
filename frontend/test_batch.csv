@@ -1,0 +1,4 @@
+pl_rade,pl_bmasse,pl_orbper,pl_orbsmax,pl_eqt,st_teff,st_rad,st_mass,st_met,st_lum,temp_score,dist_score,lum_score,stellar_temp_score,stellar_mass_score,stellar_compatibility_index,orbital_stability,spec_F,spec_G,spec_K,spec_M,spec_m
+1.5,2.0,365.25,1.0,288.0,5772.0,1.0,1.0,0.0,1.0,0.8,0.9,0.7,0.6,0.8,0.75,0.85,0,1,0,0,0
+2.1,4.5,687.0,1.5,250.0,5500.0,0.9,0.8,-0.1,0.8,0.6,0.7,0.8,0.5,0.7,0.65,0.75,0,0,1,0,0
+1.2,1.8,225.0,0.7,320.0,6000.0,1.1,1.1,0.2,1.2,0.9,0.95,0.6,0.7,0.9,0.8,0.9,1,0,0,0,0
