@@ -1,0 +1,109 @@
+<svg width="1280" height="400" viewBox="0 0 1280 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0d1b2a"/>
+      <stop offset="100%" stop-color="#060d14"/>
+    </radialGradient>
+    <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e6fa8" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#1e6fa8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4e9e75" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#4e9e75" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="planet-grad" cx="38%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#5dcaa5"/>
+      <stop offset="40%" stop-color="#1d9e75"/>
+      <stop offset="100%" stop-color="#04342c"/>
+    </radialGradient>
+    <radialGradient id="star-grad" cx="35%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#fac775"/>
+      <stop offset="60%" stop-color="#ba7517"/>
+      <stop offset="100%" stop-color="#412402"/>
+    </radialGradient>
+    <radialGradient id="atmglow" cx="50%" cy="50%" r="50%">
+      <stop offset="75%" stop-color="#5dcaa5" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#5dcaa5" stop-opacity="0.22"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="400" fill="url(#bg)"/>
+
+  <!-- Nebula glows -->
+  <ellipse cx="300" cy="200" rx="380" ry="300" fill="url(#glow1)" opacity="0.7"/>
+  <ellipse cx="1000" cy="150" rx="300" ry="240" fill="url(#glow2)" opacity="0.6"/>
+
+  <!-- Stars -->
+  <g fill="white" opacity="0.8">
+    <circle cx="50" cy="30" r="1.2"/><circle cx="140" cy="80" r="0.9"/><circle cx="210" cy="18" r="1.4"/>
+    <circle cx="380" cy="45" r="1"/><circle cx="480" cy="12" r="0.7"/><circle cx="600" cy="35" r="1.2"/>
+    <circle cx="820" cy="22" r="0.9"/><circle cx="960" cy="60" r="1.1"/><circle cx="1080" cy="15" r="1.4"/>
+    <circle cx="1180" cy="45" r="0.7"/><circle cx="1250" cy="80" r="1"/><circle cx="80" cy="120" r="0.7"/>
+    <circle cx="160" cy="160" r="0.9"/><circle cx="25" cy="240" r="1.1"/><circle cx="100" cy="300" r="0.7"/>
+    <circle cx="1220" cy="260" r="1"/><circle cx="1260" cy="140" r="0.9"/><circle cx="1150" cy="330" r="1.2"/>
+    <circle cx="60" cy="370" r="0.8"/><circle cx="1100" cy="380" r="0.7"/><circle cx="660" cy="8" r="1"/>
+    <circle cx="900" cy="380" r="0.9"/><circle cx="240" cy="390" r="1.1"/><circle cx="420" cy="380" r="0.7"/>
+    <circle cx="750" cy="20" r="0.8"/><circle cx="1040" cy="390" r="0.6"/><circle cx="500" cy="390" r="0.9"/>
+  </g>
+
+  <!-- Orbit ring -->
+  <ellipse cx="280" cy="208" rx="160" ry="56" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="8 6" opacity="0.35"/>
+
+  <!-- Host star -->
+  <circle cx="140" cy="208" r="42" fill="url(#star-grad)"/>
+  <circle cx="140" cy="208" r="55" fill="#fac775" opacity="0.08"/>
+
+  <!-- Exoplanet -->
+  <circle cx="390" cy="175" r="50" fill="url(#planet-grad)"/>
+  <circle cx="390" cy="175" r="64" fill="url(#atmglow)"/>
+  <!-- Continent blobs -->
+  <ellipse cx="380" cy="168" rx="17" ry="9" fill="#085041" opacity="0.55" transform="rotate(-20 380 168)"/>
+  <ellipse cx="400" cy="184" rx="11" ry="5" fill="#085041" opacity="0.45" transform="rotate(10 400 184)"/>
+  <ellipse cx="370" cy="185" rx="7" ry="4" fill="#085041" opacity="0.4" transform="rotate(-5 370 185)"/>
+
+  <!-- Divider -->
+  <line x1="490" y1="60" x2="490" y2="350" stroke="#5dcaa5" stroke-width="0.8" opacity="0.2"/>
+
+  <!-- Main title -->
+  <text x="530" y="168" font-family="'Courier New','Lucida Console',monospace" font-size="82" font-weight="700" fill="#e8f8f3" letter-spacing="10" opacity="0.97">EXOHABIT</text>
+  <text x="1133" y="168" font-family="'Courier New','Lucida Console',monospace" font-size="82" font-weight="700" fill="#5dcaa5" letter-spacing="3">AI</text>
+
+  <!-- Subtitle -->
+  <text x="534" y="202" font-family="'Courier New',monospace" font-size="16" fill="#9fe1cb" letter-spacing="5" opacity="0.85">EXOPLANET HABITABILITY INTELLIGENCE SYSTEM</text>
+
+  <!-- Separator -->
+  <line x1="534" y1="218" x2="1240" y2="218" stroke="#5dcaa5" stroke-width="0.6" opacity="0.3"/>
+
+  <!-- Tagline -->
+  <text x="534" y="248" font-family="Georgia,'Times New Roman',serif" font-size="20" fill="#b0d4c8" font-style="italic" opacity="0.9">"Beyond the pale blue dot, intelligence leads the search."</text>
+
+  <!-- Tech badges -->
+  <g font-family="'Courier New',monospace" font-size="13" font-weight="500">
+    <rect x="534" y="272" width="80" height="24" rx="5" fill="#0f6e56" opacity="0.75"/>
+    <text x="574" y="288" text-anchor="middle" fill="#9fe1cb">Python</text>
+
+    <rect x="624" y="272" width="62" height="24" rx="5" fill="#0c447c" opacity="0.75"/>
+    <text x="655" y="288" text-anchor="middle" fill="#b5d4f4">Flask</text>
+
+    <rect x="696" y="272" width="88" height="24" rx="5" fill="#3c3489" opacity="0.75"/>
+    <text x="740" y="288" text-anchor="middle" fill="#cecbf6">XGBoost</text>
+
+    <rect x="794" y="272" width="100" height="24" rx="5" fill="#853b1d" opacity="0.75"/>
+    <text x="844" y="288" text-anchor="middle" fill="#f5c4b3">Scikit-learn</text>
+
+    <rect x="904" y="272" width="78" height="24" rx="5" fill="#854f0b" opacity="0.75"/>
+    <text x="943" y="288" text-anchor="middle" fill="#fac775">Render</text>
+  </g>
+
+  <!-- ESI bar -->
+  <text x="534" y="328" font-family="'Courier New',monospace" font-size="11" fill="#5dcaa5" letter-spacing="2" opacity="0.7">ESI SCORE</text>
+  <rect x="534" y="336" width="300" height="7" rx="3" fill="#0d2e1e" opacity="0.8"/>
+  <rect x="534" y="336" width="261" height="7" rx="3" fill="#1d9e75" opacity="0.85"/>
+  <circle cx="795" cy="339" r="7" fill="#5dcaa5" opacity="0.95"/>
+  <text x="810" y="343" font-family="'Courier New',monospace" font-size="12" fill="#9fe1cb" opacity="0.9">0.87</text>
+
+  <!-- Bottom label -->
+  <text x="534" y="378" font-family="'Courier New',monospace" font-size="11" fill="#444441" letter-spacing="3">ML · FLASK · FULL-STACK · ASTRONOMY · DATA SCIENCE</text>
+</svg>
