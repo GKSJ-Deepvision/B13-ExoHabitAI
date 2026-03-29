@@ -24,9 +24,7 @@ const SAMPLE_DATA = {
   ]
 };
 // ════════════════════════════════════════════════════
-//  RANDOM FOREST SIMULATOR  (calibrated v2)
-//  Replicates Tuned Random Forest behavior
-//  Used ONLY when Flask API is offline (fallback)
+//  RANDOM FOREST SIMULATOR  
 //  Best Model: Tuned Random Forest
 //  Accuracy 98.89% | Precision 100% | Recall 97.5%
 // ════════════════════════════════════════════════════
