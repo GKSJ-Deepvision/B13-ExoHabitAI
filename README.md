@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- HERO BANNER -->
-![ExoHabitAI Banner](D:\Desktop\B13-ExoHabitAI\assets\banner.svg)
+![ExoHabitAI Banner](assets/banner.svg)
 
 # 🪐 E X O H A B I T A I
 
@@ -55,30 +55,79 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ---
 
-## 🖥️ Frontend Showcase
+## 🖥️ Frontend Experience
 
-> *Mission Control — the face of ExoHabitAI*
+> *A futuristic AI-powered interface designed for seamless space exploration and intelligent habitability analysis.*
 
-### Homepage
+---
+
+### 🚀 1. Initial Landing Experience
+
+![Initial Homepage](./assets/images/initial_homepage.png)
+
+*↑ First impression of ExoHabitAI — immersive space UI with strong visual identity and entry point into the system.*
+
+<br/>
+
+---
+
+### 🌌 2. Homepage — System Overview
 
 ![Homepage](./assets/images/homepage_screenshot.png)
-*↑ The landing page — designed for scientific clarity with a futuristic aesthetic*
+
+*↑ Overview of the platform, showcasing AI-driven exoplanet research, data pipeline, and model performance.*
 
 <br/>
 
-### Interactive Prediction Dashboard
+---
 
-![Dashboard](./assets/images/dashboard_screenshot.png)
-*↑ Enter exoplanet parameters and receive a real-time habitability prediction*
+### 🧠 3. Prediction Input & Top Ranked Planets
+
+![Prediction Input](./assets/images/habitibility_prediction.png)
+
+*↑ Users input planetary parameters and instantly explore the top 20 most habitable exoplanets ranked by the model.*
 
 <br/>
 
-### Prediction Result Output
+---
+
+### 📊 4. Prediction Result Dashboard
 
 ![Prediction Result](./assets/images/prediction_result.png)
-*↑ Model output with habitability classification and ESI score*
+
+*↑ Detailed habitability report with probability score, parameter influence, and scientific insights.*
 
 <br/>
+
+---
+
+### 🪐 5. About Page — Project Insight
+
+![About Page](./assets/images/about_page.png)
+
+*↑ Explains the mission, methodology, and AI approach behind ExoHabitAI.*
+
+<br/>
+
+---
+
+### 📈 6. Visualization Dashboard
+
+![Visualization Dashboard](./assets/images/dashboard_screenshot.png)
+
+*↑ Advanced analytics dashboard with feature importance, distributions, model comparison, and data insights.*
+
+<br/>
+
+---
+
+## ✨ Key Highlights
+
+- 🌠 Futuristic **space-themed UI/UX**
+- ⚡ Real-time **AI habitability prediction**
+- 📊 Interactive **data visualizations**
+- 🧪 Scientifically inspired **feature engineering**
+- 🚀 Smooth navigation across multiple modules
 
 ---
 
