@@ -130,7 +130,6 @@ This project bridges **data science**, **astronomy**, and **software engineering
 - 🚀 Smooth navigation across multiple modules
 
 ---
----
 
 ## 🧬 Machine Learning Pipeline
 
