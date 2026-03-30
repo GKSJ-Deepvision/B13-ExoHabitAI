@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- HERO BANNER -->
-![ExoHabitAI Banner](./assets/images/banner.svg)
+![ExoHabitAI Banner](D:\Desktop\B13-ExoHabitAI\assets\banner.svg)
 
 # 🪐 E X O H A B I T A I
 
