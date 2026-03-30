@@ -63,7 +63,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ### 🚀 1. Initial Landing Experience
 
-![Initial Homepage](./assets/images/initial_homepage.png)
+![Initial Homepage](assets/initial_homepage.png)
 
 *↑ First impression of ExoHabitAI — immersive space UI with strong visual identity and entry point into the system.*
 
@@ -73,7 +73,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ### 🌌 2. Homepage — System Overview
 
-![Homepage](./assets/images/homepage_screenshot.png)
+![Homepage](assets/homepage_screenshot.png)
 
 *↑ Overview of the platform, showcasing AI-driven exoplanet research, data pipeline, and model performance.*
 
@@ -83,7 +83,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ### 🧠 3. Prediction Input & Top Ranked Planets
 
-![Prediction Input](./assets/images/habitibility_prediction.png)
+![Prediction Input](assets/habitibility_prediction.png)
 
 *↑ Users input planetary parameters and instantly explore the top 20 most habitable exoplanets ranked by the model.*
 
@@ -93,7 +93,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ### 📊 4. Prediction Result Dashboard
 
-![Prediction Result](./assets/images/prediction_result.png)
+![Prediction Result](assets/prediction_result.png)
 
 *↑ Detailed habitability report with probability score, parameter influence, and scientific insights.*
 
@@ -103,7 +103,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ### 🪐 5. About Page — Project Insight
 
-![About Page](./assets/images/about_page.png)
+![About Page](assetsabout_page.png)
 
 *↑ Explains the mission, methodology, and AI approach behind ExoHabitAI.*
 
