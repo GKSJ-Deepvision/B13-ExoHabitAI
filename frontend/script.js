@@ -3,12 +3,13 @@
 const { useState, useEffect } = React;
 
 // API Configuration
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:5001/api';
 
 // Main App Component
 function App() {
-    const [activeTab, setActiveTab] = useState('binary');
+    const [activeTab, setActiveTab] = useState('multiclass');
     const [formData, setFormData] = useState({
+        orbital_period: 365.25,
         mass_earth: 1.0,
         semimajor_axis: 1.0,
         star_temp_k: 5778,
@@ -52,11 +53,9 @@ function App() {
         setResults(null);
 
         try {
-            const endpoint = activeTab === 'binary' 
-                ? `${API_BASE_URL}/predict/binary`
-                : activeTab === 'multiclass'
-                ? `${API_BASE_URL}/predict/multiclass`
-                : `${API_BASE_URL}/predict/both`;
+            const endpoint = activeTab === 'both'
+                ? `${API_BASE_URL}/predict/both`
+                : `${API_BASE_URL}/predict`;
 
             const response = await axios.post(endpoint, formData);
             setResults(response.data);
@@ -69,6 +68,7 @@ function App() {
 
     const handleReset = () => {
         setFormData({
+            orbital_period: 365.25,
             mass_earth: 1.0,
             semimajor_axis: 1.0,
             star_temp_k: 5778,
@@ -86,6 +86,7 @@ function App() {
     const loadExample = (type) => {
         const examples = {
             earth: {
+                orbital_period: 365.25,
                 mass_earth: 1.0,
                 semimajor_axis: 1.0,
                 star_temp_k: 5778,
@@ -97,6 +98,7 @@ function App() {
                 star_class: 'G'
             },
             hot: {
+                orbital_period: 5.0,
                 mass_earth: 0.8,
                 semimajor_axis: 0.05,
                 star_temp_k: 6000,
@@ -108,6 +110,7 @@ function App() {
                 star_class: 'F'
             },
             cold: {
+                orbital_period: 4330.0,
                 mass_earth: 1.2,
                 semimajor_axis: 5.0,
                 star_temp_k: 4500,
@@ -119,6 +122,7 @@ function App() {
                 star_class: 'K'
             },
             gasGiant: {
+                orbital_period: 4332.0,
                 mass_earth: 318.0,
                 semimajor_axis: 5.2,
                 star_temp_k: 5778,
@@ -238,6 +242,7 @@ function ExampleButtons({ loadExample }) {
 // Input Form Component
 function InputForm({ formData, handleInputChange }) {
     const fields = [
+        { name: 'orbital_period', label: 'Orbital Period', unit: 'Days', step: '0.1' },
         { name: 'mass_earth', label: 'Planet Mass', unit: 'Earth masses', step: '0.1' },
         { name: 'semimajor_axis', label: 'Semi-major Axis', unit: 'AU', step: '0.1' },
         { name: 'star_temp_k', label: 'Star Temperature', unit: 'Kelvin', step: '100' },
@@ -301,22 +306,18 @@ function Tabs({ activeTab, setActiveTab }) {
     return (
         <div className="tabs">
             <button 
-                className={`tab ${activeTab === 'binary' ? 'active' : ''}`}
-                onClick={() => setActiveTab('binary')}
-            >
-                Binary Classification
-            </button>
-            <button 
                 className={`tab ${activeTab === 'multiclass' ? 'active' : ''}`}
                 onClick={() => setActiveTab('multiclass')}
             >
-                Multi-Class
+                Multi-Class Classification
             </button>
             <button 
                 className={`tab ${activeTab === 'both' ? 'active' : ''}`}
                 onClick={() => setActiveTab('both')}
+                style={{ opacity: 0.6 }}
+                title="Binary model currently unavailable"
             >
-                Both
+                Both (Multi-Class Only)
             </button>
         </div>
     );
@@ -331,15 +332,32 @@ function Results({ results, activeTab }) {
                 {results.multiclass && <MultiClassResult result={results.multiclass} />}
             </div>
         );
-    } else if (activeTab === 'binary') {
-        return <BinaryResult result={results} />;
-    } else {
+    } else if (activeTab === 'multiclass') {
         return <MultiClassResult result={results} />;
     }
+    return null;
 }
 
 // Binary Result Component
 function BinaryResult({ result }) {
+    // Handle disabled binary model
+    if (result && result.error) {
+        return (
+            <div className="result-card">
+                <div className="result-header">
+                    <h3 className="result-title">Binary Classification</h3>
+                    <span className="result-badge" style={{ backgroundColor: '#f59e0b' }}>
+                        Not Available
+                    </span>
+                </div>
+                <div className="info-box">
+                    <p>{result.error}</p>
+                    {result.suggestion && <p><em>{result.suggestion}</em></p>}
+                </div>
+            </div>
+        );
+    }
+    
     const isHabitable = result.prediction === 1;
     
     return (

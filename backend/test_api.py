@@ -6,10 +6,11 @@ import requests
 import json
 
 # API base URL
-BASE_URL = "http://localhost:5000/api"
+BASE_URL = "http://localhost:5001/api"
 
 # Sample exoplanet data
 sample_data = {
+    "orbital_period": 365.25,
     "mass_earth": 1.0,
     "semimajor_axis": 1.0,
     "star_temp_k": 5778,
