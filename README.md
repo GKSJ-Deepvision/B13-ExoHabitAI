@@ -41,18 +41,21 @@ This project bridges **data science**, **astronomy**, and **software engineering
 <br/>
 
 ---
-
+ 
 ## 🚀 Live Demo & Quick Access
-
+ 
 | Access Point | Link |
 |:---|:---|
-| 🌐 **Live App** | *(Deploy via Render — see Deployment section)* |
-| 🖥️ **Local Dashboard** | `http://localhost:5000` after running Flask |
-| 📡 **API Endpoint** | `http://localhost:5000/predict` |
+| 🌐 **Live App** | [b13-exohabitai-samridhigupta.onrender.com](https://b13-exohabitai-samridhigupta.onrender.com/) |
+| 🖥️ **Local Dashboard** | `http://127.0.0.1:5000` after running Flask |
+| 🟢 **Health Check** | `GET /` |
+| 🔵 **Model Info** | `GET /model-info` |
+| 🚀 **Predict** | `POST /predict` |
+| 🏆 **Top Rankings** | `GET /rank` |
 | 📓 **Notebooks** | `./notebooks/` |
-
+ 
 <br/>
-
+ 
 ---
 
 ## 🖥️ Frontend Experience
@@ -356,21 +359,24 @@ python backend/test_api.py
 <br/>
 
 ---
-
+ 
 ## 🧪 Features at a Glance
-
+ 
 | Feature | Description |
 |:---|:---|
-| 🔭 **Habitability Prediction** | Binary classification: Habitable / Non-Habitable |
-| 🌍 **ESI Calculation** | Earth Similarity Index computed from planetary features |
-| 🤖 **Multiple ML Models** | Logistic Regression, Decision Tree, Random Forest, XGBoost |
-| 📊 **Rich Visualizations** | Confusion matrices, ROC curves, feature importance charts |
-| 🖥️ **Interactive Dashboard** | Clean frontend with real-time prediction UI |
-| 🔌 **REST API** | Flask-powered `/predict` endpoint |
-| 📦 **Deployment Ready** | Configured for Render via `render.yaml` |
-
+| 🔭 **Habitability Prediction** | Binary classification — `prediction: 1` (Habitable) or `0` (Non-Habitable) via `POST /predict` |
+| 🌍 **ESI Calculation** | Earth Similarity Index computed from planetary radius, density, escape velocity, and surface temperature |
+| 🤖 **Multiple ML Models** | Logistic Regression, Decision Tree, Random Forest, XGBoost — best model selected and deployed |
+| 📊 **Rich Visualizations** | Confusion matrices, ROC curves, feature importance charts, missing-value heatmaps |
+| 🖥️ **Interactive Dashboard** | Space-themed frontend with real-time prediction UI at `frontend/dashboard.html` |
+| 🟢 **Health Check API** | `GET /` — confirms backend is live |
+| 🔵 **Model Info API** | `GET /model-info` — returns model name, version, and features used |
+| 🚀 **Prediction API** | `POST /predict` — returns `habitability_probability` (0–1) and binary `prediction` |
+| 🏆 **Ranking API** | `GET /rank` — returns Top 10 habitable exoplanet candidates with full metrics |
+| 📦 **Deployment Ready** | Configured for Render via `render.yaml` — live at onrender.com |
+ 
 <br/>
-
+ 
 ---
 
 ## 📂 Project Structure
