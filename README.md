@@ -103,7 +103,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ### 🪐 5. About Page — Project Insight
 
-![About Page](assetsabout_page.png)
+![About Page](assets/about_page.png)
 
 *↑ Explains the mission, methodology, and AI approach behind ExoHabitAI.*
 
@@ -113,7 +113,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ### 📈 6. Visualization Dashboard
 
-![Visualization Dashboard](./assets/images/dashboard_screenshot.png)
+![Visualization Dashboard](assets/dashboard_screenshot.png)
 
 *↑ Advanced analytics dashboard with feature importance, distributions, model comparison, and data insights.*
 
