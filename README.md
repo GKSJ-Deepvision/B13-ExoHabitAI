@@ -225,51 +225,134 @@ Trained and evaluated **five models**:
 ---
 
 ## ⚙️ Backend & API
-
+ 
 > *The engine room — where predictions are born*
-
+ 
 ### Architecture
-
+ 
 ```
 Frontend (HTML/JS)
        │
        ▼
-  Flask API (/predict)
+  Flask API  (app_deploy.py · port 5000)
+       │
+       ├──── GET  /              →  Health Check
+       ├──── GET  /model-info    →  Model Metadata
+       ├──── POST /predict       →  Habitability Prediction
+       └──── GET  /rank          →  Top 10 Habitable Planets
        │
        ▼
-  Feature Preprocessing
+  Feature Preprocessing  (utils.py)
        │
        ▼
-  exohabit_model.pkl  ──►  Habitability Prediction
+  exohabit_model.pkl  ──►  Prediction Output
 ```
-
-### API Endpoint
-
-**`POST /predict`**
-
+ 
+---
+ 
+### 🟢 Endpoint 1 — Health Check
+ 
+**`GET /`** — Confirms the backend API is running.
+ 
 ```json
-// Request Body
-{
-  "pl_rade": 1.2,
-  "pl_orbper": 365.25,
-  "st_teff": 5778,
-  "ESI": 0.87,
-  ...
-}
-
 // Response
 {
-  "prediction": "Habitable",
-  "probability": 0.91,
-  "esi_score": 0.87
+  "message": "ExoHabitAI Backend API Running",
+  "status": "success"
 }
 ```
-
-### API Testing
-
-![API Test Screenshot](./assets/images/api_test_screenshot.png)
-*↑ API response tested via browser / Postman*
-
+ 
+![Health Check Endpoint](assets/api_health_endpoint.png)
+*↑ `GET 127.0.0.1:5000` — API health confirmed live in browser*
+ 
+<br/>
+ 
+---
+ 
+### 🔵 Endpoint 2 — Model Information
+ 
+**`GET /model-info`** — Returns model metadata and features used.
+ 
+```json
+// Response
+{
+  "features_used": [
+    "planet_radius",
+    "planet_mass",
+    "orbital_period"
+  ],
+  "model_name": "ExoHabitAI",
+  "version": "1.0"
+}
+```
+ 
+![Model Info Endpoint](assets/api_model_info_endpoint.png)
+*↑ `GET 127.0.0.1:5000/model-info` — model metadata returned*
+ 
+<br/>
+ 
+---
+ 
+### 🚀 Endpoint 3 — Habitability Prediction
+ 
+**`POST /predict`** — Predicts habitability of an exoplanet from input features.
+ 
+```python
+# Tested via backend/test_api.py
+python backend/test_api.py
+```
+ 
+```json
+// Response
+{
+  "habitability_probability": 0.9995276927947998,
+  "prediction": 1,
+  "status": "success"
+}
+```
+ 
+> `prediction: 1` → **Habitable** · `prediction: 0` → Non-Habitable
+ 
+![Prediction API Terminal](assets/api_predict_terminal.png)
+*↑ `test_api.py` output — 99.95% habitability probability returned*
+ 
+<br/>
+ 
+---
+ 
+### 🏆 Endpoint 4 — Habitability Ranking
+ 
+**`GET /rank`** — Returns the **Top 10 most habitable exoplanets** from the dataset, ranked by habitability probability and supporting metrics including ESI score, equilibrium temperature, orbital stability factor, and stellar compatibility index.
+ 
+```json
+// Response (truncated)
+{
+  "count": 10,
+  "status": "success",
+  "top_planets": [
+    {
+      "Equilibrium_Temp": 753.2,
+      "Habitability_Probability": 0.9999881,
+      "Habitability_Score_Index": 0.2260783639999819,
+      "Orbital_Period": 18.2734,
+      "Orbital_Stability_Factor": 0.40665921750518514,
+      "Planet_Density": 3.53,
+      "Planet_Mass": 8.7,
+      "Planet_Name": "TOI-134564 b",
+      "Planet_Radius": 2.469,
+      "Stellar_Compatibility_Index": 0.8883289840950909,
+      "Stellar_Metallicity": 0.0,
+      "Stellar_Temp": 5048.0,
+      "Target_Habitable": 1
+    }
+    // ... 9 more planets
+  ]
+}
+```
+ 
+![Rank Endpoint Output](assets/api_rank_endpoint.png)
+*↑ `GET /rank` — Top 10 habitable exoplanet candidates with full metrics*
+ 
 <br/>
 
 ---
