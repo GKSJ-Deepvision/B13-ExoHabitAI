@@ -30,7 +30,7 @@
 
 ## 🛠️ Tech Stack
 
-**Frontend:** HTML5, CSS3, Vanilla JS, Chart.js, Font Awesome, Google Fonts (Orbitron)  
+**Frontend:** HTML5, CSS3, Vanilla JS, Chart.js
 **Backend:** Python, Flask REST API  
 **ML Model:** Scikit-learn — Tuned Random Forest  
 **Data:** NASA Exoplanet Archive
