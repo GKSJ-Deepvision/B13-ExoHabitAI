@@ -378,52 +378,53 @@ python backend/test_api.py
 <br/>
  
 ---
-
+  
 ## 📂 Project Structure
-
+ 
 ![Folder Structure](./assets/images/folder_structure_screenshot.png)
-*↑ Full project directory — captured from VS Code Explorer*
-
+*↑ Full project directory — VS Code Explorer*
+ 
 <br/>
-
+ 
 ```
 B13-EXOHABITAI/
 │
-├── 📁 assets/              # GIFs and images for README
-├── 📁 backend/             # Flask API logic
-│   ├── app_deploy.py       # Main Flask app
-│   ├── utils.py            # Helper functions
-│   └── best_model.pkl      # Serialized trained model
+├── 📁 assets/images/        # README screenshots & visuals
+├── 📁 backend/              # Flask API
+│   ├── app_deploy.py        # 4 endpoints: /, /model-info, /predict, /rank
+│   ├── utils.py             # Feature preprocessing
+│   └── best_model.pkl       # Serialized production model
 │
-├── 📁 data/                # Raw, preprocessed, and processed datasets
-│   ├── raw/
-│   ├── preprocessed/
-│   └── processed/
+├── 📁 data/
+│   ├── raw/                 # NASA Exoplanet Archive snapshot (CSV)
+│   ├── preprocessed/        # Cleaned & imputed dataset
+│   └── processed/           # Feature-engineered + habitability-ranked output
 │
-├── 📁 frontend/            # HTML dashboard
-│   ├── index.html          # Landing page
-│   └── dashboard.html      # Prediction interface
+├── 📁 frontend/
+│   ├── index.html           # Landing page
+│   └── dashboard.html       # Prediction UI
 │
-├── 📁 models/              # Saved model artifacts
-│   └── exohabit_model.pkl
+├── 📁 models/
+│   └── exohabit_model.pkl   # Tuned Random Forest — final production model
 │
-├── 📁 notebooks/           # Jupyter notebooks
+├── 📁 notebooks/
 │   ├── DataPreprocessingCodeFile.ipynb
-│   └── model_training.ipynb
+│   ├── model_training.ipynb
+│   └── ExoHabitAI_Project_Report.pdf
 │
-├── 📁 reports/             # All generated plots and metrics
+├── 📁 reports/              # Model evaluation outputs (19 PNGs + 2 CSVs)
+│   ├── final_model_metrics.csv
 │   ├── model_comparison.png
 │   ├── feature_importance.png
-│   ├── final_model_metrics.csv
-│   └── [confusion matrices & ROC curves]
+│   └── [confusion matrices & ROC curves for all 5 models]
 │
-├── render.yaml             # Render deployment config
-├── requirements.txt        # Python dependencies
-└── README.md               # You are here 📍
+├── render.yaml              # Render deployment config
+├── requirements.txt
+└── README.md                # You are here 📍
 ```
-
+ 
 <br/>
-
+ 
 ---
 
 ## 🛠️ Tech Stack
