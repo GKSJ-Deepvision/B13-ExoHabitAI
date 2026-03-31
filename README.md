@@ -66,6 +66,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 👉 [▶️ Click to Watch](./assets/video_demo.mp4)
 
 <br/>
+
 ---
 
 ## 🖥️ Frontend Experience
