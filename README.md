@@ -380,10 +380,7 @@ python backend/test_api.py
 ---
   
 ## 📂 Project Structure
- 
-![Folder Structure](./assets/images/folder_structure_screenshot.png)
-*↑ Full project directory — VS Code Explorer*
- 
+  
 <br/>
  
 ```
@@ -422,7 +419,7 @@ B13-EXOHABITAI/
 ├── requirements.txt
 └── README.md                # You are here 📍
 ```
- 
+ *↑ Full project directory — VS Code Explorer*
 <br/>
  
 ---
