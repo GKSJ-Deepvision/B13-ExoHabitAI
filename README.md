@@ -58,17 +58,13 @@ This project bridges **data science**, **astronomy**, and **software engineering
  
 ---
 
-<br/>
-
 ## 🌌 Live Demo Experience
 
 > 🚀 Explore ExoHabitAI in action — from prediction to visualization
 
 🎥 Click below to watch:
 
-assets/video_demo.mp4
-
-<br/>
+B13-ExoHabitAI/assets/video_demo.mp4
 
 ---
 
