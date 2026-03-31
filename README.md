@@ -58,6 +58,20 @@ This project bridges **data science**, **astronomy**, and **software engineering
  
 ---
 
+<br/
+
+## 🌌 Live Demo Experience
+
+> 🚀 Explore ExoHabitAI in action — from prediction to visualization
+
+🎥 Click below to watch:
+
+https://github.com/user-attachments/assets/video_demo.mp4
+
+<br/>
+
+---
+
 ## 🖥️ Frontend Experience
 
 > *A futuristic AI-powered interface designed for seamless space exploration and intelligent habitability analysis.*
