@@ -64,7 +64,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 🎥 Click below to watch:
 
-./assets/video_demo.mp4
+(./assets/video_demo.mp4)
 
 ---
 
