@@ -58,7 +58,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
  
 ---
 
-<br/
+<br/>
 
 ## 🌌 Live Demo Experience
 
