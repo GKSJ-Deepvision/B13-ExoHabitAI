@@ -1,5 +1,5 @@
 <div align="center">
-<>
+
 <!-- HERO BANNER -->
 ![ExoHabitAI Banner](assets/banner.svg)
 
