@@ -64,7 +64,7 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 🎥 Click below to watch:
 
-B13-ExoHabitAI/assets/video_demo.mp4
+B13-ExoHabitAI/SamridhiiiGupta/assets/video_demo.mp4
 
 ---
 
