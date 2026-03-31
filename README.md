@@ -60,12 +60,10 @@ This project bridges **data science**, **astronomy**, and **software engineering
 
 ## 🌌 Live Demo Experience
 
-> 🚀 Explore ExoHabitAI in action — from prediction to visualization
+> 🚀 Watch ExoHabitAI in action — real-time prediction system
 
-🎥 Click below to watch:
-
-(./assets/video_demo.mp4)
-
+🎥 **Demo Video:**  
+👉 [▶️ Click to Watch](./assets/video_demo.mp4)
 ---
 
 ## 🖥️ Frontend Experience
