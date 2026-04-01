@@ -1,19 +1,19 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 
+import matplotlib
+matplotlib.use("Agg")
 
 import joblib
 import numpy as np
 import sqlite3
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import base64
+
 from datetime import datetime
 from io import BytesIO
-import base64
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-from flask import send_file
-import pandas as pd
-import sqlite3
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 def init_db():
