@@ -16,8 +16,6 @@ import pandas as pd
 import sqlite3
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
-import os
-import joblib
 def init_db():
     conn = sqlite3.connect("database.db")
     cur = conn.cursor()
@@ -43,11 +41,8 @@ CORS(app)
 init_db()
 
 
-import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-model = joblib.load(os.path.join(BASE_DIR, "rf_model.pkl"))
-scaler = joblib.load(os.path.join(BASE_DIR, "scaler.pkl"))
+model = joblib.load("rf_model.pkl")
+scaler = joblib.load("scaler.pkl")
 
 # Force non-interactive backend for matplotlib
 import matplotlib
