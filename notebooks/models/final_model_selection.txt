@@ -1,0 +1,7 @@
+Selected model: xgboost
+Selection criteria: highest test F1 (primary) with test Recall as tiebreaker.
+Test metrics:
+{'test_accuracy': 1.0, 'test_precision': 1.0, 'test_recall': 1.0, 'test_f1': 1.0, 'test_roc_auc': 1.0, 'train_accuracy': 0.9997950819672131, 'train_f1': 0.9777777777777777, 'train_recall': 1.0, 'train_roc_auc': 1.0, 'f1_diff_train_minus_test': -0.022222222222222254}
+
+Overfitting flag: False
+Notes: If overfitting flagged, consider additional regularization, tuning, or more data.

@@ -2,121 +2,518 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Exoplanet Habitability Predictor</title>
-
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ExoHabitAI — Exoplanet Habitability Predictor</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <div class="container py-5">
-    <div class="text-center mb-4">
-      <h1 class="fw-bold">Exoplanet Habitability Predictor</h1>
-      <p class="text-muted">
-        Enter planetary and stellar parameters to get a habitability prediction.
-      </p>
+
+<canvas id="starfield"></canvas>
+<div class="nebula n1"></div>
+<div class="nebula n2"></div>
+<div class="nebula n3"></div>
+
+<!-- ═══ NAV ═══════════════════════════════════════════════════ -->
+<nav class="exo-nav">
+  <div class="nav-brand">
+    <span class="brand-glyph">◈</span>
+    <span class="brand-name">ExoHabit<span class="brand-hi">AI</span></span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showTab('predict')">Predict</button>
+    <button class="nav-btn" onclick="showTab('rankings')">Rankings</button>
+    <button class="nav-btn" onclick="showTab('model')">Model</button>
+    <button class="nav-btn" onclick="showTab('about')">About</button>
+  </div>
+  <div class="api-status">
+    <span class="dot" id="apiDot"></span>
+    <span class="api-txt" id="apiTxt">Connecting…</span>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-left">
+    <div class="hero-pill">
+      <span class="pill-dot"></span>
+      XGBoost · F1 = 1.0 · 6,100 Exoplanets Analysed
+    </div>
+    <h1 class="hero-h1">
+      <span class="h1-sm">EXOPLANET</span>
+      <span class="h1-lg">HABITABILITY</span>
+      <span class="h1-acc">ANALYSIS</span>
+    </h1>
+    <p class="hero-p">
+      AI-powered habitability classification using NASA Exoplanet Archive data.<br>
+      Input planetary and stellar parameters to receive an instant prediction.
+    </p>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-v" id="sTot">6,100</span><span class="hstat-l">Planets</span></div>
+      <div class="hstat"><span class="hstat-v" id="sHab">27</span><span class="hstat-l">Habitable</span></div>
+      <div class="hstat"><span class="hstat-v">1.0</span><span class="hstat-l">F1 Score</span></div>
+      <div class="hstat"><span class="hstat-v">100%</span><span class="hstat-l">ROC-AUC</span></div>
+    </div>
+    <button class="hero-cta" onclick="showTab('predict')">Begin Analysis →</button>
+  </div>
+  <div class="hero-right">
+    <div class="solar">
+      <div class="star-core"></div>
+      <div class="ring r1"><div class="planet p-blue"></div></div>
+      <div class="ring r2"><div class="planet p-pink"></div></div>
+      <div class="ring r3"><div class="planet p-green"></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  TAB: PREDICT                                              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="tab-predict" class="tab active">
+  <div class="sec-head">
+    <h2 class="sec-title">HABITABILITY PREDICTOR</h2>
+    <p class="sec-desc">Enter planetary and stellar parameters to get an AI-powered habitability assessment.</p>
+  </div>
+
+  <div class="predict-layout">
+
+    <!-- ── Form ── -->
+    <div class="card form-card">
+      <form id="predictForm" novalidate>
+
+        <div class="field-full">
+          <label class="lbl">Planet Designation</label>
+          <input type="text" id="planet_name" class="inp" placeholder="e.g. Kepler-452b"/>
+        </div>
+
+        <!-- Planetary -->
+        <div class="param-group">
+          <div class="pg-title"><span>🪐</span> Planetary Parameters</div>
+          <div class="field-grid">
+            <div class="field">
+              <label class="lbl">Radius <span class="unit">(R⊕)</span></label>
+              <input type="number" step="any" id="radius_earth" class="inp" placeholder="1.0" required/>
+              <span class="hint">Earth = 1.0</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Mass <span class="unit">(M⊕)</span></label>
+              <input type="number" step="any" id="mass_earth" class="inp" placeholder="1.0" required/>
+              <span class="hint">Earth = 1.0</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Orbital Period <span class="unit">(days)</span></label>
+              <input type="number" step="any" id="orbital_period" class="inp" placeholder="365.25" required/>
+              <span class="hint">Earth = 365.25 d</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Semi-major Axis <span class="unit">(AU)</span></label>
+              <input type="number" step="any" id="semimajor_axis" class="inp" placeholder="1.0" required/>
+              <span class="hint">Earth = 1.0 AU</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Eq. Temperature <span class="unit">(K)</span></label>
+              <input type="number" step="any" id="eq_temp_k" class="inp" placeholder="255" required/>
+              <span class="hint">HZ range: 180–310 K</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Density <span class="unit">(g/cm³)</span></label>
+              <input type="number" step="any" id="density" class="inp" placeholder="5.51" required/>
+              <span class="hint">Earth = 5.51</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stellar -->
+        <div class="param-group">
+          <div class="pg-title"><span>⭐</span> Stellar Parameters</div>
+          <div class="field-grid">
+            <div class="field">
+              <label class="lbl">Star Temperature <span class="unit">(K)</span></label>
+              <input type="number" step="any" id="star_temp_k" class="inp" placeholder="5778" required/>
+              <span class="hint">Sun = 5778 K</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Star Luminosity <span class="unit">(log L☉)</span></label>
+              <input type="number" step="any" id="star_luminosity" class="inp" placeholder="0.0" required/>
+              <span class="hint">Sun = 0.0</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Metallicity <span class="unit">[Fe/H]</span></label>
+              <input type="number" step="any" id="star_metallicity" class="inp" placeholder="0.0" required/>
+              <span class="hint">Sun = 0.0</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Spectral Type</label>
+              <select id="star_spectype" class="inp sel" required>
+                <option value="">Select type…</option>
+                <option value="G2 V">G2 V — Sun-like</option>
+                <option value="K5 V">K5 V — Orange Dwarf</option>
+                <option value="M3 V">M3 V — Red Dwarf</option>
+                <option value="F8 V">F8 V — Yellow-White</option>
+                <option value="K0 III">K0 III — Giant</option>
+                <option value="G8 III">G8 III — Giant</option>
+                <option value="M0 V">M0 V — Red Dwarf</option>
+                <option value="A5 V">A5 V — White Star</option>
+                <option value="Unknown">Unknown</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Derived -->
+        <div class="param-group">
+          <div class="pg-title"><span>🧬</span> Habitability Indices</div>
+          <div class="field-grid">
+            <div class="field">
+              <label class="lbl">Habitability Score <span class="unit">(0–1)</span></label>
+              <input type="number" step="any" min="0" max="1" id="habitability_score" class="inp" placeholder="0.5" required/>
+              <span class="hint">Composite planetary index</span>
+            </div>
+            <div class="field">
+              <label class="lbl">Stellar Compatibility <span class="unit">(0–2)</span></label>
+              <input type="number" step="any" min="0" max="2" id="stellar_compatibility" class="inp" placeholder="1.0" required/>
+              <span class="hint">Host star influence</span>
+            </div>
+            <div class="field field-full">
+              <label class="lbl">Orbital Stability</label>
+              <input type="number" step="any" id="orbital_stability" class="inp" placeholder="5.0" required/>
+              <span class="hint">Orbital dynamics metric</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Fill -->
+        <div class="quick-fill">
+          <span class="qf-lbl">Quick fill:</span>
+          <button type="button" class="qf-btn" onclick="fillPreset('earth')">🌍 Earth-like</button>
+          <button type="button" class="qf-btn" onclick="fillPreset('kepler452b')">🔭 Kepler-452b</button>
+          <button type="button" class="qf-btn" onclick="fillPreset('proxima')">🌑 Proxima b</button>
+          <button type="button" class="qf-btn" onclick="fillPreset('hot_jupiter')">🔥 Hot Jupiter</button>
+          <button type="button" class="qf-btn qf-random" onclick="fillRandom()">🎲 Random</button>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="sb-icon">⬡</span>
+          <span class="sb-text">ANALYSE HABITABILITY</span>
+          <span class="sb-spin" id="sbSpin"></span>
+        </button>
+
+        <div class="form-err" id="formErr" style="display:none"></div>
+      </form>
     </div>
 
-    <div class="row g-4">
-      <div class="col-12 col-lg-8 mx-auto">
-        <div class="card shadow-sm border-0">
-          <div class="card-body p-4">
-            <form id="predictForm">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <h5 class="section-title">Planetary Parameters</h5>
-                </div>
-                <div class="col-md-6">
-                  <h5 class="section-title">Stellar Parameters</h5>
-                </div>
-              </div>
+    <!-- ── Result Panel ── -->
+    <div class="result-col" id="resultCol" style="display:none">
 
-              <div class="row g-3 mt-1">
-                <div class="col-md-6">
-                  <label class="form-label">Planet Radius</label>
-                  <input type="number" step="any" class="form-control" name="planet_radius" placeholder="e.g. 1.1" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Star Temperature</label>
-                  <input type="number" step="any" class="form-control" name="star_temperature" placeholder="e.g. 5778" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Planet Mass</label>
-                  <input type="number" step="any" class="form-control" name="planet_mass" placeholder="e.g. 1.0" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Star Luminosity</label>
-                  <input type="number" step="any" class="form-control" name="star_luminosity" placeholder="e.g. 1.0" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Orbital Period</label>
-                  <input type="number" step="any" class="form-control" name="orbital_period" placeholder="e.g. 365" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Star Metallicity</label>
-                  <input type="number" step="any" class="form-control" name="star_metallicity" placeholder="e.g. 0.02" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Semi-major Axis</label>
-                  <input type="number" step="any" class="form-control" name="semi_major_axis" placeholder="e.g. 1.0" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Star Spectral Type</label>
-                  <input type="text" class="form-control" name="star_spectype" placeholder="e.g. G2V" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Equilibrium Temperature</label>
-                  <input type="number" step="any" class="form-control" name="eq_temperature" placeholder="e.g. 288" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Planet Density</label>
-                  <input type="number" step="any" class="form-control" name="planet_density" placeholder="e.g. 5.5" required />
-                </div>
-              </div>
-
-              <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary btn-lg">
-                  Predict Habitability
-                </button>
-              </div>
-            </form>
+      <!-- Gauge -->
+      <div class="card gauge-card">
+        <svg class="gauge-svg" viewBox="0 0 220 145">
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#ff4444"/>
+              <stop offset="40%"  stop-color="#ffd700"/>
+              <stop offset="100%" stop-color="#00ff88"/>
+            </linearGradient>
+          </defs>
+          <path d="M 25 120 A 85 85 0 0 1 195 120" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14" stroke-linecap="round"/>
+          <path id="gaugeArc" d="M 25 120 A 85 85 0 0 1 195 120" fill="none" stroke="url(#gaugeGrad)" stroke-width="14" stroke-linecap="round"
+                stroke-dasharray="267" stroke-dashoffset="267" style="transition:stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1)"/>
+          <text id="gScore" x="110" y="108" text-anchor="middle" class="g-num">0%</text>
+          <text x="110" y="128" text-anchor="middle" class="g-lbl">HABITABILITY SCORE</text>
+        </svg>
+        <div class="verdict-row" id="verdictRow">
+          <span class="v-icon" id="vIcon">—</span>
+          <div>
+            <div class="v-label" id="vLabel">Awaiting Analysis</div>
+            <div class="v-class" id="vClass">—</div>
           </div>
         </div>
       </div>
 
-      <div class="col-12 col-lg-8 mx-auto">
-        <div id="messageBox" class="alert d-none" role="alert"></div>
-
-        <div class="card shadow-sm border-0 mt-3">
-          <div class="card-body p-4">
-            <h4 class="mb-3">Prediction Result</h4>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="result-card">
-                  <div class="result-label">Habitability Status</div>
-                  <div id="statusValue" class="result-value">—</div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="result-card">
-                  <div class="result-label">Habitability Score</div>
-                  <div id="scoreValue" class="result-value">—</div>
-                </div>
-              </div>
-            </div>
+      <!-- Probability Bars -->
+      <div class="card prob-card">
+        <div class="card-title" id="resName">—</div>
+        <div class="prob-rows">
+          <div class="prob-row">
+            <span class="prob-lbl">Potentially Habitable</span>
+            <div class="prob-track"><div class="prob-fill fill-hab" id="barHab" style="width:0%"></div></div>
+            <span class="prob-val" id="valHab">—</span>
           </div>
+          <div class="prob-row">
+            <span class="prob-lbl">Non-Habitable</span>
+            <div class="prob-track"><div class="prob-fill fill-no" id="barNo" style="width:0%"></div></div>
+            <span class="prob-val" id="valNo">—</span>
+          </div>
+        </div>
+        <div class="meta-grid" id="metaGrid"></div>
+        <div class="hz-tag" id="hzTag" style="display:none"></div>
+      </div>
+
+      <!-- Feature Importance -->
+      <div class="card feat-card">
+        <div class="card-title">TOP PREDICTION FACTORS</div>
+        <div id="featRows"></div>
+      </div>
+    </div>
+
+    <!-- Scan overlay -->
+    <div class="scan-overlay" id="scanOverlay">
+      <div class="scan-box">
+        <div class="scan-beam"></div>
+        <div class="scan-title">ANALYSING PLANETARY DATA</div>
+        <div class="scan-step" id="scanStep">Initializing XGBoost pipeline…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  TAB: RANKINGS                                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="tab-rankings" class="tab">
+  <div class="sec-head">
+    <div class="sec-tag">RANKED CATALOGUE</div>
+    <h2 class="sec-title">TOP HABITABLE CANDIDATES</h2>
+    <p class="sec-desc">Exoplanets ranked by AI-predicted habitability probability from the NASA Exoplanet Archive.</p>
+  </div>
+
+  <div class="card rank-controls">
+    <div class="rc-group">
+      <label class="lbl">Show</label>
+      <select id="rankLimit" class="inp sel sm" onchange="loadRankings()">
+        <option value="10">Top 10</option>
+        <option value="20" selected>Top 20</option>
+        <option value="50">Top 50</option>
+        <option value="100">Top 100</option>
+      </select>
+    </div>
+    <div class="rc-group">
+      <label class="lbl">Filter</label>
+      <select id="rankFilter" class="inp sel sm" onchange="loadRankings()">
+        <option value="false">All Planets</option>
+        <option value="true">Habitable Only</option>
+      </select>
+    </div>
+    <button class="refresh-btn" onclick="loadRankings()">↻ Refresh</button>
+  </div>
+
+  <!-- Quick rank summary cards -->
+  <div class="top3-wrap" id="top3Wrap" style="display:none">
+    <div class="top3-card" id="top3-1"><div class="t3-medal">🥇</div><div class="t3-name">—</div><div class="t3-score">—</div></div>
+    <div class="top3-card" id="top3-2"><div class="t3-medal">🥈</div><div class="t3-name">—</div><div class="t3-score">—</div></div>
+    <div class="top3-card" id="top3-3"><div class="t3-medal">🥉</div><div class="t3-name">—</div><div class="t3-score">—</div></div>
+  </div>
+
+  <div class="card rank-wrap" id="rankWrap">
+    <div class="rank-loading" id="rankLoading">
+      <div class="spin"></div><span>Loading planetary catalogue…</span>
+    </div>
+    <table class="rank-table" id="rankTable" style="display:none">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Planet</th>
+          <th>Host Star</th>
+          <th>Hab. Score</th>
+          <th>Class</th>
+          <th>Radius (R⊕)</th>
+          <th>Eq. Temp (K)</th>
+          <th>Orbital Period (d)</th>
+          <th>Star Temp (K)</th>
+        </tr>
+      </thead>
+      <tbody id="rankBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  TAB: MODEL INFO                                           -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="tab-model" class="tab">
+  <div class="sec-head">
+    <div class="sec-tag">ML METHODOLOGY</div>
+    <h2 class="sec-title">MODEL DETAILS</h2>
+    <p class="sec-desc">Understanding the XGBoost classifier behind ExoHabitAI's predictions.</p>
+  </div>
+
+  <!-- Why this model -->
+  <div class="info-section">
+    <h3 class="info-h3"><span class="info-icon">🤔</span> Why XGBoost?</h3>
+    <div class="info-cards">
+      <div class="card info-card">
+        <div class="ic-title">Class Imbalance Handling</div>
+        <p class="ic-text">The dataset has only 27 habitable planets out of 6,100 (0.44%) — a severe class imbalance. XGBoost's <code>scale_pos_weight=220</code> parameter directly penalises the model for missing habitable planets, making it recall-optimised for the minority class.</p>
+      </div>
+      <div class="card info-card">
+        <div class="ic-title">Tabular Data Performance</div>
+        <p class="ic-text">XGBoost consistently outperforms neural networks and linear models on structured tabular data. Our dataset has 31 engineered features including scaled numerics, spectral type encodings, and custom habitability indices — exactly where gradient boosting excels.</p>
+      </div>
+      <div class="card info-card">
+        <div class="ic-title">Interpretability</div>
+        <p class="ic-text">Unlike black-box deep learning models, XGBoost provides native feature importance scores. This is critical for scientific use: astronomers can see exactly which parameters (habitability score: 49.3%, eq. temperature: 21.5%) drive predictions.</p>
+      </div>
+      <div class="card info-card">
+        <div class="ic-title">Comparison Results</div>
+        <p class="ic-text">XGBoost achieved F1=1.0 and ROC-AUC=1.0 on the test set — outperforming Logistic Regression (F1=0.21), Decision Tree (F1=0.60), and Random Forest (F1=0.57) across all metrics after hyperparameter tuning.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- How it was trained -->
+  <div class="info-section">
+    <h3 class="info-h3"><span class="info-icon">⚙️</span> How It Was Trained</h3>
+    <div class="train-steps">
+      <div class="card train-step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <div class="step-title">Data Collection</div>
+          <p class="step-text">6,100 confirmed exoplanets sourced from the NASA Exoplanet Archive. Features include radius, mass, orbital period, equilibrium temperature, stellar luminosity, temperature, and metallicity.</p>
+        </div>
+      </div>
+      <div class="card train-step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <div class="step-title">Feature Engineering</div>
+          <p class="step-text">Three custom indices created: <strong>Habitability Score Index</strong> (composite planetary-stellar metric), <strong>Stellar Compatibility Index</strong> (host star influence), and <strong>Orbital Stability Index</strong>. Star spectral types were one-hot encoded into 8 binary columns.</p>
+        </div>
+      </div>
+      <div class="card train-step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <div class="step-title">Preprocessing Pipeline</div>
+          <p class="step-text">Scikit-learn Pipeline with ColumnTransformer: <strong>SimpleImputer (median)</strong> for 4,559 missing values, <strong>StandardScaler</strong> for 23 numeric columns, and <strong>OneHotEncoder</strong> for the star_spectype categorical column.</p>
+        </div>
+      </div>
+      <div class="card train-step">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <div class="step-title">Train-Test Split</div>
+          <p class="step-text">80/20 stratified split (stratify on <code>habitable_binary</code> to preserve the 0.44% class ratio). Training: 4,880 rows (22 habitable). Test: 1,220 rows (5 habitable).</p>
+        </div>
+      </div>
+      <div class="card train-step">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <div class="step-title">Baseline Models</div>
+          <p class="step-text">Logistic Regression and shallow Decision Tree trained first as benchmarks. Logistic Regression achieved F1=0.21 (high recall, poor precision). Decision Tree achieved F1=0.60 with class_weight='balanced'.</p>
+        </div>
+      </div>
+      <div class="card train-step">
+        <div class="step-num">06</div>
+        <div class="step-body">
+          <div class="step-title">Primary Model Training</div>
+          <p class="step-text">Random Forest (200 trees, class_weight='balanced') and XGBoost (200 estimators, scale_pos_weight=220) trained on full training set. XGBoost achieved ROC-AUC=1.0 on test with perfect precision and recall.</p>
+        </div>
+      </div>
+      <div class="card train-step">
+        <div class="step-num">07</div>
+        <div class="step-body">
+          <div class="step-title">Hyperparameter Tuning</div>
+          <p class="step-text">RandomizedSearchCV with 5-fold StratifiedKFold (40 iterations each). Best XGBoost params: <code>n_estimators=400, max_depth=10, learning_rate=0.1, subsample=0.8, colsample_bytree=0.7</code>. Best CV F1 = 0.931.</p>
+        </div>
+      </div>
+      <div class="card train-step">
+        <div class="step-num">08</div>
+        <div class="step-body">
+          <div class="step-title">Final Selection & Saving</div>
+          <p class="step-text">XGBoost selected as final model (highest F1 + no overfitting). Saved as <code>models/final_model.pkl</code> using joblib. Also saved <code>random_forest.pkl</code> and <code>xgboost_best.joblib</code> for comparison.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Feature Importance -->
+  <div class="info-section">
+    <h3 class="info-h3"><span class="info-icon">📊</span> Feature Importance</h3>
+    <div class="card feat-importance-card">
+      <p class="fi-desc">Based on Random Forest feature importance scores from the trained model. Larger bars = stronger influence on habitability prediction.</p>
+      <div id="modelFeatBars"></div>
+    </div>
+  </div>
+
+  <!-- Metrics Table -->
+  <div class="info-section">
+    <h3 class="info-h3"><span class="info-icon">📈</span> Model Comparison</h3>
+    <div class="card metrics-card">
+      <table class="metrics-table">
+        <thead>
+          <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1 Score</th><th>ROC-AUC</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Logistic Regression</td><td>0.9689</td><td>0.1163</td><td>1.0000</td><td>0.2083</td><td>0.9865</td></tr>
+          <tr><td>Decision Tree</td><td>0.9994</td><td>1.0000</td><td>0.8636</td><td>0.9262</td><td>0.7992</td></tr>
+          <tr><td>Random Forest</td><td>0.9992</td><td>0.8333</td><td>1.0000</td><td>0.9091</td><td>0.9998</td></tr>
+          <tr class="best-row"><td>⭐ XGBoost (Final)</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  TAB: ABOUT                                                -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="tab-about" class="tab">
+  <div class="sec-head">
+    <div class="sec-tag">PROJECT INFO</div>
+    <h2 class="sec-title">ABOUT ExoHabitAI</h2>
+    <p class="sec-desc">An end-to-end ML pipeline for exoplanet habitability classification.</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="card about-card"><div class="ac-icon">🌌</div><h4>The Problem</h4><p>Of 5,000+ confirmed exoplanets, identifying potentially habitable ones requires expensive telescopic observation. ExoHabitAI uses ML to pre-screen candidates, helping astronomers prioritise observation targets.</p></div>
+    <div class="card about-card"><div class="ac-icon">📡</div><h4>Data Source</h4><p>NASA Exoplanet Archive — 6,100 confirmed exoplanets with parameters spanning radius, mass, orbital mechanics, stellar properties, and derived habitability indices.</p></div>
+    <div class="card about-card"><div class="ac-icon">🤖</div><h4>XGBoost Model</h4><p>Gradient-boosted decision trees with scale_pos_weight=220 to handle severe class imbalance (only 0.44% habitable). Achieves F1=1.0 on the test set.</p></div>
+    <div class="card about-card"><div class="ac-icon">🔧</div><h4>Pipeline</h4><p>Sklearn Pipeline: ColumnTransformer (imputation + scaling + OHE) → XGBClassifier. No data leakage. Handles missing values automatically via median imputation.</p></div>
+    <div class="card about-card"><div class="ac-icon">🌐</div><h4>REST API</h4><p>Flask backend with 6 endpoints: /predict, /predict/batch, /rank, /stats, /features, /health. CORS enabled for frontend integration.</p></div>
+    <div class="card about-card"><div class="ac-icon">🎯</div><h4>Key Insight</h4><p>Habitability Score Index (engineered feature) contributes 49.3% of prediction importance — confirming that composite metrics outperform individual raw measurements.</p></div>
+  </div>
+
+  <!-- API Docs -->
+  <div class="card api-ref">
+    <div class="card-title">API REFERENCE</div>
+    <table class="metrics-table">
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="meth post">POST</span></td><td>/predict</td><td>Single planet habitability prediction with score + class</td></tr>
+        <tr><td><span class="meth post">POST</span></td><td>/predict/batch</td><td>Batch prediction — returns ranked list</td></tr>
+        <tr><td><span class="meth get">GET</span></td><td>/rank?limit=20&habitable_only=false</td><td>Pre-ranked catalogue from habitability_ranked.csv</td></tr>
+        <tr><td><span class="meth get">GET</span></td><td>/features</td><td>Required fields + feature importance data</td></tr>
+        <tr><td><span class="meth get">GET</span></td><td>/stats</td><td>Dataset overview statistics</td></tr>
+        <tr><td><span class="meth get">GET</span></td><td>/health</td><td>API + model health check</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="card tech-stack">
+    <div class="card-title">TECH STACK</div>
+    <div class="tech-pills">
+      <span class="tech-pill">Python 3.10</span>
+      <span class="tech-pill">Flask 3.0</span>
+      <span class="tech-pill">scikit-learn 1.4</span>
+      <span class="tech-pill">XGBoost 2.0</span>
+      <span class="tech-pill">pandas 2.2</span>
+      <span class="tech-pill">NumPy</span>
+      <span class="tech-pill">joblib</span>
+      <span class="tech-pill">Bootstrap 5</span>
+      <span class="tech-pill">Vanilla JS</span>
+      <span class="tech-pill">NASA Exoplanet Archive</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="exo-footer">
+  <div class="f-brand">◈ ExoHabitAI</div>
+  <div class="f-txt">Predicting Life Beyond Earth · NASA Exoplanet Archive · XGBoost ML Pipeline</div>
+  <div class="f-sub">Python · Flask · scikit-learn · XGBoost · Bootstrap · JavaScript</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
