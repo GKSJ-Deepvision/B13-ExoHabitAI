@@ -1,0 +1,13 @@
+flask
+gunicorn
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+requests
+flask-cors
+python-dotenv
+pytest
+pytest-cov
+coverage
