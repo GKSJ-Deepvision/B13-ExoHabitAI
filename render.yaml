@@ -2,7 +2,7 @@ services:
   - type: web
     name: exohabitai
     runtime: python
-    buildCommand: pip install --only-binary=:all:-r requirements.txt
+    buildCommand: pip install --only-binary=:all: -r requirements.txt
     startCommand: gunicorn backend.app:app
     envVars:
       - key: PYTHON_VERSION
