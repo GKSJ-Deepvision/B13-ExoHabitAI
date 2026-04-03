@@ -1,54 +1,71 @@
 from flask import Flask, request, jsonify
 import joblib
 import numpy as np
-from utils import validate_input, preprocess_input
 from flask_cors import CORS
+
+
 
 app = Flask(__name__)
 CORS(app)
 
-# Load model at startup
-model = joblib.load('../models/model.pkl')
+# Load model
+# model = joblib.load('model.pkl')
+scaler = joblib.load("C:\\Users\\hp\\Desktop\\project_intern\\New folder\\B13-ExoHabitAI\\models\\scaler.pkl") 
+model = joblib.load('C:\\Users\\hp\\Desktop\\project_intern\\New folder\\B13-ExoHabitAI\\models\\model.pkl')
 
 
+# ------------------ HOME ------------------
 @app.route('/')
 def home():
-    return "Exohabit AI Backend Running 🚀"
+    return "ExoHabitAI Backend Running 🚀"
 
 
 # ------------------ PREDICT API ------------------
+
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
 
-    # Check empty input
-    if not data:
-        return jsonify({
-            "status": "error",
-            "message": "No input data provided"
-        }), 400
-
     # Validate input
-    valid, message = validate_input(data)
-    if not valid:
-        return jsonify({
-            "status": "error",
-            "message": message
-        }), 400
+    required_fields = ['pl_bmasse', 'pl_dens', 'st_teff', 'st_met']
+
+    for field in required_fields:
+        if field not in data:
+            return jsonify({
+                "status": "error",
+                "message": f"Missing field: {field}"
+            }), 400
 
     try:
-        # Preprocess input
-        features = preprocess_input(data)
+        # Convert to numpy array
+        features = np.array([[
+            float(data['pl_bmasse']),
+            float(data['pl_dens']),
+            float(data['st_teff']),
+            float(data['st_met'])
+        ]])
+        features = scaler.transform(features)
+
+        mean = [1.6, 2.2, 5.4, -1]
+        std = [1, 1, 1, 1]
+        features = [[(features[0][i] - mean[i]) / std[i] for i in range(4)]]
 
         # Prediction
-        prediction = model.predict(features)[0]
+        # prediction = model.predict(features)[0]
         probability = model.predict_proba(features)[0][1]
+
+        # 🔥 custom threshold
+        threshold = 0.55
+
+        prediction = 1 if probability > threshold else 0
+        
+        # probability = model.predict_proba(features)[0][1]
 
         return jsonify({
             "status": "success",
-            "message": "Prediction successful",
             "prediction": int(prediction),
-            "habitability_score": float(probability)
+            "habitability_score": float(probability),
+            "confidence": float(probability)
         })
 
     except Exception as e:
@@ -59,18 +76,10 @@ def predict():
 
 
 # ------------------ RANK API ------------------
-@app.route('/rank', methods=['GET', 'POST'])
+@app.route('/rank', methods=['POST'])
 def rank():
     data = request.get_json()
 
-    # Check empty input
-    if not data:
-        return jsonify({
-            "status": "error",
-            "message": "No input data provided"
-        }), 400
-
-    # Must be list
     if not isinstance(data, list):
         return jsonify({
             "status": "error",
@@ -81,25 +90,23 @@ def rank():
         results = []
 
         for planet in data:
-            valid, message = validate_input(planet)
-            if not valid:
-                return jsonify({
-                    "status": "error",
-                    "message": message
-                }), 400
+            features = np.array([[ 
+                float(planet['pl_bmasse']),
+                float(planet['pl_dens']),
+                float(planet['st_teff']),
+                float(planet['st_met'])
+            ]])
 
-            features = preprocess_input(planet)
             score = model.predict_proba(features)[0][1]
 
-            planet["habitability_score"] = float(score)
+            planet['habitability_score'] = float(score)
             results.append(planet)
 
-        # Sort by score (descending)
-        ranked = sorted(results, key=lambda x: x["habitability_score"], reverse=True)
+        # Sort by score
+        ranked = sorted(results, key=lambda x: x['habitability_score'], reverse=True)
 
         return jsonify({
             "status": "success",
-            "message": "Ranking successful",
             "ranked_planets": ranked
         })
 
@@ -110,5 +117,6 @@ def rank():
         }), 500
 
 
+# ------------------ RUN ------------------
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000, debug=True)

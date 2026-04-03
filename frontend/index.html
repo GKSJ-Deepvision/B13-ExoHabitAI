@@ -2,68 +2,359 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Exohabit AI</title>
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExoHabitAI - Exoplanet Habitability Analysis</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-<div class="container mt-5">
-    <h2 class="text-center mb-4">🌍 Exohabit AI - Habitability Predictor</h2>
-
-    <div class="card p-4 shadow">
-        <form id="planetForm">
-
-            <div class="row">
-                <div class="col-md-6">
-                    <label>Planet Radius</label>
-                    <input type="number" step="any" id="pl_rade" class="form-control" placeholder="Enter radius" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Star Luminosity</label>
-                    <input type="number" step="any" id="st_lum" class="form-control" placeholder="Enter luminosity" required>
-                </div>
+<body class="dark">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <div class="logo-icon">E</div>
+                <span>ExoHabitAI</span>
+            </div>
+            
+            <div class="navbar-menu">
+                <a href="#" data-page="home" class="nav-link">Home</a>
+                <a href="#" data-page="explore" class="nav-link" id="exploreLink" style="display: none;">Explore</a>
+                <a href="#" data-page="predictor" class="nav-link" id="predictorLink" style="display: none;">Predictor</a>
+                <a href="#" data-page="dashboard" class="nav-link" id="dashboardLink" style="display: none;">Dashboard</a>
+                <a href="#" data-page="about" class="nav-link">About</a>
             </div>
 
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <label>Orbital Period</label>
-                    <input type="number" step="any" id="pl_orbper" class="form-control" required>
-                </div>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
 
-                <div class="col-md-6">
-                    <label>Star Temperature</label>
-                    <input type="number" step="any" id="st_teff" class="form-control" required>
+                <div class="navbar-auth">
+                    <span id="userEmail" class="user-email" style="display: none;"></span>
+                    <button id="authToggle" class="btn btn-primary">Sign In</button>
                 </div>
             </div>
+        </div>
+    </nav>
 
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <label>Equilibrium Temperature</label>
-                    <input type="number" step="any" id="pl_eqt" class="form-control" required>
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Home Page -->
+        <section id="home-page" class="page active">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Discover Habitable <span class="accent-text">Exoplanets</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Analyze distant worlds with ExoHabitAI. Use advanced algorithms to predict which exoplanets might support life.
+                    </p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" data-page="signup">Get Started</button>
+                        <button class="btn btn-outline" data-page="explore">Browse Exoplanets</button>
+                    </div>
                 </div>
+            </section>
 
-                <div class="col-md-6">
-                    <label>Orbital Distance</label>
-                    <input type="number" step="any" id="pl_orbsmax" class="form-control" required>
+            <!-- Features Section -->
+            <section class="features">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>AI Analysis</h3>
+                        <p>Predict habitability scores using advanced machine learning algorithms trained on exoplanet data.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3>Explore Worlds</h3>
+                        <p>Browse a catalog of exoplanets and discover their characteristics and habitability potential.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔬</div>
+                        <h3>Deep Analysis</h3>
+                        <p>Get detailed reports on atmospheric composition, temperature, orbital mechanics, and water presence.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta-section">
+                <div class="cta-content">
+                    <h2>Ready to Explore the Universe?</h2>
+                    <p>Create an account to start analyzing exoplanets and building your personal catalog of discoveries.</p>
+                    <button class="btn btn-primary" data-page="signup">Sign Up Now</button>
+                </div>
+            </section>
+        </section>
+
+        <!-- Sign Up Page -->
+        <section id="signup-page" class="page">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h1>Create Account</h1>
+                    <p>Join ExoHabitAI to start analyzing exoplanets</p>
+                    
+                    <div id="signupError" class="error-message" style="display: none;"></div>
+                    
+                    <form id="signupForm" class="auth-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="signupName" placeholder="Dr. Astro Scientist" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="signupPassword" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" id="signupConfirm" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary full-width">Sign Up</button>
+                    </form>
+
+                    <p class="auth-link">
+                        Already have an account? 
+                        <button type="button" data-page="signin" class="link-button">Sign In</button>
+                    </p>
                 </div>
             </div>
+        </section>
 
-            <button class="btn btn-primary mt-4 w-100" type="submit">
-                Predict Habitability
-            </button>
-        </form>
-    </div>
+        <!-- Sign In Page -->
+        <section id="signin-page" class="page">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h1>Sign In</h1>
+                    <p>Welcome back to ExoHabitAI</p>
+                    
+                    <div id="signinError" class="error-message" style="display: none;"></div>
+                    
+                    <form id="signinForm" class="auth-form">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="signinEmail" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="signinPassword" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary full-width">Sign In</button>
+                    </form>
 
-    <!-- Result -->
-    <div id="result" class="mt-4"></div>
+                    <p class="auth-link">
+                        Don't have an account? 
+                        <button type="button" data-page="signup" class="link-button">Sign Up</button>
+                    </p>
 
-</div>
+                    <div class="demo-credentials">
+                        <p><strong>Demo Account:</strong></p>
+                        <p>Email: demo@exohabitat.com</p>
+                        <p>Password: demo123</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<script src="script.js"></script>
+        <!-- Predictor Page -->
+        <section id="predictor-page" class="page">
+            <div class="predictor-container">
+                <div class="predictor-header">
+                    <h1>Exoplanet Habitability Predictor</h1>
+                    <p>Enter exoplanet parameters to analyze habitability potential</p>
+                </div>
+
+                <div class="predictor-grid">
+                    <!-- Input Form -->
+                    <div class="predictor-form">
+                        <div class="form-group">
+                            <label>Planet Name</label>
+                            <input type="text" id="planetName" placeholder="e.g., TRAPPIST-1e, Kepler-452b">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Radius (Earth radii) <span id="radiusValue">1.00</span></label>
+                            <input type="range" id="radius" min="0.5" max="2.5" step="0.1" value="1.0">
+                            <small>Range: 0.5 - 2.5 Earth radii</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Orbital Distance (AU) <span id="distanceValue">1.00</span></label>
+                            <input type="range" id="distance" min="0.5" max="2.0" step="0.1" value="1.0">
+                            <small>Range: 0.5 - 2.0 AU</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Surface Temperature (K) <span id="temperatureValue">288</span></label>
+                            <input type="range" id="temperature" min="200" max="400" step="5" value="288">
+                            <small>Range: 200 - 400 K</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Water Presence Probability (%) <span id="waterValue">50.0</span></label>
+                            <input type="range" id="waterPresence" min="0" max="100" step="5" value="50">
+                        </div>
+
+                        <div class="form-group checkbox">
+                            <input type="checkbox" id="atmosphere" checked>
+                            <label for="atmosphere">Has Atmosphere</label>
+                        </div>
+
+                        <button id="predictBtn" class="btn btn-primary full-width">Analyze Planet</button>
+                    </div>
+
+                    <!-- Results Panel -->
+                    <div id="resultsPanel" class="results-panel" style="display: none;">
+                        <div class="score-card">
+                            <div class="score-header">
+                                <div>
+                                    <p class="score-label">Habitability Score</p>
+                                    <p class="score-value" id="scoreValue">0</p>
+                                </div>
+                                <div>
+                                    <p class="score-label">Classification</p>
+                                    <p class="score-value" id="classificationValue">-</p>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="scoreProgress" class="progress-fill"></div>
+                            </div>
+                        </div>
+
+                        <div id="factorsContainer" class="factors-list"></div>
+
+                        <p id="recommendationText" class="recommendation-text"></p>
+
+                        <div class="result-buttons">
+                            <button id="saveBtn" class="btn btn-primary full-width">Save to Dashboard</button>
+                            <button id="newAnalysisBtn" class="btn btn-outline full-width">New Analysis</button>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="emptyState" class="empty-state">
+                        <p>Enter parameters and click "Analyze Planet" to see results</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Explore Page -->
+        <section id="explore-page" class="page">
+            <div class="explore-container">
+                <div class="explore-header">
+                    <h1>Exoplanet Database</h1>
+                    <p>Browse known exoplanets and their habitability potential</p>
+                </div>
+
+                <div class="search-section">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search by planet name or star...">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All Planets</button>
+                        <button class="filter-btn" data-filter="high">Highly Habitable</button>
+                        <button class="filter-btn" data-filter="medium">Potentially Habitable</button>
+                        <button class="filter-btn" data-filter="low">Unlikely Habitable</button>
+                    </div>
+                </div>
+
+                <div id="planetsGrid" class="planets-grid"></div>
+            </div>
+        </section>
+
+        <!-- Dashboard Page -->
+        <section id="dashboard-page" class="page">
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h1>Dashboard</h1>
+                    <p id="welcomeMessage">Welcome back</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <p class="stat-label">Total Predictions</p>
+                        <p class="stat-value" id="totalPredictions">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Highly Habitable</p>
+                        <p class="stat-value" id="highlyHabitable">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Potentially Habitable</p>
+                        <p class="stat-value" id="potentiallyHabitable">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Account Created</p>
+                        <p class="stat-value" id="accountCreated">-</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-actions">
+                    <button class="btn btn-primary" data-page="predictor">+ New Prediction</button>
+                    <button class="btn btn-outline" data-page="explore">Explore Database</button>
+                </div>
+
+                <div class="predictions-section">
+                    <h2>Recent Predictions</h2>
+                    <div id="predictionsTable"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Page -->
+        <section id="about-page" class="page">
+            <div class="about-container">
+                <h1>About ExoHabitAI</h1>
+                <div class="about-content">
+                    <section>
+                        <h2>What is ExoHabitAI?</h2>
+                        <p>ExoHabitAI is an advanced platform for analyzing the habitability potential of exoplanets. Using sophisticated algorithms trained on astronomical data, we predict which distant worlds might be capable of supporting life.</p>
+                    </section>
+
+                    <section>
+                        <h2>Our Methodology</h2>
+                        <p>Our habitability analysis considers five critical factors:</p>
+                        <ul>
+                            <li><strong>Planetary Size:</strong> Optimal habitable planets are typically between 0.8 and 1.2 Earth radii</li>
+                            <li><strong>Orbital Distance:</strong> The planet must reside in the habitable zone (0.95-1.37 AU for Sun-like stars)</li>
+                            <li><strong>Atmosphere:</strong> A protective atmosphere is essential for maintaining surface conditions suitable for life</li>
+                            <li><strong>Temperature:</strong> Surface temperatures between 250-310K are ideal for liquid water</li>
+                            <li><strong>Water Presence:</strong> Liquid water is a fundamental requirement for life as we understand it</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Important Limitations</h2>
+                        <p>This analysis is based on our current understanding of habitability. The universe may harbor life in forms and environments we cannot yet imagine. These predictions should be viewed as hypothetical assessments based on Earth-like habitability criteria.</p>
+                    </section>
+
+                    <section>
+                        <h2>Demo Account</h2>
+                        <p>Try ExoHabitAI with our demo account:</p>
+                        <p><strong>Email:</strong> demo@exohabitat.com<br><strong>Password:</strong> demo123</p>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
